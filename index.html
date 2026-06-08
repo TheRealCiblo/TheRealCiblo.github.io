@@ -1,10 +1,327 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Vanillfy</title>
-  </head>
-  <body>
-    <h1>Welcome to Vanillfy!</h1>
-    <p>Coming soon...</p>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vanillafy.xyz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --orange: #FF6B00;
+      --orange-light: #FF9A3C;
+      --orange-glow: #FFB347;
+      --bg: #0a0a0a;
+      --text: #fff;
+    }
+
+    /* Custom cursor */
+    * { cursor: none !important; }
+    #cursor {
+      width: 22px; height: 22px;
+      background: var(--orange);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, background 0.2s;
+      box-shadow: 0 0 16px 4px var(--orange-glow);
+      mix-blend-mode: normal;
+    }
+    #cursor-ring {
+      width: 44px; height: 44px;
+      border: 2px solid var(--orange-light);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, left 0.12s ease, top 0.12s ease;
+      opacity: 0.5;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    /* Animated background blobs */
+    .bg-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      animation: blobFloat 8s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob1 { width: 500px; height: 500px; background: var(--orange); top: -100px; left: -100px; animation-delay: 0s; }
+    .blob2 { width: 400px; height: 400px; background: var(--orange-light); bottom: -80px; right: -80px; animation-delay: -4s; }
+    .blob3 { width: 300px; height: 300px; background: #ff3d00; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: -2s; }
+
+    @keyframes blobFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    /* Logo/Title */
+    .logo {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(3rem, 10vw, 7rem);
+      color: var(--orange);
+      text-shadow: 0 0 40px rgba(255,107,0,0.6), 0 4px 0 rgba(0,0,0,0.4);
+      letter-spacing: 2px;
+      animation: popIn 0.7s cubic-bezier(.34,1.56,.64,1) both;
+      line-height: 1;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.7) translateY(30px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .tagline {
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      font-weight: 800;
+      color: var(--orange-light);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      animation: popIn 0.7s 0.15s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    /* Buttons row */
+    .buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+      animation: popIn 0.7s 0.3s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    .btn {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      padding: 14px 36px;
+      border-radius: 50px;
+      border: none;
+      background: var(--orange);
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(255,107,0,0.4);
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.12);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .btn:hover::after { opacity: 1; }
+    .btn:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 8px 32px rgba(255,107,0,0.6);
+    }
+    .btn:active { transform: scale(0.97); }
+
+    .btn-outline {
+      background: transparent;
+      border: 2.5px solid var(--orange);
+      color: var(--orange);
+      box-shadow: 0 4px 24px rgba(255,107,0,0.15);
+    }
+    .btn-outline:hover {
+      background: rgba(255,107,0,0.12);
+      box-shadow: 0 8px 32px rgba(255,107,0,0.3);
+    }
+
+    /* IP Dropdown */
+    .ip-wrapper {
+      animation: popIn 0.7s 0.45s cubic-bezier(.34,1.56,.64,1) both;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .ip-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.1rem;
+      color: var(--orange-light);
+      background: rgba(255,107,0,0.08);
+      border: 2px solid rgba(255,107,0,0.3);
+      border-radius: 50px;
+      padding: 12px 28px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .ip-toggle:hover {
+      background: rgba(255,107,0,0.18);
+      border-color: var(--orange);
+    }
+    .arrow {
+      display: inline-block;
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+      font-size: 1rem;
+    }
+    .arrow.open { transform: rotate(180deg); }
+
+    .ip-box {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+    .ip-box.open {
+      max-height: 200px;
+      opacity: 1;
+    }
+    .ip-inner {
+      margin-top: 12px;
+      background: rgba(255,107,0,0.08);
+      border: 2px solid rgba(255,107,0,0.3);
+      border-radius: 16px;
+      padding: 18px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .ip-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.4);
+    }
+    .ip-address {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.5rem;
+      color: var(--orange);
+      text-shadow: 0 0 20px rgba(255,107,0,0.5);
+    }
+    .copy-btn {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 20px;
+      border: none;
+      background: rgba(255,107,0,0.2);
+      color: var(--orange-light);
+      transition: background 0.2s;
+      margin-top: 2px;
+    }
+    .copy-btn:hover { background: rgba(255,107,0,0.35); }
+
+    /* Floating emoji decorations */
+    .floaty {
+      position: fixed;
+      font-size: 2rem;
+      pointer-events: none;
+      z-index: 0;
+      animation: floatUp linear infinite;
+      opacity: 0.18;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 0.18; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-blob blob1"></div>
+<div class="bg-blob blob2"></div>
+<div class="bg-blob blob3"></div>
+
+<!-- Floating emojis -->
+<div class="floaty" style="left:8%; bottom:-5%; animation-duration:12s; animation-delay:0s;">🍦</div>
+<div class="floaty" style="left:25%; bottom:-5%; animation-duration:16s; animation-delay:3s;">⛏️</div>
+<div class="floaty" style="left:60%; bottom:-5%; animation-duration:14s; animation-delay:6s;">🟠</div>
+<div class="floaty" style="left:80%; bottom:-5%; animation-duration:18s; animation-delay:1s;">🍊</div>
+<div class="floaty" style="left:45%; bottom:-5%; animation-duration:10s; animation-delay:5s;">🌟</div>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<main>
+  <div class="logo">Vanillafy.xyz</div>
+  <div class="tagline">Vanilla Minecraft at its Finest</div>
+
+  <div class="buttons">
+    <button class="btn" onclick="alert('Store coming soon!')">🛒 Store</button>
+  </div>
+
+  <div class="ip-wrapper">
+    <button class="ip-toggle" onclick="toggleIP()" id="ipToggle">
+      🌐 Server IP <span class="arrow" id="arrow">▼</span>
+    </button>
+    <div class="ip-box" id="ipBox">
+      <div class="ip-inner">
+        <div class="ip-label">Join us at</div>
+        <div class="ip-address">play.vanillafy.xyz:26225</div>
+        <button class="copy-btn" onclick="copyIP()">📋 Copy IP</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+
+  // IP dropdown
+  function toggleIP() {
+    const box = document.getElementById('ipBox');
+    const arrow = document.getElementById('arrow');
+    box.classList.toggle('open');
+    arrow.classList.toggle('open');
+  }
+
+  // Copy IP
+  function copyIP() {
+    navigator.clipboard.writeText('play.vanillafy.xyz:26225');
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy IP', 2000);
+  }
+</script>
+</body>
 </html>
