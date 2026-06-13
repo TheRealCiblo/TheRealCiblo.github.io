@@ -415,16 +415,16 @@
 
   <div class="timer">
     <div class="timer-block">
-      <div class="timer-value" id="days">5</div>
-      <div class="timer-label">Days</div>
-    </div>
-    <div class="timer-block">
-      <div class="timer-value" id="hours">00</div>
+      <div class="timer-value" id="hours">05</div>
       <div class="timer-label">Hours</div>
     </div>
     <div class="timer-block">
       <div class="timer-value" id="minutes">00</div>
       <div class="timer-label">Minutes</div>
+    </div>
+    <div class="timer-block">
+      <div class="timer-value" id="seconds">00</div>
+      <div class="timer-label">Seconds</div>
     </div>
   </div>
 
@@ -548,7 +548,7 @@
   let endTime = localStorage.getItem('vanillafy_timer_end');
 
   if (!endTime) {
-    endTime = new Date().getTime() + (5 * 24 * 60 * 60 * 1000);
+    endTime = new Date().getTime() + (5 * 60 * 60 * 1000);
     localStorage.setItem('vanillafy_timer_end', endTime);
   } else {
     endTime = parseInt(endTime, 10);
@@ -559,13 +559,13 @@
     let remaining = endTime - now;
     if (remaining < 0) remaining = 0;
 
-    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const hours = Math.floor(remaining / (1000 * 60 * 60));
     const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
 
-    document.getElementById('days').textContent = days;
     document.getElementById('hours').textContent = String(hours).padStart(2, '0');
     document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
   }
 
   updateTimer();
