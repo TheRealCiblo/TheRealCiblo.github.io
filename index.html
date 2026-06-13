@@ -6,6 +6,7 @@
   <title>Vanillafy.xyz</title>
   <link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -92,6 +93,41 @@
       margin-top: 10px;
       text-shadow: 0 0 10px rgba(255,32,32,0.6);
       animation: popIn 0.7s 0.2s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    .title-wrapper {
+      position: relative;
+      width: 100%;
+      min-height: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .title-wrapper > * {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fade-target {
+      transition: opacity 0.7s ease;
+    }
+    .fade-target.fade-out {
+      opacity: 0;
+    }
+    .brand-title {
+      font-family: 'Minecraftia', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      color: var(--orange);
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(255,107,0,0.7), 0 0 22px rgba(255,179,71,0.5);
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .brand-title.fade-in {
+      opacity: 1;
     }
 
     .timer {
@@ -296,6 +332,37 @@
     }
     .why-inner p + p { margin-top: 8px; }
 
+    .store-box {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
+      opacity: 0;
+      width: 100%;
+      max-width: 480px;
+    }
+    .store-box.open { max-height: 300px; opacity: 1; }
+
+    .store-inner {
+      margin-top: 12px;
+      background: rgba(255,107,0,0.08);
+      border: 2px solid rgba(255,107,0,0.3);
+      border-radius: 16px;
+      padding: 18px 24px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.9);
+    }
+    .store-inner p + p { margin-top: 8px; }
+
+    .reveal-target {
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .reveal-target.fade-in {
+      opacity: 1;
+    }
+
     .brand-watermark {
       position: fixed;
       bottom: 10px;
@@ -411,7 +478,10 @@
 <div id="cursor-trail"></div>
 
 <main>
-  <div class="maintenance">Server Maintenance</div>
+  <div class="title-wrapper">
+    <div class="maintenance fade-target" id="maintenanceText">Server Maintenance</div>
+    <div class="brand-title" id="brandTitle">vanillafy.xyz</div>
+  </div>
 
   <div class="timer">
     <div class="timer-block">
@@ -450,12 +520,24 @@
     </div>
   </div>
 
-  <button class="btn btn-why" onclick="toggleWhy()">Why?</button>
-  <div class="why-box" id="whyBox">
-    <div class="why-inner">
-      <p>We're pushing the Season 2 update — Vanillafy Reborn!</p>
-      <p>New terrain, new mechanics, and a fresh start for everyone.</p>
-      <p>Every player's data will be reset.</p>
+  <div id="whySection">
+    <button class="btn btn-why" onclick="toggleWhy()">Why?</button>
+    <div class="why-box" id="whyBox">
+      <div class="why-inner">
+        <p>We're pushing the Season 2 update — Vanillafy Reborn!</p>
+        <p>New terrain, new mechanics, and a fresh start for everyone.</p>
+        <p>Every player's data will be reset.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="storeSection" class="reveal-target" style="display:none; flex-direction:column; align-items:center;">
+    <button class="btn btn-why" onclick="toggleStore()">Store</button>
+    <div class="store-box" id="storeBox">
+      <div class="store-inner">
+        <p>The Vanillafy Store is open for Season 2 — Reborn!</p>
+        <p>Ranks, cosmetics, and perks are now available.</p>
+      </div>
     </div>
   </div>
 
@@ -463,6 +545,13 @@
     <div class="login-box">
       <input type="text" id="mcUsername" class="login-input" placeholder="Minecraft Username" maxlength="16" onkeydown="if(event.key==='Enter') lookupPlayer()" />
       <button class="btn btn-login" onclick="lookupPlayer()">Login</button>
+    </div>
+    <div class="login-box" id="passwordBox" style="display:none; margin-top:10px; flex-wrap: wrap;">
+      <input type="password" id="mcPassword" class="login-input" placeholder="Password" onkeydown="if(event.key==='Enter') signIn()" />
+    </div>
+    <div class="buttons" id="authButtons" style="display:none; margin-top:10px;">
+      <button class="btn btn-login" onclick="signIn()">Sign In</button>
+      <button class="btn btn-why" onclick="signUp()">Create Account</button>
     </div>
     <div class="login-result" id="loginResult"></div>
   </div>
@@ -501,6 +590,11 @@
     box.classList.toggle('open');
   }
 
+  function toggleStore() {
+    const box = document.getElementById('storeBox');
+    box.classList.toggle('open');
+  }
+
   function copyIP() {
     navigator.clipboard.writeText('play.vanillafy.xyz:26225');
     const btn = document.querySelector('.copy-btn');
@@ -508,10 +602,27 @@
     setTimeout(() => btn.textContent = '📋 Copy IP', 2000);
   }
 
+  // Supabase setup
+  const SUPABASE_URL = 'https://tnjzxpvmkudeovgxdsol.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_L4U_ofaZQVw_k_znjcZL4Q_Eh4frJKl';
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Usernames that get is_admin = true on account creation
+  const ADMIN_USERNAMES = ['ciblo', 'winddtxc'];
+
+  let pendingPlayer = null;
+
   async function lookupPlayer() {
     const input = document.getElementById('mcUsername');
     const result = document.getElementById('loginResult');
+    const passwordBox = document.getElementById('passwordBox');
+    const authButtons = document.getElementById('authButtons');
+    const pwInput = document.getElementById('mcPassword');
     const username = input.value.trim();
+
+    passwordBox.style.display = 'none';
+    authButtons.style.display = 'none';
+    pwInput.value = '';
 
     if (!username) {
       result.style.display = 'flex';
@@ -529,25 +640,108 @@
       if (data.code === 'player.found') {
         const name = data.data.player.username;
         const uuid = data.data.player.id;
-        
-        result.innerHTML = `
-          <div>Welcome, ${name}!</div>
-          <div class="character-display">
-            <img class="mc-bust" src="https://visage.surgeplay.com/bust/256/${uuid}" alt="${name}'s 3D Bust" onerror="this.src='https://mc-heads.net/avatar/${encodeURIComponent(name)}'">
-            <img class="mc-cape" src="https://mc-heads.net/cape/${encodeURIComponent(name)}" alt="${name}'s Cape" onerror="this.style.display='none'">
-          </div>
-        `;
+        pendingPlayer = { name, uuid, key: username.toLowerCase() };
+
+        result.innerHTML = 'Enter a password, then Sign In (existing account) or Create Account (new).';
+        passwordBox.style.display = 'flex';
+        authButtons.style.display = 'flex';
+        pwInput.focus();
       } else {
+        pendingPlayer = null;
         result.innerHTML = 'Player not found';
       }
     } catch (err) {
+      pendingPlayer = null;
       result.innerHTML = 'Error looking up player';
     }
+  }
+
+  async function signIn() {
+    const result = document.getElementById('loginResult');
+    const password = document.getElementById('mcPassword').value;
+
+    if (!pendingPlayer) return;
+    if (!password) {
+      result.innerHTML = 'Please enter a password';
+      return;
+    }
+
+    result.innerHTML = 'Signing in...';
+    const email = pendingPlayer.key + '@vanillafy.local';
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      result.innerHTML = '❌ ' + error.message;
+      return;
+    }
+
+    const { data: profile } = await supabaseClient
+      .from('profiles')
+      .select('is_admin')
+      .eq('id', data.user.id)
+      .single();
+
+    renderWelcome(pendingPlayer, !!(profile && profile.is_admin));
+  }
+
+  async function signUp() {
+    const result = document.getElementById('loginResult');
+    const password = document.getElementById('mcPassword').value;
+
+    if (!pendingPlayer) return;
+    if (!password) {
+      result.innerHTML = 'Please enter a password';
+      return;
+    }
+
+    result.innerHTML = 'Creating account...';
+    const email = pendingPlayer.key + '@vanillafy.local';
+    const isAdmin = ADMIN_USERNAMES.includes(pendingPlayer.key);
+
+    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+
+    if (error) {
+      result.innerHTML = '❌ ' + error.message;
+      return;
+    }
+
+    if (!data.user) {
+      result.innerHTML = 'Account created, but no session was returned. Check your Supabase email confirmation settings.';
+      return;
+    }
+
+    await supabaseClient.from('profiles').insert({
+      id: data.user.id,
+      username: pendingPlayer.key,
+      is_admin: isAdmin
+    });
+
+    if (data.session) {
+      renderWelcome(pendingPlayer, isAdmin);
+    } else {
+      result.innerHTML = 'Account created! You can now click Sign In.';
+    }
+  }
+
+  function renderWelcome(player, isAdmin) {
+    const result = document.getElementById('loginResult');
+    document.getElementById('passwordBox').style.display = 'none';
+    document.getElementById('authButtons').style.display = 'none';
+    result.innerHTML = `
+      <div>Welcome${isAdmin ? ', Admin' : ''}, ${player.name}!</div>
+      <div class="character-display">
+        <img class="mc-bust" src="https://visage.surgeplay.com/bust/256/${player.uuid}" alt="${player.name}'s 3D Bust" onerror="this.src='https://mc-heads.net/avatar/${encodeURIComponent(player.name)}'">
+        <img class="mc-cape" src="https://mc-heads.net/cape/${encodeURIComponent(player.name)}" alt="${player.name}'s Cape" onerror="this.style.display='none'">
+      </div>
+    `;
   }
 
   // Fixed end time - same for all visitors. Edit this date/time as needed.
   // Format: 'YYYY-MM-DDTHH:MM:SS-05:00' (the -05:00 is the UTC offset, e.g. -05:00 for CDT)
   const endTime = new Date('2026-06-13T18:00:00-05:00').getTime();
+
+  let revealTriggered = false;
 
   function updateTimer() {
     const now = new Date().getTime();
@@ -561,6 +755,28 @@
     document.getElementById('hours').textContent = String(hours).padStart(2, '0');
     document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
     document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+    if (remaining <= 5000 && !revealTriggered) {
+      revealTriggered = true;
+      triggerReveal();
+    }
+  }
+
+  function triggerReveal() {
+    // Fade out "Server Maintenance"
+    document.getElementById('maintenanceText').classList.add('fade-out');
+
+    // Swap the Why? section out for the Store section
+    document.getElementById('whySection').style.display = 'none';
+    const storeSection = document.getElementById('storeSection');
+    storeSection.style.display = 'flex';
+
+    // Slight delay so the maintenance text fades out first, then
+    // the brand title and store section fade in together
+    setTimeout(() => {
+      document.getElementById('brandTitle').classList.add('fade-in');
+      storeSection.classList.add('fade-in');
+    }, 400);
   }
 
   updateTimer();
