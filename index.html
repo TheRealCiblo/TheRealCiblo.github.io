@@ -352,7 +352,7 @@
       font-size: 1rem;
     }
 
-    /* UPDATED: Profile Results Container */
+    /* Result Container for Skins & Capes */
     .login-result {
       margin-top: 14px;
       font-family: 'Minecraftia', sans-serif;
@@ -370,7 +370,7 @@
       border-radius: 16px;
       border: 2px dashed rgba(255, 107, 0, 0.2);
       width: 100%;
-      display: none; /* Hidden by default until login */
+      display: none; /* Stays hidden until a user searches */
     }
 
     .character-display {
@@ -499,7 +499,7 @@
     setTimeout(() => btn.textContent = '📋 Copy IP', 2000);
   }
 
-  /* UPDATED: Lookup function to render full character body & cape */
+  /* Reliable username-based player lookup via MC-Heads */
   async function lookupPlayer() {
     const input = document.getElementById('mcUsername');
     const result = document.getElementById('loginResult');
@@ -520,14 +520,12 @@
 
       if (data.code === 'player.found') {
         const name = data.data.player.username;
-        const uuid = data.data.player.id;
         
-        // Setup the template using Crafatar API for full-body skin and cape
         result.innerHTML = `
           <div>Welcome, ${name}!</div>
           <div class="character-display">
-            <img class="mc-skin" src="https://crafatar.com/renders/body/${uuid}?overlay" alt="${name}'s Skin">
-            <img class="mc-cape" src="https://crafatar.com/capes/${uuid}" alt="${name}'s Cape" onerror="this.style.display='none'">
+            <img class="mc-skin" src="https://mc-heads.net/body/${encodeURIComponent(name)}" alt="${name}'s Skin">
+            <img class="mc-cape" src="https://mc-heads.net/cape/${encodeURIComponent(name)}" alt="${name}'s Cape" onerror="this.style.display='none'">
           </div>
         `;
       } else {
