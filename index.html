@@ -545,14 +545,9 @@
     }
   }
 
-  let endTime = localStorage.getItem('vanillafy_timer_end_v2');
-
-  if (!endTime) {
-    endTime = new Date().getTime() + (5 * 60 * 60 * 1000);
-    localStorage.setItem('vanillafy_timer_end_v2', endTime);
-  } else {
-    endTime = parseInt(endTime, 10);
-  }
+  // Fixed end time - same for all visitors. Edit this date/time as needed.
+  // Format: 'YYYY-MM-DDTHH:MM:SS-05:00' (the -05:00 is the UTC offset, e.g. -05:00 for CDT)
+  const endTime = new Date('2026-06-13T18:00:00-05:00').getTime();
 
   function updateTimer() {
     const now = new Date().getTime();
