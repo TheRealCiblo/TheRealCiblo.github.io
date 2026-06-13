@@ -16,7 +16,6 @@
       --orange-glow: #FFB347;
       --discord: #5865F2;
       --discord-hover: #4752C4;
-      --red: #ff2020;
       --bg: #652600;
       --text: #fff;
     }
@@ -87,11 +86,11 @@
     .maintenance {
       font-family: 'Minecraftia', sans-serif;
       font-weight: 700;
-      -webkit-text-stroke: 1px var(--red);
+      -webkit-text-stroke: 1px var(--orange);
       font-size: clamp(1.2rem, 4vw, 2rem);
-      color: var(--red);
+      color: var(--orange-light);
       margin-top: 10px;
-      text-shadow: 0 0 10px rgba(255,32,32,0.6);
+      text-shadow: 0 0 10px rgba(255,107,0,0.6);
       animation: popIn 0.7s 0.2s cubic-bezier(.34,1.56,.64,1) both;
     }
 
@@ -151,8 +150,8 @@
       font-family: 'Minecraftia', sans-serif;
       font-weight: 400;
       font-size: clamp(1.5rem, 6vw, 3rem);
-      color: var(--red);
-      text-shadow: 0 0 10px rgba(255,32,32,0.6);
+      color: var(--orange-light);
+      text-shadow: 0 0 10px rgba(255,107,0,0.6);
     }
 
     .timer-label {
@@ -160,7 +159,7 @@
       font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 2px;
-      color: var(--red);
+      color: var(--orange);
       margin-top: 4px;
       font-weight: 400;
     }
@@ -503,9 +502,9 @@
       color: #fff;
       transition: background 0.2s;
     }
-    .btn-maint-trigger { background: var(--red); }
-    .btn-maint-trigger:hover { background: #cc1010; }
-    .btn-up-trigger { background: var(--orange); }
+    .btn-maint-trigger { background: var(--orange); }
+    .btn-maint-trigger:hover { background: var(--orange-light); }
+    .btn-up-trigger { background: var(--orange); border: 1px solid #fff; }
     .btn-up-trigger:hover { background: var(--orange-light); }
     
     @keyframes popIn {
@@ -797,19 +796,16 @@
       </div>
     `;
 
-    // Display Admin Panel if the logged in user is part of the admin system list
     if (isAdmin) {
       const panel = document.getElementById('adminPanel');
       panel.style.display = 'flex';
       
-      // Default the date input field value to the current targeted layout end time
       const dateLocal = new Date(endTime);
       dateLocal.setMinutes(dateLocal.getMinutes() - dateLocal.getTimezoneOffset());
       document.getElementById('maintEndTime').value = dateLocal.toISOString().slice(0, 16);
     }
   }
 
-  // Countdown Logic Management variables
   let endTime = new Date('2026-06-13T18:00:00-05:00').getTime();
   let isServerUpForced = false; 
   let revealTriggered = false;
@@ -849,16 +845,13 @@
     }, 400);
   }
 
-  // Admin Specific Action Panel Functions
   function adminSetMaintenance() {
     const inputTime = document.getElementById('maintEndTime').value;
     if (!inputTime) return alert("Please specify a valid countdown end target time first.");
     
-    // Reset flags
     isServerUpForced = false;
     revealTriggered = false;
     
-    // Set global time variables and apply view updates
     endTime = new Date(inputTime).getTime();
     
     document.getElementById('brandTitle').classList.remove('fade-in');
@@ -876,12 +869,10 @@
     isServerUpForced = true;
     revealTriggered = true;
     
-    // Zero out variables and values safely
     document.getElementById('hours').textContent = "00";
     document.getElementById('minutes').textContent = "00";
     document.getElementById('seconds').textContent = "00";
     
-    // Execute live swap layout updates immediately
     triggerReveal();
   }
 
