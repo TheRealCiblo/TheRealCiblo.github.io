@@ -650,65 +650,55 @@
     }
   }
 
-  async function signIn(username, password) {
-    const result = document.getElementById('loginResult');
-    result.style.display = 'flex';
-    result.innerHTML = 'Signing in...';
-
-    const key = username.toLowerCase();
-    const email = key + '@vanillafy.local';
-
-    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
-    if (error) {
-      result.innerHTML = '❌ ' + error.message;
-      return;
-    }
-
-    const { data: profile } = await supabaseClient
-      .from('profiles')
-      .select('is_admin')
-      .eq('id', data.user.id)
-      .single();
-
-    showPlayer(username, !!(profile && profile.is_admin));
-  }
-
   async function signUp(username, password) {
     const result = document.getElementById('loginResult');
     result.style.display = 'flex';
     result.innerHTML = 'Creating account...';
 
-    const key = username.toLowerCase();
-    const email = key + '@vanillafy.local';
-    const isAdmin = ADMIN_USERNAMES.includes(key);
-
-    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+    const { data, error } = await supabaseClient.rpc('signup', {
+      p_username: username,
+      p_password: password
+    });
 
     if (error) {
       result.innerHTML = '❌ ' + error.message;
       return;
     }
 
-    if (!data.user) {
-      result.innerHTML = 'Account created, but no session was returned. Check your Supabase email confirmation settings.';
+    if (!data.success) {
+      result.innerHTML = data.reason === 'exists'
+        ? '❌ That username is already taken.'
+        : '❌ Something went wrong.';
       return;
     }
 
-    await supabaseClient.from('profiles').insert({
-      id: data.user.id,
-      username: key,
-      is_admin: isAdmin
+    const isAdmin = ADMIN_USERNAMES.includes(username.toLowerCase());
+    showPlayer(username, isAdmin);
+  }
+
+  async function signIn(username, password) {
+    const result = document.getElementById('loginResult');
+    result.style.display = 'flex';
+    result.innerHTML = 'Signing in...';
+
+    const { data, error } = await supabaseClient.rpc('login', {
+      p_username: username,
+      p_password: password
     });
 
-    if (data.session) {
-      showPlayer(username, isAdmin);
-    } else {
-      // Switch back to login mode so the user can sign in
-      toggleAuthMode();
-      result.style.display = 'flex';
-      result.innerHTML = '✅ Account created! Now log in below.';
+    if (error) {
+      result.innerHTML = '❌ ' + error.message;
+      return;
     }
+
+    if (!data.success) {
+      result.innerHTML = data.reason === 'not_found'
+        ? '❌ No account found with that username.'
+        : '❌ Incorrect password.';
+      return;
+    }
+
+    showPlayer(username, !!data.is_admin);
   }
 
   async function showPlayer(username, isAdmin) {
