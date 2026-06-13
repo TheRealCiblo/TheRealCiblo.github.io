@@ -383,7 +383,8 @@
       image-rendering: pixelated;
     }
 
-    .mc-skin {
+    /* Fixed style rule for 3D isometric bust position rendering */
+    .mc-bust {
       height: 180px;
       width: auto;
     }
@@ -479,6 +480,15 @@
     trail.style.top = e.clientY + 'px';
   });
 
+  document.addEventListener('mouseleave', () => {
+    cursor.style.display = 'none';
+    trail.style.display = 'none';
+  });
+  document.addEventListener('mouseenter', () => {
+    cursor.style.display = 'block';
+    trail.style.display = 'block';
+  });
+
   function toggleIP() {
     const box = document.getElementById('ipBox');
     const arrow = document.getElementById('arrow');
@@ -518,11 +528,12 @@
 
       if (data.code === 'player.found') {
         const name = data.data.player.username;
+        const uuid = data.data.player.id;
         
         result.innerHTML = `
           <div>Welcome, ${name}!</div>
           <div class="character-display">
-            <img class="mc-skin" src="https://mc-heads.net/body/${encodeURIComponent(name)}" alt="${name}'s Skin">
+            <img class="mc-bust" src="https://visage.surgeplay.com/bust/256/${uuid}" alt="${name}'s 3D Bust" onerror="this.src='https://mc-heads.net/avatar/${encodeURIComponent(name)}'">
             <img class="mc-cape" src="https://mc-heads.net/cape/${encodeURIComponent(name)}" alt="${name}'s Cape" onerror="this.style.display='none'">
           </div>
         `;
@@ -534,15 +545,12 @@
     }
   }
 
-  /* FIXED: Use localStorage so the timer end time persists across browser refreshes */
   let endTime = localStorage.getItem('vanillafy_timer_end');
 
   if (!endTime) {
-    // If no timer is saved yet, create a target 5 days out and lock it in
     endTime = new Date().getTime() + (5 * 24 * 60 * 60 * 1000);
     localStorage.setItem('vanillafy_timer_end', endTime);
   } else {
-    // Parse the saved text string back into a workable integer value
     endTime = parseInt(endTime, 10);
   }
 
