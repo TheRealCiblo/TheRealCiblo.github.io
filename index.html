@@ -83,38 +83,6 @@
       text-align: center;
     }
 
-    .brand-logo {
-      width: clamp(80px, 15vw, 130px);
-      height: auto;
-      border-radius: 16px;
-      animation: popIn 0.7s cubic-bezier(.34,1.56,.64,1) both;
-    }
-
-    .logo {
-      font-family: 'Minecraftia', sans-serif;
-      font-weight: 400;
-      font-size: clamp(3rem, 10vw, 7rem);
-      color: var(--orange);
-      letter-spacing: 2px;
-      animation: popIn 0.7s cubic-bezier(.34,1.56,.64,1) both;
-      line-height: 1;
-    }
-
-    @keyframes popIn {
-      from { opacity: 0; transform: scale(0.7) translateY(30px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    .tagline {
-      font-family: 'Minecraftia', sans-serif;
-      font-weight: 400;
-      font-size: clamp(1rem, 3vw, 1.5rem);
-      color: var(--orange-light);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      animation: popIn 0.7s 0.15s cubic-bezier(.34,1.56,.64,1) both;
-    }
-
     .maintenance {
       font-family: 'Minecraftia', sans-serif;
       font-weight: 700;
@@ -326,9 +294,7 @@
       line-height: 1.5;
       color: rgba(255,255,255,0.9);
     }
-    .why-inner p + p {
-      margin-top: 8px;
-    }
+    .why-inner p + p { margin-top: 8px; }
 
     .brand-watermark {
       position: fixed;
@@ -386,6 +352,7 @@
       font-size: 1rem;
     }
 
+    /* UPDATED: Profile Results Container */
     .login-result {
       margin-top: 14px;
       font-family: 'Minecraftia', sans-serif;
@@ -394,16 +361,43 @@
       text-align: center;
       min-height: 1.2em;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 15px;
       justify-content: center;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      border-radius: 16px;
+      border: 2px dashed rgba(255, 107, 0, 0.2);
+      width: 100%;
+      display: none; /* Hidden by default until login */
     }
 
-    .login-result img {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
+    .character-display {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .character-display img {
       image-rendering: pixelated;
+    }
+
+    .mc-skin {
+      height: 180px;
+      width: auto;
+    }
+
+    .mc-cape {
+      height: 120px;
+      width: auto;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    }
+    
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.7) translateY(30px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
     }
   </style>
 </head>
@@ -505,16 +499,19 @@
     setTimeout(() => btn.textContent = '📋 Copy IP', 2000);
   }
 
+  /* UPDATED: Lookup function to render full character body & cape */
   async function lookupPlayer() {
     const input = document.getElementById('mcUsername');
     const result = document.getElementById('loginResult');
     const username = input.value.trim();
 
     if (!username) {
+      result.style.display = 'flex';
       result.innerHTML = 'Please enter a username';
       return;
     }
 
+    result.style.display = 'flex';
     result.innerHTML = 'Checking...';
 
     try {
@@ -524,7 +521,15 @@
       if (data.code === 'player.found') {
         const name = data.data.player.username;
         const uuid = data.data.player.id;
-        result.innerHTML = `<img src="https://crafatar.com/avatars/${uuid}?overlay" alt="${name}"> Logged in as ${name}`;
+        
+        // Setup the template using Crafatar API for full-body skin and cape
+        result.innerHTML = `
+          <div>Welcome, ${name}!</div>
+          <div class="character-display">
+            <img class="mc-skin" src="https://crafatar.com/renders/body/${uuid}?overlay" alt="${name}'s Skin">
+            <img class="mc-cape" src="https://crafatar.com/capes/${uuid}" alt="${name}'s Cape" onerror="this.style.display='none'">
+          </div>
+        `;
       } else {
         result.innerHTML = 'Player not found';
       }
