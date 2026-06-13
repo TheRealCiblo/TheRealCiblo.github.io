@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vanillafy.xyz</title>
   <link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght=700;800;900&family=Nunito:wght=400;600;800&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -111,10 +111,11 @@
       justify-content: center;
     }
     .fade-target {
-      transition: opacity 0.7s ease;
+      transition: opacity 0.5s ease;
     }
     .fade-target.fade-out {
       opacity: 0;
+      pointer-events: none;
     }
     .brand-title {
       font-family: 'Minecraftia', sans-serif;
@@ -122,9 +123,9 @@
       font-size: clamp(1.2rem, 4vw, 2rem);
       color: var(--orange);
       letter-spacing: 2px;
-      text-shadow: 0 0 10px rgba(255,107,0,0.7), 0 0 22px rgba(255,179,71,0.5);
+      text-shadow: 0 0 12px rgba(255,107,0,0.8), 0 0 24px rgba(255,179,71,0.6);
       opacity: 0;
-      transition: opacity 0.8s ease;
+      transition: opacity 0.5s ease;
     }
     .brand-title.fade-in {
       opacity: 1;
@@ -136,6 +137,7 @@
       flex-wrap: wrap;
       justify-content: center;
       animation: popIn 0.7s 0.25s cubic-bezier(.34,1.56,.64,1) both;
+      transition: opacity 0.4s ease;
     }
 
     .timer-block {
@@ -309,7 +311,7 @@
     }
     .btn-why::after { display: none; }
 
-    .why-box {
+    .why-box, .store-box {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.4s ease, opacity 0.3s ease;
@@ -317,9 +319,9 @@
       width: 100%;
       max-width: 480px;
     }
-    .why-box.open { max-height: 300px; opacity: 1; }
+    .why-box.open, .store-box.open { max-height: 300px; opacity: 1; }
 
-    .why-inner {
+    .why-inner, .store-inner {
       margin-top: 12px;
       background: rgba(0,0,0,0.15);
       border: 2px solid rgba(0,0,0,0.25);
@@ -330,30 +332,11 @@
       line-height: 1.5;
       color: rgba(255,255,255,0.9);
     }
-    .why-inner p + p { margin-top: 8px; }
-
-    .store-box {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, opacity 0.3s ease;
-      opacity: 0;
-      width: 100%;
-      max-width: 480px;
-    }
-    .store-box.open { max-height: 300px; opacity: 1; }
-
     .store-inner {
-      margin-top: 12px;
       background: rgba(255,107,0,0.08);
       border: 2px solid rgba(255,107,0,0.3);
-      border-radius: 16px;
-      padding: 18px 24px;
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.95rem;
-      line-height: 1.5;
-      color: rgba(255,255,255,0.9);
     }
-    .store-inner p + p { margin-top: 8px; }
+    .why-inner p + p, .store-inner p + p { margin-top: 8px; }
 
     .reveal-target {
       opacity: 0;
@@ -450,7 +433,6 @@
       image-rendering: pixelated;
     }
 
-    /* Fixed style rule for 3D isometric bust position rendering */
     .mc-bust {
       height: 180px;
       width: auto;
@@ -461,6 +443,70 @@
       width: auto;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
     }
+
+    /* Admin Panel styles */
+    .admin-panel {
+      margin-top: 20px;
+      background: rgba(20, 20, 20, 0.85);
+      border: 2px solid var(--orange);
+      border-radius: 16px;
+      padding: 20px;
+      width: 100%;
+      max-width: 400px;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 0 20px rgba(255, 107, 0, 0.2);
+    }
+    .admin-title {
+      font-family: 'Minecraftia', sans-serif;
+      font-size: 1rem;
+      color: var(--orange-light);
+      margin-bottom: 5px;
+    }
+    .admin-field {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      gap: 4px;
+    }
+    .admin-field label {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+    }
+    .admin-input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,107,0,0.4);
+      padding: 10px;
+      border-radius: 6px;
+      color: #fff;
+      font-family: inherit;
+      outline: none;
+    }
+    .admin-input:focus {
+      border-color: var(--orange);
+    }
+    .admin-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .btn-admin-action {
+      flex: 1;
+      padding: 10px;
+      font-family: 'Minecraftia', sans-serif;
+      font-size: 0.8rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      transition: background 0.2s;
+    }
+    .btn-maint-trigger { background: var(--red); }
+    .btn-maint-trigger:hover { background: #cc1010; }
+    .btn-up-trigger { background: var(--orange); }
+    .btn-up-trigger:hover { background: var(--orange-light); }
     
     @keyframes popIn {
       from { opacity: 0; transform: scale(0.7) translateY(30px); }
@@ -483,9 +529,9 @@
     <div class="brand-title" id="brandTitle">vanillafy.xyz</div>
   </div>
 
-  <div class="timer">
+  <div class="timer" id="timerContainer">
     <div class="timer-block">
-      <div class="timer-value" id="hours">05</div>
+      <div class="timer-value" id="hours">00</div>
       <div class="timer-label">Hours</div>
     </div>
     <div class="timer-block">
@@ -507,7 +553,7 @@
     </a>
   </div>
 
-  <div class="ip-wrapper">
+  <div class="ip-wrapper" id="ipWrapperSection">
     <button class="ip-toggle" onclick="toggleIP()" id="ipToggle">
       🌐 Server IP <span class="arrow" id="arrow">▼</span>
     </button>
@@ -556,6 +602,18 @@
     </button>
     <div class="login-result" id="loginResult"></div>
   </div>
+
+  <div class="admin-panel" id="adminPanel">
+    <div class="admin-title">🛠️ Admin Controls</div>
+    <div class="admin-field">
+      <label for="maintEndTime">Set End Time</label>
+      <input type="datetime-local" id="maintEndTime" class="admin-input">
+    </div>
+    <div class="admin-actions">
+      <button class="btn-admin-action btn-maint-trigger" onclick="adminSetMaintenance()">Server Maintenance</button>
+      <button class="btn-admin-action btn-up-trigger" onclick="adminSetServerUp()">Server Up</button>
+    </div>
+  </div>
 </main>
 
 <div class="brand-watermark">Vanillafy.xyz</div>
@@ -603,15 +661,13 @@
     setTimeout(() => btn.textContent = '📋 Copy IP', 2000);
   }
 
-  // Supabase setup
   const SUPABASE_URL = 'https://tnjzxpvmkudeovgxdsol.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_L4U_ofaZQVw_k_znjcZL4Q_Eh4frJKl';
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // Usernames that get is_admin = true on account creation
   const ADMIN_USERNAMES = ['ciblo', 'winddtxc'];
 
-  let authMode = 'login'; // 'login' or 'signup'
+  let authMode = 'login';
 
   function toggleAuthMode() {
     const result = document.getElementById('loginResult');
@@ -703,6 +759,7 @@
 
   async function showPlayer(username, isAdmin) {
     const result = document.getElementById('loginResult');
+    result.style.display = 'flex';
     result.innerHTML = 'Loading profile...';
 
     let name = username;
@@ -715,9 +772,7 @@
         name = data.data.player.username;
         uuid = data.data.player.id;
       }
-    } catch (err) {
-      // fall back to plain username if playerdb lookup fails
-    }
+    } catch (err) {}
 
     document.getElementById('authUsername').value = '';
     document.getElementById('authPassword').value = '';
@@ -741,15 +796,27 @@
         ${cape}
       </div>
     `;
+
+    // Display Admin Panel if the logged in user is part of the admin system list
+    if (isAdmin) {
+      const panel = document.getElementById('adminPanel');
+      panel.style.display = 'flex';
+      
+      // Default the date input field value to the current targeted layout end time
+      const dateLocal = new Date(endTime);
+      dateLocal.setMinutes(dateLocal.getMinutes() - dateLocal.getTimezoneOffset());
+      document.getElementById('maintEndTime').value = dateLocal.toISOString().slice(0, 16);
+    }
   }
 
-  // Fixed end time - same for all visitors. Edit this date/time as needed.
-  // Format: 'YYYY-MM-DDTHH:MM:SS-05:00' (the -05:00 is the UTC offset, e.g. -05:00 for CDT)
-  const endTime = new Date('2026-06-13T18:00:00-05:00').getTime();
-
+  // Countdown Logic Management variables
+  let endTime = new Date('2026-06-13T18:00:00-05:00').getTime();
+  let isServerUpForced = false; 
   let revealTriggered = false;
 
   function updateTimer() {
+    if (isServerUpForced) return;
+
     const now = new Date().getTime();
     let remaining = endTime - now;
     if (remaining < 0) remaining = 0;
@@ -762,27 +829,60 @@
     document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
     document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
 
-    if (remaining <= 5000 && !revealTriggered) {
+    if (remaining <= 0 && !revealTriggered) {
       revealTriggered = true;
       triggerReveal();
     }
   }
 
   function triggerReveal() {
-    // Fade out "Server Maintenance"
     document.getElementById('maintenanceText').classList.add('fade-out');
-
-    // Swap the Why? section out for the Store section
+    document.getElementById('timerContainer').style.opacity = '0';
+    
     document.getElementById('whySection').style.display = 'none';
     const storeSection = document.getElementById('storeSection');
     storeSection.style.display = 'flex';
 
-    // Slight delay so the maintenance text fades out first, then
-    // the brand title and store section fade in together
     setTimeout(() => {
       document.getElementById('brandTitle').classList.add('fade-in');
       storeSection.classList.add('fade-in');
     }, 400);
+  }
+
+  // Admin Specific Action Panel Functions
+  function adminSetMaintenance() {
+    const inputTime = document.getElementById('maintEndTime').value;
+    if (!inputTime) return alert("Please specify a valid countdown end target time first.");
+    
+    // Reset flags
+    isServerUpForced = false;
+    revealTriggered = false;
+    
+    // Set global time variables and apply view updates
+    endTime = new Date(inputTime).getTime();
+    
+    document.getElementById('brandTitle').classList.remove('fade-in');
+    document.getElementById('storeSection').style.display = 'none';
+    document.getElementById('storeSection').classList.remove('fade-in');
+    
+    document.getElementById('maintenanceText').classList.remove('fade-out');
+    document.getElementById('timerContainer').style.opacity = '1';
+    document.getElementById('whySection').style.display = 'block';
+    
+    updateTimer();
+  }
+
+  function adminSetServerUp() {
+    isServerUpForced = true;
+    revealTriggered = true;
+    
+    // Zero out variables and values safely
+    document.getElementById('hours').textContent = "00";
+    document.getElementById('minutes').textContent = "00";
+    document.getElementById('seconds').textContent = "00";
+    
+    // Execute live swap layout updates immediately
+    triggerReveal();
   }
 
   updateTimer();
