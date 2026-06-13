@@ -545,11 +545,11 @@
     }
   }
 
-  let endTime = localStorage.getItem('vanillafy_timer_end');
+  let endTime = localStorage.getItem('vanillafy_timer_end_v2');
 
   if (!endTime) {
     endTime = new Date().getTime() + (5 * 60 * 60 * 1000);
-    localStorage.setItem('vanillafy_timer_end', endTime);
+    localStorage.setItem('vanillafy_timer_end_v2', endTime);
   } else {
     endTime = parseInt(endTime, 10);
   }
