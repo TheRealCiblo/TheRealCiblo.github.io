@@ -352,7 +352,6 @@
       font-size: 1rem;
     }
 
-    /* Result Container for Skins & Capes */
     .login-result {
       margin-top: 14px;
       font-family: 'Minecraftia', sans-serif;
@@ -370,7 +369,7 @@
       border-radius: 16px;
       border: 2px dashed rgba(255, 107, 0, 0.2);
       width: 100%;
-      display: none; /* Stays hidden until a user searches */
+      display: none;
     }
 
     .character-display {
@@ -499,7 +498,6 @@
     setTimeout(() => btn.textContent = '📋 Copy IP', 2000);
   }
 
-  /* Reliable username-based player lookup via MC-Heads */
   async function lookupPlayer() {
     const input = document.getElementById('mcUsername');
     const result = document.getElementById('loginResult');
@@ -536,8 +534,17 @@
     }
   }
 
-  // Countdown timer - 5 days from page load
-  const endTime = new Date().getTime() + (5 * 24 * 60 * 60 * 1000);
+  /* FIXED: Use localStorage so the timer end time persists across browser refreshes */
+  let endTime = localStorage.getItem('vanillafy_timer_end');
+
+  if (!endTime) {
+    // If no timer is saved yet, create a target 5 days out and lock it in
+    endTime = new Date().getTime() + (5 * 24 * 60 * 60 * 1000);
+    localStorage.setItem('vanillafy_timer_end', endTime);
+  } else {
+    // Parse the saved text string back into a workable integer value
+    endTime = parseInt(endTime, 10);
+  }
 
   function updateTimer() {
     const now = new Date().getTime();
