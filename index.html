@@ -83,39 +83,27 @@
       text-align: center;
     }
 
+    .title-wrapper {
+      position: relative;
+      width: 100%;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
     .maintenance {
       font-family: 'Minecraftia', sans-serif;
       font-weight: 700;
       -webkit-text-stroke: 1px var(--orange);
       font-size: clamp(1.2rem, 4vw, 2rem);
       color: var(--orange-light);
-      margin-top: 10px;
       text-shadow: 0 0 10px rgba(255,107,0,0.6);
       animation: popIn 0.7s 0.2s cubic-bezier(.34,1.56,.64,1) both;
+      opacity: 1;
+      transition: opacity 0.4s ease;
     }
 
-    .title-wrapper {
-      position: relative;
-      width: 100%;
-      min-height: 2.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .title-wrapper > * {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .fade-target {
-      transition: opacity 0.5s ease;
-    }
-    .fade-target.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
     .brand-title {
       font-family: 'Minecraftia', sans-serif;
       font-weight: 700;
@@ -124,11 +112,22 @@
       letter-spacing: 2px;
       text-shadow: 0 0 12px rgba(255,107,0,0.8), 0 0 24px rgba(255,179,71,0.6);
       opacity: 0;
+      display: none;
       transition: opacity 0.5s ease;
     }
-    .brand-title.fade-in {
-      opacity: 1;
-    }
+
+    /* State Classes to stop overlays completely */
+    .state-maint #maintenanceText { display: block; opacity: 1; }
+    .state-maint #brandTitle { display: none; opacity: 0; }
+    .state-maint #timerContainer { display: flex; opacity: 1; }
+    .state-maint #whySection { display: block; }
+    .state-maint #storeSection { display: none; }
+
+    .state-live #maintenanceText { display: none; opacity: 0; }
+    .state-live #brandTitle { display: block; opacity: 1; }
+    .state-live #timerContainer { display: none; opacity: 0; }
+    .state-live #whySection { display: none; }
+    .state-live #storeSection { display: flex; opacity: 1; }
 
     .timer {
       display: flex;
@@ -308,7 +307,6 @@
       box-shadow: none;
       border-color: var(--orange);
     }
-    .btn-why::after { display: none; }
 
     .why-box, .store-box {
       max-height: 0;
@@ -336,14 +334,6 @@
       border: 2px solid rgba(255,107,0,0.3);
     }
     .why-inner p + p, .store-inner p + p { margin-top: 8px; }
-
-    .reveal-target {
-      opacity: 0;
-      transition: opacity 0.8s ease;
-    }
-    .reveal-target.fade-in {
-      opacity: 1;
-    }
 
     .brand-watermark {
       position: fixed;
@@ -428,20 +418,9 @@
       gap: 20px;
     }
 
-    .character-display img {
-      image-rendering: pixelated;
-    }
-
-    .mc-bust {
-      height: 180px;
-      width: auto;
-    }
-
-    .mc-cape {
-      height: 120px;
-      width: auto;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
-    }
+    .character-display img { image-rendering: pixelated; }
+    .mc-bust { height: 180px; width: auto; }
+    .mc-cape { height: 120px; width: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
 
     /* Admin Panel styles */
     .admin-panel {
@@ -457,51 +436,13 @@
       gap: 12px;
       box-shadow: 0 0 20px rgba(255, 107, 0, 0.2);
     }
-    .admin-title {
-      font-family: 'Minecraftia', sans-serif;
-      font-size: 1rem;
-      color: var(--orange-light);
-      margin-bottom: 5px;
-    }
-    .admin-field {
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-      gap: 4px;
-    }
-    .admin-field label {
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.6);
-      text-transform: uppercase;
-    }
-    .admin-input {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,107,0,0.4);
-      padding: 10px;
-      border-radius: 6px;
-      color: #fff;
-      font-family: inherit;
-      outline: none;
-    }
-    .admin-input:focus {
-      border-color: var(--orange);
-    }
-    .admin-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 5px;
-    }
-    .btn-admin-action {
-      flex: 1;
-      padding: 10px;
-      font-family: 'Minecraftia', sans-serif;
-      font-size: 0.8rem;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      color: #fff;
-      transition: background 0.2s;
-    }
+    .admin-title { font-family: 'Minecraftia', sans-serif; font-size: 1rem; color: var(--orange-light); margin-bottom: 5px; }
+    .admin-field { display: flex; flex-direction: column; text-align: left; gap: 4px; }
+    .admin-field label { font-size: 0.8rem; color: rgba(255,255,255,0.6); text-transform: uppercase; }
+    .admin-input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,107,0,0.4); padding: 10px; border-radius: 6px; color: #fff; font-family: inherit; outline: none; }
+    .admin-input:focus { border-color: var(--orange); }
+    .admin-actions { display: flex; gap: 10px; margin-top: 5px; }
+    .btn-admin-action { flex: 1; padding: 10px; font-family: 'Minecraftia', sans-serif; font-size: 0.8rem; border-radius: 6px; border: none; cursor: pointer; color: #fff; transition: background 0.2s; }
     .btn-maint-trigger { background: var(--orange); }
     .btn-maint-trigger:hover { background: var(--orange-light); }
     .btn-up-trigger { background: var(--orange); border: 1px solid #fff; }
@@ -513,7 +454,7 @@
     }
   </style>
 </head>
-<body>
+<body class="state-maint" id="pageBody">
 
 <div class="bg-blob blob1"></div>
 <div class="bg-blob blob2"></div>
@@ -524,7 +465,7 @@
 
 <main>
   <div class="title-wrapper">
-    <div class="maintenance fade-target" id="maintenanceText">Server Maintenance</div>
+    <div class="maintenance" id="maintenanceText">Server Maintenance</div>
     <div class="brand-title" id="brandTitle">vanillafy.xyz</div>
   </div>
 
@@ -576,7 +517,7 @@
     </div>
   </div>
 
-  <div id="storeSection" class="reveal-target" style="display:none; flex-direction:column; align-items:center;">
+  <div id="storeSection" style="flex-direction:column; align-items:center;">
     <button class="btn btn-why" onclick="toggleStore()">Store</button>
     <div class="store-box" id="storeBox">
       <div class="store-inner">
@@ -596,7 +537,7 @@
     <div class="buttons" style="margin-top:10px;">
       <button class="btn btn-login" id="authSubmitBtn" onclick="submitAuth()">Login</button>
     </div>
-    <button class="btn-why-link" id="authModeToggle" onclick="toggleAuthMode()" style="background:none; border:none; color: var(--orange-light); margin-top: 10px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; text-decoration: underline;">
+    <button id="authModeToggle" onclick="toggleAuthMode()" style="background:none; border:none; color: var(--orange-light); margin-top: 10px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; text-decoration: underline;">
       Need an account? Create one
     </button>
     <div class="login-result" id="loginResult"></div>
@@ -627,31 +568,12 @@
     trail.style.top = e.clientY + 'px';
   });
 
-  document.addEventListener('mouseleave', () => {
-    cursor.style.display = 'none';
-    trail.style.display = 'none';
-  });
-  document.addEventListener('mouseenter', () => {
-    cursor.style.display = 'block';
-    trail.style.display = 'block';
-  });
-
   function toggleIP() {
-    const box = document.getElementById('ipBox');
-    const arrow = document.getElementById('arrow');
-    box.classList.toggle('open');
-    arrow.classList.toggle('open');
+    document.getElementById('ipBox').classList.toggle('open');
+    document.getElementById('arrow').classList.toggle('open');
   }
-
-  function toggleWhy() {
-    const box = document.getElementById('whyBox');
-    box.classList.toggle('open');
-  }
-
-  function toggleStore() {
-    const box = document.getElementById('storeBox');
-    box.classList.toggle('open');
-  }
+  function toggleWhy() { document.getElementById('whyBox').classList.toggle('open'); }
+  function toggleStore() { document.getElementById('storeBox').classList.toggle('open'); }
 
   function copyIP() {
     navigator.clipboard.writeText('play.vanillafy.xyz:26225');
@@ -664,15 +586,100 @@
   const SUPABASE_ANON_KEY = 'sb_publishable_L4U_ofaZQVw_k_znjcZL4Q_Eh4frJKl';
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  const ADMIN_USERNAMES = ['ciblo', 'winddtxc'];
+  let currentAdminUser = '';
+  let currentAdminPass = '';
+  let endTime = 0;
+  let isServerUpForced = false;
 
+  // Fetch the latest global status directly from database
+  async function fetchServerState() {
+    const { data, error } = await supabaseClient.from('server_state').select('*').eq('id', 1).single();
+    if (!error && data) {
+      isServerUpForced = data.is_up;
+      endTime = new Date(data.end_time).getTime();
+      applyStateLayout();
+    }
+  }
+
+  function applyStateLayout() {
+    const body = document.getElementById('pageBody');
+    if (isServerUpForced) {
+      body.className = "state-live";
+    } else {
+      const now = new Date().getTime();
+      if (endTime - now <= 0) {
+        body.className = "state-live";
+      } else {
+        body.className = "state-maint";
+      }
+    }
+  }
+
+  function updateTimer() {
+    if (isServerUpForced) return;
+
+    const now = new Date().getTime();
+    let remaining = endTime - now;
+    if (remaining < 0) remaining = 0;
+
+    const hours = Math.floor(remaining / (1000 * 60 * 60));
+    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+    if (remaining <= 0) {
+      applyStateLayout();
+    }
+  }
+
+  // Admin action triggers saved to Supabase dynamically
+  async function adminSetMaintenance() {
+    const inputTime = document.getElementById('maintEndTime').value;
+    if (!inputTime) return alert("Please specify a valid countdown end target time first.");
+
+    const targetIso = new Date(inputTime).toISOString();
+    
+    const { data, error } = await supabaseClient.rpc('update_server_state', {
+      p_username: currentAdminUser,
+      p_password: currentAdminPass,
+      p_is_up: false,
+      p_end_time: targetIso
+    });
+
+    if (error || !data.success) {
+      alert("Failed to update database server state setup.");
+    } else {
+      isServerUpForced = false;
+      endTime = new Date(targetIso).getTime();
+      applyStateLayout();
+    }
+  }
+
+  async function adminSetServerUp() {
+    const { data, error } = await supabaseClient.rpc('update_server_state', {
+      p_username: currentAdminUser,
+      p_password: currentAdminPass,
+      p_is_up: true,
+      p_end_time: new Date().toISOString()
+    });
+
+    if (error || !data.success) {
+      alert("Failed to push Live State updates to Supabase.");
+    } else {
+      isServerUpForced = true;
+      applyStateLayout();
+    }
+  }
+
+  // Sign-in / Auth Logic 
   let authMode = 'login';
-
   function toggleAuthMode() {
     const result = document.getElementById('loginResult');
     const submitBtn = document.getElementById('authSubmitBtn');
     const toggleBtn = document.getElementById('authModeToggle');
-
     if (authMode === 'login') {
       authMode = 'signup';
       submitBtn.textContent = 'Create Account';
@@ -682,9 +689,7 @@
       submitBtn.textContent = 'Login';
       toggleBtn.textContent = 'Need an account? Create one';
     }
-
     result.style.display = 'none';
-    result.innerHTML = '';
   }
 
   async function submitAuth() {
@@ -698,69 +703,41 @@
       return;
     }
 
+    result.style.display = 'flex';
+    result.innerHTML = 'Processing...';
+
     if (authMode === 'signup') {
-      await signUp(username, password);
+      const { data, error } = await supabaseClient.rpc('signup', { p_username: username, p_password: password });
+      if (error || !data.success) {
+        result.innerHTML = '❌ Account creation failed or username taken.';
+      } else {
+        checkAdminAccess(username, password, false);
+      }
     } else {
-      await signIn(username, password);
+      const { data, error } = await supabaseClient.rpc('login', { p_username: username, p_password: password });
+      if (error || !data.success) {
+        result.innerHTML = '❌ Incorrect username or password.';
+      } else {
+        checkAdminAccess(username, password, !!data.is_admin);
+      }
     }
   }
 
-  async function signUp(username, password) {
-    const result = document.getElementById('loginResult');
-    result.style.display = 'flex';
-    result.innerHTML = 'Creating account...';
-
-    const { data, error } = await supabaseClient.rpc('signup', {
-      p_username: username,
-      p_password: password
-    });
-
-    if (error) {
-      result.innerHTML = '❌ ' + error.message;
-      return;
+  async function checkAdminAccess(username, password, isAdmin) {
+    if (isAdmin) {
+      currentAdminUser = username;
+      currentAdminPass = password;
+      document.getElementById('adminPanel').style.display = 'flex';
+      
+      const dateLocal = new Date(endTime);
+      dateLocal.setMinutes(dateLocal.getMinutes() - dateLocal.getTimezoneOffset());
+      document.getElementById('maintEndTime').value = dateLocal.toISOString().slice(0, 16);
     }
-
-    if (!data.success) {
-      result.innerHTML = data.reason === 'exists'
-        ? '❌ That username is already taken.'
-        : '❌ Something went wrong.';
-      return;
-    }
-
-    const isAdmin = ADMIN_USERNAMES.includes(username.toLowerCase());
-    showPlayer(username, isAdmin);
+    showPlayerCard(username, isAdmin);
   }
 
-  async function signIn(username, password) {
+  async function showPlayerCard(username, isAdmin) {
     const result = document.getElementById('loginResult');
-    result.style.display = 'flex';
-    result.innerHTML = 'Signing in...';
-
-    const { data, error } = await supabaseClient.rpc('login', {
-      p_username: username,
-      p_password: password
-    });
-
-    if (error) {
-      result.innerHTML = '❌ ' + error.message;
-      return;
-    }
-
-    if (!data.success) {
-      result.innerHTML = data.reason === 'not_found'
-        ? '❌ No account found with that username.'
-        : '❌ Incorrect password.';
-      return;
-    }
-
-    showPlayer(username, !!data.is_admin);
-  }
-
-  async function showPlayer(username, isAdmin) {
-    const result = document.getElementById('loginResult');
-    result.style.display = 'flex';
-    result.innerHTML = 'Loading profile...';
-
     let name = username;
     let uuid = null;
 
@@ -781,102 +758,21 @@
     document.getElementById('authModeToggle').style.display = 'none';
 
     const bust = uuid
-      ? `<img class="mc-bust" src="https://visage.surgeplay.com/bust/256/${uuid}" alt="${name}'s 3D Bust" onerror="this.src='https://mc-heads.net/avatar/${encodeURIComponent(name)}'">`
-      : `<img class="mc-bust" src="https://mc-heads.net/avatar/${encodeURIComponent(name)}" alt="${name}'s avatar">`;
+      ? `<img class="mc-bust" src="https://visage.surgeplay.com/bust/256/${uuid}" alt="Bust" onerror="this.src='https://mc-heads.net/avatar/${encodeURIComponent(name)}'">`
+      : `<img class="mc-bust" src="https://mc-heads.net/avatar/${encodeURIComponent(name)}" alt="Avatar">`;
 
     const cape = uuid
-      ? `<img class="mc-cape" src="https://mc-heads.net/cape/${encodeURIComponent(name)}" alt="${name}'s Cape" onerror="this.style.display='none'">`
+      ? `<img class="mc-cape" src="https://mc-heads.net/cape/${encodeURIComponent(name)}" alt="Cape" onerror="this.style.display='none'">`
       : '';
 
     result.innerHTML = `
       <div>Welcome${isAdmin ? ', Admin' : ''}, ${name}!</div>
-      <div class="character-display">
-        ${bust}
-        ${cape}
-      </div>
+      <div class="character-display">${bust}${cape}</div>
     `;
-
-    if (isAdmin) {
-      const panel = document.getElementById('adminPanel');
-      panel.style.display = 'flex';
-      
-      const dateLocal = new Date(endTime);
-      dateLocal.setMinutes(dateLocal.getMinutes() - dateLocal.getTimezoneOffset());
-      document.getElementById('maintEndTime').value = dateLocal.toISOString().slice(0, 16);
-    }
   }
 
-  let endTime = new Date('2026-06-13T18:00:00-05:00').getTime();
-  let isServerUpForced = false; 
-  let revealTriggered = false;
-
-  function updateTimer() {
-    if (isServerUpForced) return;
-
-    const now = new Date().getTime();
-    let remaining = endTime - now;
-    if (remaining < 0) remaining = 0;
-
-    const hours = Math.floor(remaining / (1000 * 60 * 60));
-    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-
-    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-
-    if (remaining <= 0 && !revealTriggered) {
-      revealTriggered = true;
-      triggerReveal();
-    }
-  }
-
-  function triggerReveal() {
-    document.getElementById('maintenanceText').classList.add('fade-out');
-    document.getElementById('timerContainer').style.opacity = '0';
-    
-    document.getElementById('whySection').style.display = 'none';
-    const storeSection = document.getElementById('storeSection');
-    storeSection.style.display = 'flex';
-
-    setTimeout(() => {
-      document.getElementById('brandTitle').classList.add('fade-in');
-      storeSection.classList.add('fade-in');
-    }, 400);
-  }
-
-  function adminSetMaintenance() {
-    const inputTime = document.getElementById('maintEndTime').value;
-    if (!inputTime) return alert("Please specify a valid countdown end target time first.");
-    
-    isServerUpForced = false;
-    revealTriggered = false;
-    
-    endTime = new Date(inputTime).getTime();
-    
-    document.getElementById('brandTitle').classList.remove('fade-in');
-    document.getElementById('storeSection').style.display = 'none';
-    document.getElementById('storeSection').classList.remove('fade-in');
-    
-    document.getElementById('maintenanceText').classList.remove('fade-out');
-    document.getElementById('timerContainer').style.opacity = '1';
-    document.getElementById('whySection').style.display = 'block';
-    
-    updateTimer();
-  }
-
-  function adminSetServerUp() {
-    isServerUpForced = true;
-    revealTriggered = true;
-    
-    document.getElementById('hours').textContent = "00";
-    document.getElementById('minutes').textContent = "00";
-    document.getElementById('seconds').textContent = "00";
-    
-    triggerReveal();
-  }
-
-  updateTimer();
+  // Run on load
+  fetchServerState();
   setInterval(updateTimer, 1000);
 </script>
 </body>
