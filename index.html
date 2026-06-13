@@ -543,16 +543,17 @@
 
   <div class="login-wrapper">
     <div class="login-box">
-      <input type="text" id="mcUsername" class="login-input" placeholder="Minecraft Username" maxlength="16" onkeydown="if(event.key==='Enter') lookupPlayer()" />
-      <button class="btn btn-login" onclick="lookupPlayer()">Login</button>
+      <input type="text" id="authUsername" class="login-input" placeholder="Minecraft Username" maxlength="16" onkeydown="if(event.key==='Enter') submitAuth()" />
     </div>
-    <div class="login-box" id="passwordBox" style="display:none; margin-top:10px; flex-wrap: wrap;">
-      <input type="password" id="mcPassword" class="login-input" placeholder="Password" onkeydown="if(event.key==='Enter') signIn()" />
+    <div class="login-box" style="margin-top:10px;">
+      <input type="password" id="authPassword" class="login-input" placeholder="Password" onkeydown="if(event.key==='Enter') submitAuth()" />
     </div>
-    <div class="buttons" id="authButtons" style="display:none; margin-top:10px;">
-      <button class="btn btn-login" onclick="signIn()">Sign In</button>
-      <button class="btn btn-why" onclick="signUp()">Create Account</button>
+    <div class="buttons" style="margin-top:10px;">
+      <button class="btn btn-login" id="authSubmitBtn" onclick="submitAuth()">Login</button>
     </div>
+    <button class="btn-why-link" id="authModeToggle" onclick="toggleAuthMode()" style="background:none; border:none; color: var(--orange-light); margin-top: 10px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; text-decoration: underline;">
+      Need an account? Create one
+    </button>
     <div class="login-result" id="loginResult"></div>
   </div>
 </main>
@@ -610,64 +611,52 @@
   // Usernames that get is_admin = true on account creation
   const ADMIN_USERNAMES = ['ciblo', 'winddtxc'];
 
-  let pendingPlayer = null;
+  let authMode = 'login'; // 'login' or 'signup'
 
-  async function lookupPlayer() {
-    const input = document.getElementById('mcUsername');
+  function toggleAuthMode() {
     const result = document.getElementById('loginResult');
-    const passwordBox = document.getElementById('passwordBox');
-    const authButtons = document.getElementById('authButtons');
-    const pwInput = document.getElementById('mcPassword');
-    const username = input.value.trim();
+    const submitBtn = document.getElementById('authSubmitBtn');
+    const toggleBtn = document.getElementById('authModeToggle');
 
-    passwordBox.style.display = 'none';
-    authButtons.style.display = 'none';
-    pwInput.value = '';
+    if (authMode === 'login') {
+      authMode = 'signup';
+      submitBtn.textContent = 'Create Account';
+      toggleBtn.textContent = 'Already have an account? Log in';
+    } else {
+      authMode = 'login';
+      submitBtn.textContent = 'Login';
+      toggleBtn.textContent = 'Need an account? Create one';
+    }
 
-    if (!username) {
+    result.style.display = 'none';
+    result.innerHTML = '';
+  }
+
+  async function submitAuth() {
+    const username = document.getElementById('authUsername').value.trim();
+    const password = document.getElementById('authPassword').value;
+    const result = document.getElementById('loginResult');
+
+    if (!username || !password) {
       result.style.display = 'flex';
-      result.innerHTML = 'Please enter a username';
+      result.innerHTML = 'Please enter a username and password';
       return;
     }
 
-    result.style.display = 'flex';
-    result.innerHTML = 'Checking...';
-
-    try {
-      const res = await fetch(`https://playerdb.co/api/player/minecraft/${encodeURIComponent(username)}`);
-      const data = await res.json();
-
-      if (data.code === 'player.found') {
-        const name = data.data.player.username;
-        const uuid = data.data.player.id;
-        pendingPlayer = { name, uuid, key: username.toLowerCase() };
-
-        result.innerHTML = 'Enter a password, then Sign In (existing account) or Create Account (new).';
-        passwordBox.style.display = 'flex';
-        authButtons.style.display = 'flex';
-        pwInput.focus();
-      } else {
-        pendingPlayer = null;
-        result.innerHTML = 'Player not found';
-      }
-    } catch (err) {
-      pendingPlayer = null;
-      result.innerHTML = 'Error looking up player';
+    if (authMode === 'signup') {
+      await signUp(username, password);
+    } else {
+      await signIn(username, password);
     }
   }
 
-  async function signIn() {
+  async function signIn(username, password) {
     const result = document.getElementById('loginResult');
-    const password = document.getElementById('mcPassword').value;
-
-    if (!pendingPlayer) return;
-    if (!password) {
-      result.innerHTML = 'Please enter a password';
-      return;
-    }
-
+    result.style.display = 'flex';
     result.innerHTML = 'Signing in...';
-    const email = pendingPlayer.key + '@vanillafy.local';
+
+    const key = username.toLowerCase();
+    const email = key + '@vanillafy.local';
 
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
@@ -682,22 +671,17 @@
       .eq('id', data.user.id)
       .single();
 
-    renderWelcome(pendingPlayer, !!(profile && profile.is_admin));
+    showPlayer(username, !!(profile && profile.is_admin));
   }
 
-  async function signUp() {
+  async function signUp(username, password) {
     const result = document.getElementById('loginResult');
-    const password = document.getElementById('mcPassword').value;
-
-    if (!pendingPlayer) return;
-    if (!password) {
-      result.innerHTML = 'Please enter a password';
-      return;
-    }
-
+    result.style.display = 'flex';
     result.innerHTML = 'Creating account...';
-    const email = pendingPlayer.key + '@vanillafy.local';
-    const isAdmin = ADMIN_USERNAMES.includes(pendingPlayer.key);
+
+    const key = username.toLowerCase();
+    const email = key + '@vanillafy.local';
+    const isAdmin = ADMIN_USERNAMES.includes(key);
 
     const { data, error } = await supabaseClient.auth.signUp({ email, password });
 
@@ -713,26 +697,58 @@
 
     await supabaseClient.from('profiles').insert({
       id: data.user.id,
-      username: pendingPlayer.key,
+      username: key,
       is_admin: isAdmin
     });
 
     if (data.session) {
-      renderWelcome(pendingPlayer, isAdmin);
+      showPlayer(username, isAdmin);
     } else {
-      result.innerHTML = 'Account created! You can now click Sign In.';
+      // Switch back to login mode so the user can sign in
+      toggleAuthMode();
+      result.style.display = 'flex';
+      result.innerHTML = '✅ Account created! Now log in below.';
     }
   }
 
-  function renderWelcome(player, isAdmin) {
+  async function showPlayer(username, isAdmin) {
     const result = document.getElementById('loginResult');
-    document.getElementById('passwordBox').style.display = 'none';
-    document.getElementById('authButtons').style.display = 'none';
+    result.innerHTML = 'Loading profile...';
+
+    let name = username;
+    let uuid = null;
+
+    try {
+      const res = await fetch(`https://playerdb.co/api/player/minecraft/${encodeURIComponent(username)}`);
+      const data = await res.json();
+      if (data.code === 'player.found') {
+        name = data.data.player.username;
+        uuid = data.data.player.id;
+      }
+    } catch (err) {
+      // fall back to plain username if playerdb lookup fails
+    }
+
+    document.getElementById('authUsername').value = '';
+    document.getElementById('authPassword').value = '';
+    document.querySelector('.login-wrapper > .login-box').style.display = 'none';
+    document.querySelectorAll('.login-wrapper > .login-box')[1].style.display = 'none';
+    document.querySelector('.login-wrapper > .buttons').style.display = 'none';
+    document.getElementById('authModeToggle').style.display = 'none';
+
+    const bust = uuid
+      ? `<img class="mc-bust" src="https://visage.surgeplay.com/bust/256/${uuid}" alt="${name}'s 3D Bust" onerror="this.src='https://mc-heads.net/avatar/${encodeURIComponent(name)}'">`
+      : `<img class="mc-bust" src="https://mc-heads.net/avatar/${encodeURIComponent(name)}" alt="${name}'s avatar">`;
+
+    const cape = uuid
+      ? `<img class="mc-cape" src="https://mc-heads.net/cape/${encodeURIComponent(name)}" alt="${name}'s Cape" onerror="this.style.display='none'">`
+      : '';
+
     result.innerHTML = `
-      <div>Welcome${isAdmin ? ', Admin' : ''}, ${player.name}!</div>
+      <div>Welcome${isAdmin ? ', Admin' : ''}, ${name}!</div>
       <div class="character-display">
-        <img class="mc-bust" src="https://visage.surgeplay.com/bust/256/${player.uuid}" alt="${player.name}'s 3D Bust" onerror="this.src='https://mc-heads.net/avatar/${encodeURIComponent(player.name)}'">
-        <img class="mc-cape" src="https://mc-heads.net/cape/${encodeURIComponent(player.name)}" alt="${player.name}'s Cape" onerror="this.style.display='none'">
+        ${bust}
+        ${cape}
       </div>
     `;
   }
