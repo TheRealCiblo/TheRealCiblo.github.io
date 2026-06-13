@@ -116,7 +116,7 @@
       transition: opacity 0.5s ease;
     }
 
-    /* State Classes to stop overlays completely */
+    /* Absolute states to completely prevent layout stacks */
     .state-maint #maintenanceText { display: block; opacity: 1; }
     .state-maint #brandTitle { display: none; opacity: 0; }
     .state-maint #timerContainer { display: flex; opacity: 1; }
@@ -591,7 +591,6 @@
   let endTime = 0;
   let isServerUpForced = false;
 
-  // Fetch the latest global status directly from database
   async function fetchServerState() {
     const { data, error } = await supabaseClient.from('server_state').select('*').eq('id', 1).single();
     if (!error && data) {
@@ -635,7 +634,6 @@
     }
   }
 
-  // Admin action triggers saved to Supabase dynamically
   async function adminSetMaintenance() {
     const inputTime = document.getElementById('maintEndTime').value;
     if (!inputTime) return alert("Please specify a valid countdown end target time first.");
@@ -649,8 +647,9 @@
       p_end_time: targetIso
     });
 
-    if (error || !data.success) {
-      alert("Failed to update database server state setup.");
+    if (error || !data || !data.success) {
+      console.error(error, data);
+      alert("Failed to update database server state setup. Reason: " + (data ? data.reason : 'Unknown database error'));
     } else {
       isServerUpForced = false;
       endTime = new Date(targetIso).getTime();
@@ -666,15 +665,15 @@
       p_end_time: new Date().toISOString()
     });
 
-    if (error || !data.success) {
-      alert("Failed to push Live State updates to Supabase.");
+    if (error || !data || !data.success) {
+      console.error(error, data);
+      alert("Failed to push Live State updates to Supabase. Reason: " + (data ? data.reason : 'Unauthorized / bad database response'));
     } else {
       isServerUpForced = true;
       applyStateLayout();
     }
   }
 
-  // Sign-in / Auth Logic 
   let authMode = 'login';
   function toggleAuthMode() {
     const result = document.getElementById('loginResult');
@@ -711,6 +710,9 @@
       if (error || !data.success) {
         result.innerHTML = '❌ Account creation failed or username taken.';
       } else {
+        // Track credentials securely inside running memory
+        currentAdminUser = username;
+        currentAdminPass = password;
         checkAdminAccess(username, password, false);
       }
     } else {
@@ -718,6 +720,9 @@
       if (error || !data.success) {
         result.innerHTML = '❌ Incorrect username or password.';
       } else {
+        // Track credentials securely inside running memory
+        currentAdminUser = username;
+        currentAdminPass = password;
         checkAdminAccess(username, password, !!data.is_admin);
       }
     }
@@ -725,8 +730,6 @@
 
   async function checkAdminAccess(username, password, isAdmin) {
     if (isAdmin) {
-      currentAdminUser = username;
-      currentAdminPass = password;
       document.getElementById('adminPanel').style.display = 'flex';
       
       const dateLocal = new Date(endTime);
@@ -771,11 +774,8 @@
     `;
   }
 
-  // Run on load
   fetchServerState();
   setInterval(updateTimer, 1000);
 </script>
 </body>
 </html>
-
-
