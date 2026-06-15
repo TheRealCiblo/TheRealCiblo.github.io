@@ -310,7 +310,7 @@
       border-color: var(--orange);
     }
 
-    .why-box, .store-box {
+    .why-box {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.4s ease, opacity 0.3s ease;
@@ -319,9 +319,8 @@
       max-width: 480px;
     }
     .why-box.open { max-height: 300px; opacity: 1; }
-    .store-box.open { max-height: 600px; opacity: 1; }
 
-    .why-inner, .store-inner {
+    .why-inner {
       margin-top: 12px;
       background: rgba(0,0,0,0.15);
       border: 2px solid rgba(0,0,0,0.25);
@@ -332,74 +331,13 @@
       line-height: 1.5;
       color: rgba(255,255,255,0.9);
     }
-    .store-inner {
-      background: rgba(255,107,0,0.08);
-      border: 2px solid rgba(255,107,0,0.3);
-    }
-    .why-inner p + p, .store-inner p + p { margin-top: 8px; }
+    .why-inner p + p { margin-top: 8px; }
 
-    /* Store / Supporter role styles */
-    .store-info {
-      margin-bottom: 14px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid rgba(255,107,0,0.25);
-    }
-
-    .supporter-card {
-      background: linear-gradient(160deg, rgba(155,89,255,0.18), rgba(155,89,255,0.05));
-      border: 2px solid rgba(155,89,255,0.45);
-      border-radius: 16px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 0 24px rgba(155,89,255,0.25);
-    }
-
-    .gem-icon {
-      width: 56px;
-      height: 56px;
-      filter: drop-shadow(0 0 10px rgba(155,89,255,0.8));
-      animation: gemPulse 2.4s ease-in-out infinite;
-    }
-
-    @keyframes gemPulse {
-      0%, 100% { transform: scale(1) rotate(0deg); }
-      50% { transform: scale(1.08) rotate(4deg); }
-    }
-
-    .supporter-title {
-      font-family: 'Minecraftia', sans-serif;
-      font-weight: 400;
-      font-size: 1.15rem;
-      color: var(--purple-light);
-      text-shadow: 0 0 10px rgba(155,89,255,0.6);
-      letter-spacing: 1px;
-    }
-
-    .supporter-price {
-      font-family: 'Minecraftia', sans-serif;
-      font-weight: 400;
-      font-size: 1.6rem;
-      color: #fff;
-      text-shadow: 0 0 10px rgba(155,89,255,0.7);
-    }
-
-    .supporter-desc {
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.85);
-      line-height: 1.5;
-    }
-
-    .btn-supporter {
-      margin-top: 6px;
+    .btn-store-link {
       background: var(--purple);
       box-shadow: 0 4px 24px rgba(155,89,255,0.4);
-      font-size: 1rem;
-      padding: 12px 30px;
     }
-    .btn-supporter:hover {
+    .btn-store-link:hover {
       background: #8645f2;
       box-shadow: 0 8px 32px rgba(155,89,255,0.6);
     }
@@ -587,34 +525,7 @@
   </div>
 
   <div id="storeSection" style="flex-direction:column; align-items:center;">
-    <button class="btn btn-why" onclick="toggleStore()">Store</button>
-    <div class="store-box" id="storeBox">
-      <div class="store-inner">
-        <div class="store-info">
-          <p>The Vanillafy Store is open for Season 2 — Reborn!</p>
-          <p>Ranks, cosmetics, and perks are now available.</p>
-        </div>
-
-        <div class="supporter-card">
-          <svg class="gem-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="12,2 19,9 12,22 5,9" fill="#9B59FF" stroke="#C9A6FF" stroke-width="0.7"/>
-            <polygon points="12,2 19,9 12,9" fill="#C9A6FF" opacity="0.7"/>
-            <polygon points="12,2 5,9 12,9" fill="#B07CFF" opacity="0.6"/>
-            <polygon points="5,9 12,22 12,9" fill="#8645F2" opacity="0.8"/>
-            <polygon points="19,9 12,22 12,9" fill="#7A3DEB" opacity="0.7"/>
-          </svg>
-          <div class="supporter-title">Supporter Role</div>
-          <div class="supporter-price">$2.99</div>
-          <div class="supporter-desc">
-            The Supporter role is for donators of the server.<br>
-            Purchase it to become an official donator!
-          </div>
-          <a class="btn btn-supporter" href="https://discord.gg/BDjHzh37TX" target="_blank" rel="noopener">
-            Open a ticket in Discord to buy
-          </a>
-        </div>
-      </div>
-    </div>
+    <a class="btn btn-store-link" href="store.html">🛒 Store</a>
   </div>
 
   <div class="login-wrapper">
@@ -663,7 +574,6 @@
     document.getElementById('arrow').classList.toggle('open');
   }
   function toggleWhy() { document.getElementById('whyBox').classList.toggle('open'); }
-  function toggleStore() { document.getElementById('storeBox').classList.toggle('open'); }
 
   function copyIP() {
     navigator.clipboard.writeText('play.vanillafy.xyz:26225');
