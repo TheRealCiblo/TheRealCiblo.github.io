@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vanillafy.xyz — Store</title>
+  <link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght=700;800;900&family=Nunito:wght=400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --orange: #FF6B00;
+      --orange-light: #FF9A3C;
+      --bg: #652600;
+      --text: #fff;
+      --purple: #9B59FF;
+      --purple-light: #C9A6FF;
+    }
+
+    * { cursor: none !important; }
+    #cursor, #cursor-trail {
+      position: fixed;
+      top: 0; left: 0;
+      width: 28px; height: 28px;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 2 L4 20 L9 15.5 L12.5 22.5 L15.5 21 L12 14 L19 14 Z' fill='%23FF6B00' stroke='%23000000' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      transform: translate(0, 0);
+    }
+    #cursor { z-index: 9999; transition: left 0.03s linear, top 0.03s linear; }
+    #cursor-trail { z-index: 9998; opacity: 0.35; filter: blur(5px); transition: left 0.15s ease-out, top 0.15s ease-out; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 100px;
+      overflow-x: hidden;
+    }
+
+    .bg-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      animation: blobFloat 8s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob1 { width: 500px; height: 500px; background: var(--orange); top: -100px; left: -100px; animation-delay: 0s; }
+    .blob2 { width: 400px; height: 400px; background: var(--orange-light); bottom: -80px; right: -80px; animation-delay: -4s; }
+    .blob3 { width: 300px; height: 300px; background: var(--purple); top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: -2s; }
+
+    @keyframes blobFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+      max-width: 520px;
+      text-align: center;
+    }
+
+    .back-link {
+      align-self: flex-start;
+      font-family: 'Minecraftia', sans-serif;
+      font-size: 0.9rem;
+      color: var(--orange-light);
+      text-decoration: none;
+      border: 2px solid rgba(255,107,0,0.3);
+      border-radius: 50px;
+      padding: 10px 22px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .back-link:hover { background: rgba(255,107,0,0.12); border-color: var(--orange); }
+
+    .page-title {
+      font-family: 'Minecraftia', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.4rem, 5vw, 2.4rem);
+      color: var(--orange);
+      letter-spacing: 2px;
+      text-shadow: 0 0 12px rgba(255,107,0,0.8), 0 0 24px rgba(255,179,71,0.6);
+      animation: popIn 0.7s 0.1s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    .page-subtitle {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.5;
+      animation: popIn 0.7s 0.15s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    .product-card {
+      width: 100%;
+      border-radius: 18px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      animation: popIn 0.7s 0.2s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    /* Supporter Role - purple */
+    .product-supporter {
+      background: linear-gradient(160deg, rgba(155,89,255,0.18), rgba(155,89,255,0.05));
+      border: 2px solid rgba(155,89,255,0.45);
+      box-shadow: 0 0 24px rgba(155,89,255,0.25);
+    }
+
+    .gem-icon {
+      width: 60px;
+      height: 60px;
+      filter: drop-shadow(0 0 10px rgba(155,89,255,0.8));
+      animation: gemPulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes gemPulse {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.08) rotate(4deg); }
+    }
+
+    .product-title {
+      font-family: 'Minecraftia', sans-serif;
+      font-weight: 400;
+      font-size: 1.25rem;
+      letter-spacing: 1px;
+      color: var(--purple-light);
+      text-shadow: 0 0 10px rgba(155,89,255,0.6);
+    }
+
+    .product-price {
+      font-family: 'Minecraftia', sans-serif;
+      font-weight: 400;
+      font-size: 1.7rem;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(155,89,255,0.7);
+    }
+
+    .product-desc {
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.55;
+      max-width: 360px;
+    }
+
+    .btn-buy {
+      margin-top: 6px;
+      font-family: 'Minecraftia', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      padding: 13px 30px;
+      border-radius: 50px;
+      border: none;
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    }
+    .btn-buy:hover { transform: translateY(-3px) scale(1.04); }
+    .btn-buy:active { transform: scale(0.97); }
+
+    .btn-buy-purple {
+      background: var(--purple);
+      box-shadow: 0 4px 24px rgba(155,89,255,0.4);
+    }
+    .btn-buy-purple:hover { background: #8645f2; box-shadow: 0 8px 32px rgba(155,89,255,0.6); }
+
+    /* Custom Rank - rainbow */
+    .product-rainbow {
+      background: rgba(0,0,0,0.18);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+    }
+    .product-rainbow::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      padding: 2px;
+      background: linear-gradient(270deg, #ff0040, #ff9a00, #fff700, #4dff4d, #00d2ff, #b14dff, #ff0040);
+      background-size: 600% 600%;
+      animation: rainbowShift 6s linear infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+    @keyframes rainbowShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    .star-icon {
+      width: 60px;
+      height: 60px;
+      animation: gemPulse 2.4s ease-in-out infinite;
+    }
+
+    .rainbow-text {
+      font-family: 'Minecraftia', sans-serif;
+      font-weight: 400;
+      font-size: 1.25rem;
+      letter-spacing: 1px;
+      background: linear-gradient(270deg, #ff0040, #ff9a00, #fff700, #4dff4d, #00d2ff, #b14dff, #ff0040);
+      background-size: 600% 600%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: rainbowShift 6s linear infinite;
+      text-shadow: 0 0 14px rgba(255,255,255,0.25);
+    }
+
+    .rainbow-price {
+      font-family: 'Minecraftia', sans-serif;
+      font-weight: 400;
+      font-size: 1.7rem;
+      background: linear-gradient(270deg, #ff0040, #ff9a00, #fff700, #4dff4d, #00d2ff, #b14dff, #ff0040);
+      background-size: 600% 600%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: rainbowShift 6s linear infinite;
+    }
+
+    .btn-buy-rainbow {
+      background: linear-gradient(270deg, #ff0040, #ff9a00, #fff700, #4dff4d, #00d2ff, #b14dff, #ff0040);
+      background-size: 600% 600%;
+      animation: rainbowShift 6s linear infinite;
+      box-shadow: 0 4px 24px rgba(255,255,255,0.15);
+      color: #1a1a1a;
+      font-weight: 700;
+    }
+    .btn-buy-rainbow:hover { box-shadow: 0 8px 32px rgba(255,255,255,0.3); }
+
+    .brand-watermark {
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: 'Minecraftia', sans-serif;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.15);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.7) translateY(30px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-blob blob1"></div>
+<div class="bg-blob blob2"></div>
+<div class="bg-blob blob3"></div>
+
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+
+<main>
+  <a class="back-link" href="index.html">← Back</a>
+
+  <div class="page-title">Vanillafy Store</div>
+  <div class="page-subtitle">
+    Support the server and grab a rank! All purchases are handled manually —
+    just open a ticket in our Discord to claim yours.
+  </div>
+
+  <!-- Supporter Role -->
+  <div class="product-card product-supporter">
+    <svg class="gem-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="12,2 19,9 12,22 5,9" fill="#9B59FF" stroke="#C9A6FF" stroke-width="0.7"/>
+      <polygon points="12,2 19,9 12,9" fill="#C9A6FF" opacity="0.7"/>
+      <polygon points="12,2 5,9 12,9" fill="#B07CFF" opacity="0.6"/>
+      <polygon points="5,9 12,22 12,9" fill="#8645F2" opacity="0.8"/>
+      <polygon points="19,9 12,22 12,9" fill="#7A3DEB" opacity="0.7"/>
+    </svg>
+    <div class="product-title">Supporter Role</div>
+    <div class="product-price">$2.99</div>
+    <div class="product-desc">
+      The Supporter role is for donators of the server.<br>
+      Purchase it to become an official donator!
+    </div>
+    <a class="btn-buy btn-buy-purple" href="https://discord.gg/BDjHzh37TX" target="_blank" rel="noopener">
+      🎫 Open a ticket to buy
+    </a>
+  </div>
+
+  <!-- Custom Rank - Rainbow -->
+  <div class="product-card product-rainbow">
+    <svg class="star-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff0040"/>
+          <stop offset="20%" stop-color="#ff9a00"/>
+          <stop offset="40%" stop-color="#fff700"/>
+          <stop offset="60%" stop-color="#4dff4d"/>
+          <stop offset="80%" stop-color="#00d2ff"/>
+          <stop offset="100%" stop-color="#b14dff"/>
+        </linearGradient>
+      </defs>
+      <polygon points="12,2 15,9 22,9.5 16.5,14.5 18,22 12,18 6,22 7.5,14.5 2,9.5 9,9" fill="url(#starGrad)" stroke="#fff" stroke-width="0.6"/>
+    </svg>
+    <div class="rainbow-text">Custom Rank</div>
+    <div class="rainbow-price">$3.99</div>
+    <a class="btn-buy btn-buy-rainbow" href="https://discord.gg/BDjHzh37TX" target="_blank" rel="noopener">
+      🎫 Open a ticket to buy
+    </a>
+  </div>
+</main>
+
+<div class="brand-watermark">Vanillafy.xyz</div>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const trail = document.getElementById('cursor-trail');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    trail.style.left = e.clientX + 'px';
+    trail.style.top = e.clientY + 'px';
+  });
+</script>
+</body>
+</html>
