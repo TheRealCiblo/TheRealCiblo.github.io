@@ -6,7 +6,7 @@
 <title>ciblo.xyz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@400;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=Sora:wght@400;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0A0A0A;
@@ -22,7 +22,7 @@
     background:linear-gradient(to bottom, #2E2E2E 0%, #0A0A0A 55%, #000000 100%);
     color:var(--text);
     font-family:'Sora', sans-serif;
-    font-weight:700; /* Matched to 'My work' title weight */
+    font-weight:700;
     -webkit-font-smoothing:antialiased;
     min-height:100vh;
     display:flex; align-items:center; justify-content:center;
@@ -233,8 +233,9 @@
     border-radius:2px; background:var(--bg); display:none;
   }
   .ticket-result.show{ display:block; }
-  .ticket-result .tid{ font-family:'DM Mono',monospace; font-size:13px; margin-bottom:6px; font-weight:700; }
-  .ticket-result p{ font-size:13px; color:var(--text-dim); line-height:1.6; margin-bottom:12px; font-weight:700; }
+  .ticket-result .tid{ font-family:'DM Mono',monospace; font-size:13px; margin-bottom:6px; font-weight:700; color:var(--accent); }
+  .ticket-result p{ font-size:13px; color:var(--text); line-height:1.6; margin-bottom:12px; font-weight:700; }
+  .ticket-result p strong{ color:var(--accent); }
   .queue-label{ margin-top:18px; }
   .ticket-queue{ list-style:none; border:1px solid var(--line); border-radius:2px; overflow:hidden; }
   .queue-item, .queue-empty{
@@ -301,13 +302,13 @@
     <div class="work-title">My work</div>
     <div class="work-grid">
       <div class="video-frame">
-        <iframe src="https://www.youtube.com/embed/smSEZE-_M00" title="ciblo.xyz edit 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/smSEZE-_M00" title="ciblo.xyz edit 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
       <div class="video-frame">
-        <iframe src="https://www.youtube.com/embed/tztUDTC4hT4" title="ciblo.xyz edit 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/tztUDTC4hT4" title="ciblo.xyz edit 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
       <div class="video-frame">
-        <iframe src="https://www.youtube.com/embed/ujBPBkpoBbQ" title="ciblo.xyz edit 3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/ujBPBkpoBbQ" title="ciblo.xyz edit 3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -374,7 +375,7 @@
 
       <div class="ticket-result" id="ticketResult">
         <div class="tid" id="ticketId"></div>
-        <p id="ticketStatus">Ticket opened. You are now in the queue.</p>
+        <p id="ticketStatus">Ticket created! To get your ticket accepted, contact <strong>ciblo.dev</strong> on Discord and send your ticket ID as a message request, or join the Discord server and send a message request.</p>
         <span class="sec-tag queue-label">Your queue</span>
         <ul class="ticket-queue" id="ticketQueue"></ul>
       </div>
@@ -546,6 +547,7 @@
     renderQueue();
 
     ticketId.textContent = id;
+    ticketStatus.innerHTML = 'Ticket created! To get your ticket accepted, contact <strong>ciblo.dev</strong> on Discord and send <strong>' + id + '</strong> as a message request, or join the Discord server and send a message request.';
     result.classList.add('show');
     form.reset();
   });
