@@ -34,25 +34,6 @@
   }
   a{ color:inherit; text-decoration:none; }
 
-  /* ---------- VIEW COUNTER ---------- */
-  .view-counter{
-    display:inline-flex; align-items:center; gap:10px;
-    background:var(--surface); border:1px solid var(--line);
-    padding:8px 18px; border-radius:30px;
-    font-size:14px; color:var(--text);
-    box-shadow:0 4px 12px rgba(0,0,0,0.3);
-  }
-  .blinking-eye{
-    width:20px; height:20px; fill:var(--text);
-    display:inline-block;
-    transform-origin:center;
-    animation:eyeBlink 3.8s infinite ease-in-out;
-  }
-  @keyframes eyeBlink{
-    0%, 90%, 100% { transform:scaleY(1); opacity:1; }
-    95% { transform:scaleY(0.08); opacity:0.3; }
-  }
-
   .logo{
     font-size:clamp(48px, 9vw, 96px);
     letter-spacing:-0.04em;
@@ -179,6 +160,20 @@
   .video-frame:hover .video-play-btn{
     background:rgba(0,0,0,.12);
   }
+  .video-views{
+    position:absolute; top:10px; right:10px; z-index:2;
+    display:inline-flex; align-items:center; gap:6px;
+    padding:7px 10px; border:1px solid rgba(255,255,255,.35);
+    border-radius:20px; background:rgba(0,0,0,.62);
+    color:var(--text); font-family:'DM Mono', monospace !important;
+    font-size:11px; letter-spacing:.02em;
+    animation:viewBadgeFloat 2.8s ease-in-out infinite;
+  }
+  .video-views svg{ width:14px; height:14px; fill:currentColor; }
+  @keyframes viewBadgeFloat{
+    0%, 100%{ transform:translateY(0); box-shadow:0 0 0 rgba(255,255,255,0); }
+    50%{ transform:translateY(-3px); box-shadow:0 0 14px rgba(255,255,255,.25); }
+  }
   @media (max-width:700px){
     .work-grid{ grid-template-columns:minmax(0, 280px); max-width:280px; margin:0 auto; }
   }
@@ -237,13 +232,6 @@
 
   <div class="snow" id="snow"></div>
 
-  <div class="view-counter">
-    <svg class="blinking-eye" viewBox="0 0 24 24">
-      <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-    </svg>
-    <span id="viewCount">...</span> views
-  </div>
-
   <div class="logo"><span id="logoText">ciblo.xyz</span><span class="logo-cursor">|</span></div>
 
   <div class="crosshair">
@@ -287,18 +275,21 @@
           <source src="PVP%20%20Changed%20Forever%20DonutSMP__%20%20%23donutsmp%20%20%20%23minecraft%20%20%20%23fyp%20%20%20%23viral.mp4" type="video/mp4">
         </video>
         <button class="video-play-btn" type="button" aria-label="Play PVP Changed Forever DonutSMP"></button>
+        <span class="video-views" aria-label="1.5 thousand views"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5Zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>1.5K</span>
       </div>
       <div class="video-frame">
         <video preload="metadata" playsinline aria-label="Flooding ruining DonutSMP">
           <source src="%5BTubePull%5D%20Flooding_ruining_DonutSMP_minecraft_donutsmp_fyp.mp4" type="video/mp4">
         </video>
         <button class="video-play-btn" type="button" aria-label="Play Flooding ruining DonutSMP"></button>
+        <span class="video-views" aria-label="2 thousand views"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5Zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>2K</span>
       </div>
       <div class="video-frame">
         <video preload="metadata" playsinline aria-label="Best money method on the DonutSMP">
           <source src="Best%20money%20method%20on%20the%20DonutSMP_%20%20%20%23minecraft%20%20%20%23viral%20%20%20%23fyp%20%20%20%20%23donutsmp%20%20%20%23gaming.mp4" type="video/mp4">
         </video>
         <button class="video-play-btn" type="button" aria-label="Play Best money method on the DonutSMP"></button>
+        <span class="video-views" aria-label="1.7 thousand views"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5Zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>1.7K</span>
       </div>
     </div>
   </div>
@@ -322,7 +313,7 @@
   </div>
 
 <script>
-  // ---------- VIEW COUNTER SCRIPT ----------
+  /* Removed: overall page-view counter. Video badges are shown above instead.
   const viewCount = document.getElementById('viewCount');
   const alreadyCounted = localStorage.getItem('ciblo_unique_visitor_counted') === 'true';
   const isLiveSite = ['ciblo.xyz', 'www.ciblo.xyz'].includes(window.location.hostname);
@@ -369,6 +360,7 @@
       viewCount.textContent = '—';
     });
 
+  */
   // ---------- CROSSHAIR & CURSOR SCRIPT ----------
   const crosshair = document.querySelector('.crosshair');
   const smearCount = 7;
