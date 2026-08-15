@@ -21,6 +21,7 @@
     font-family:'Sora', sans-serif !important;
     font-weight:700 !important;
   }
+  button, a, input, video{ cursor:none !important; }
   body{
     cursor:none;
     background:linear-gradient(to bottom, #2E2E2E 0%, #0A0A0A 55%, #000000 100%);
@@ -54,7 +55,7 @@
     position:fixed; top:0; left:0;
     transform:translate(-50%, -50%);
     width:22px; height:22px;
-    pointer-events:none; z-index:9999;
+    pointer-events:none; z-index:2147483647;
     opacity:0.85;
     will-change:transform, left, top;
   }
@@ -62,7 +63,7 @@
   .crosshair-smear{
     position:fixed; transform:translate(-50%, -50%);
     width:22px; height:22px;
-    pointer-events:none; z-index:9998;
+    pointer-events:none; z-index:2147483646;
     opacity:0;
     will-change:transform, opacity;
   }
@@ -456,4 +457,166 @@
   }
 
   // ---------- LOGO TYPING EFFECT ----------
-  const logoText = document.getElementById('
+  const logoText = document.getElementById('logoText');
+  const fullLogo = 'ciblo.xyz';
+  let logoIdx = 0;
+  let logoDeleting = false;
+
+  function typeLogo(){
+    if(!logoDeleting){
+      logoIdx++;
+      logoText.textContent = fullLogo.slice(0, logoIdx);
+      if(logoIdx === fullLogo.length){
+        logoDeleting = true;
+        setTimeout(typeLogo, 1400);
+        return;
+      }
+      setTimeout(typeLogo, 150);
+    } else {
+      logoIdx--;
+      logoText.textContent = fullLogo.slice(0, logoIdx);
+      if(logoIdx === 0){
+        logoDeleting = false;
+        setTimeout(typeLogo, 500);
+        return;
+      }
+      setTimeout(typeLogo, 90);
+    }
+  }
+  typeLogo();
+
+  // ---------- MODAL OPEN/CLOSE ----------
+  const openBtn = document.getElementById('openBtn');
+  const closeBtn = document.getElementById('closeBtn');
+  const overlay = document.getElementById('overlay');
+
+  openBtn.addEventListener('click', () => overlay.classList.add('show'));
+  closeBtn.addEventListener('click', () => overlay.classList.remove('show'));
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay) overlay.classList.remove('show');
+  });
+
+  // ---------- MUSIC PLAYER ----------
+  const musicAudio = document.getElementById('musicAudio');
+  const musicTrack = document.getElementById('musicTrack');
+  const muteToggle = document.getElementById('muteToggle');
+  const volumeSlider = document.getElementById('volumeSlider');
+  const playlist = [
+    { title: 'The Race — Tay-K', src: 'SpotiDown.App%20-%20The%20Race%20-%20Tay-K.mp3' },
+    { title: 'LV Sandals — EsDeeKid', src: 'SpotiDown.App%20-%20LV%20Sandals%20-%20EsDeeKid.mp3' },
+    { title: 'highschool prom — roombound', src: 'SpotiDown.App%20-%20highschool%20prom%20-%20roombound.mp3' },
+    { title: 'An Italian Magician Be Like — Project Dumb', src: 'SpotiDown.App%20-%20An%20Italian%20Magician%20Be%20Like%20-%20Project%20Dumb.mp3' }
+  ];
+  let trackIndex = 0;
+  let unplayedTracks = [];
+  let resumeMusicAfterVideo = false;
+  let fadeTimer;
+
+  function shuffleTracks() {
+    unplayedTracks = playlist.map((_, index) => index);
+    for (let i = unplayedTracks.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [unplayedTracks[i], unplayedTracks[j]] = [unplayedTracks[j], unplayedTracks[i]];
+    }
+  }
+  function playNextShuffledTrack() {
+    if (!unplayedTracks.length) shuffleTracks();
+    loadTrack(unplayedTracks.pop());
+  }
+
+  function loadTrack(index) {
+    trackIndex = (index + playlist.length) % playlist.length;
+    musicAudio.src = playlist[trackIndex].src;
+    musicTrack.textContent = playlist[trackIndex].title;
+    muteToggle.title = `Now playing: ${playlist[trackIndex].title}`;
+  }
+  function playMusic() {
+    musicAudio.play();
+  }
+  function fadeInMusic() {
+    clearInterval(fadeTimer);
+    const targetVolume = Number(volumeSlider.value);
+    musicAudio.volume = 0;
+    playMusic();
+    const steps = 20;
+    let step = 0;
+    fadeTimer = setInterval(() => {
+      step++;
+      musicAudio.volume = Math.min(targetVolume, targetVolume * (step / steps));
+      if (step >= steps) clearInterval(fadeTimer);
+    }, 40);
+  }
+  function pauseMusicForVideo() {
+    clearInterval(fadeTimer);
+    if (!musicAudio.paused && !musicAudio.muted) {
+      resumeMusicAfterVideo = true;
+      musicAudio.pause();
+    }
+  }
+  function resumeMusicWhenVideosPause() {
+    window.setTimeout(() => {
+      const videoIsStillPlaying = [...document.querySelectorAll('.video-frame video')]
+        .some((workVideo) => !workVideo.paused && !workVideo.ended);
+      if (!videoIsStillPlaying && resumeMusicAfterVideo && !musicAudio.muted) {
+        resumeMusicAfterVideo = false;
+        fadeInMusic();
+      }
+    }, 150);
+  }
+
+  playNextShuffledTrack();
+  musicAudio.volume = Number(volumeSlider.value);
+  muteToggle.addEventListener('click', () => {
+    if (musicAudio.paused) {
+      musicAudio.muted = false;
+      muteToggle.classList.remove('is-muted');
+      muteToggle.textContent = '🔊';
+      muteToggle.setAttribute('aria-label', 'Mute music');
+      playMusic();
+      return;
+    }
+    musicAudio.muted = !musicAudio.muted;
+    muteToggle.classList.toggle('is-muted', musicAudio.muted);
+    muteToggle.textContent = musicAudio.muted ? '🔇' : '🔊';
+    muteToggle.setAttribute('aria-label', musicAudio.muted ? 'Unmute music' : 'Mute music');
+  });
+  volumeSlider.addEventListener('input', () => {
+    musicAudio.volume = Number(volumeSlider.value);
+    if (musicAudio.muted && musicAudio.volume > 0) {
+      musicAudio.muted = false;
+      muteToggle.classList.remove('is-muted');
+      muteToggle.textContent = '🔊';
+      muteToggle.setAttribute('aria-label', 'Mute music');
+    }
+  });
+  musicAudio.addEventListener('ended', () => {
+    playNextShuffledTrack();
+    playMusic();
+  });
+
+  // ---------- WORK VIDEOS ----------
+  document.querySelectorAll('.video-frame').forEach((frame) => {
+    const video = frame.querySelector('video');
+    const playButton = frame.querySelector('.video-play-btn');
+    const playVideo = () => {
+      document.querySelectorAll('.video-frame video').forEach((otherVideo) => {
+        if (otherVideo !== video) otherVideo.pause();
+      });
+      video.play();
+    };
+    playButton.addEventListener('click', playVideo);
+    video.addEventListener('click', () => video.paused ? playVideo() : video.pause());
+    video.addEventListener('play', () => frame.classList.add('is-playing'));
+    video.addEventListener('play', pauseMusicForVideo);
+    video.addEventListener('pause', () => {
+      frame.classList.remove('is-playing');
+      resumeMusicWhenVideosPause();
+    });
+    video.addEventListener('ended', () => {
+      frame.classList.remove('is-playing');
+      resumeMusicWhenVideosPause();
+    });
+  });
+</script>
+</body>
+</html>
