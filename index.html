@@ -1,1 +1,703 @@
+<!DOCTYPE html>
+<!-- saved from url=(0089)file:///C:/Users/chiil/Documents/Codex/2026-08-14/amke/outputs/ciblo-dev-motion-blur.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ciblo.xyz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./ciblo.xyz_files/css2" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0A0A;
+    --surface:#131313;
+    --line:#2A2A2A;
+    --text:#F5F5F5;
+    --text-dim:#8F8F8F;
+    --accent:#FFFFFF;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; cursor:none; }
+  body{
+    cursor:none;
+    background:linear-gradient(to bottom, #2E2E2E 0%, #0A0A0A 55%, #000000 100%);
+    color:var(--text);
+    font-family:'Sora', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column;
+    gap:36px;
+    padding:80px 24px;
+  }
+  a{ color:inherit; text-decoration:none; }
+
+  .logo{
+    font-family:'UnifrakturMaguntia', cursive;
+    font-weight:400;
+    font-size:clamp(48px, 9vw, 96px);
+    letter-spacing:0.01em;
+    min-height:1.2em;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .logo-cursor{
+    display:inline-block;
+    margin-left:2px;
+    animation:blink 0.9s step-end infinite;
+  }
+  @keyframes blink{
+    0%, 100%{ opacity:1; }
+    50%{ opacity:0; }
+  }
+
+  .crosshair{
+    position:fixed;
+    top:0; left:0;
+    transform:translate(-50%, -50%);
+    width:22px; height:22px;
+    pointer-events:none;
+    z-index:9999;
+    opacity:0.85;
+    will-change:transform, left, top;
+  }
+  .crosshair svg{ width:100%; height:100%; display:block; }
+  .crosshair-smear{
+    position:fixed;
+    transform:translate(-50%, -50%);
+    width:22px; height:22px;
+    pointer-events:none;
+    z-index:9998;
+    opacity:0;
+    will-change:transform, opacity;
+  }
+  .crosshair-smear svg{ width:100%; height:100%; display:block; }
+
+  /* ---------- SNOW ---------- */
+  .snow{
+    position:fixed; inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:3;
+  }
+  .snowflake{
+    position:absolute;
+    top:-10px;
+    background:#ffffff;
+    border-radius:50%;
+    opacity:0.85;
+    animation-name:fall, sway;
+    animation-timing-function:linear, ease-in-out;
+    animation-iteration-count:infinite, infinite;
+  }
+  @keyframes fall{
+    0%{ transform:translateY(-10px); }
+    100%{ transform:translateY(110vh); }
+  }
+  @keyframes sway{
+    0%, 100%{ margin-left:0; }
+    50%{ margin-left:20px; }
+  }
+
+  .hire-btn{
+    background:var(--accent); color:#0A0A0A;
+    font-weight:700; font-size:16px;
+    padding:18px 40px; border-radius:2px;
+    border:none; cursor:pointer;
+    font-family:'Sora',sans-serif;
+    transition:background .15s ease, transform .15s ease;
+  }
+  .hire-btn:hover{ background:#D8D8D8; transform:translateY(-2px); box-shadow:0 0 18px rgba(255,255,255,0.35); }
+
+  .social-row{ display:flex; gap:14px; }
+  .social-btn{
+    border:1px solid var(--line); color:var(--text);
+    font-size:14px; font-weight:600;
+    padding:12px 22px; border-radius:2px;
+    font-family:'Sora',sans-serif;
+    transition:border-color .15s ease, color .15s ease, box-shadow .15s ease;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .social-btn:hover{ border-color:var(--text-dim); color:var(--text-dim); box-shadow:0 0 14px rgba(255,255,255,0.2); }
+  .social-btn svg{ width:16px; height:16px; fill:currentColor; }
+
+  /* ---------- WORK SECTION ---------- */
+  .work-section{ width:100%; max-width:900px; text-align:center; }
+  .work-title{
+    font-family:'Sora', sans-serif;
+    font-weight:700;
+    font-size:clamp(28px, 4.5vw, 42px);
+    margin-bottom:28px;
+    letter-spacing:-0.045em;
+  }
+  .work-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;
+  }
+  .site-copyright{
+    margin-top:8px;
+    color:var(--text);
+    opacity:0.28;
+    font-family:'DM Mono',monospace;
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .video-frame{
+    position:relative; width:100%; aspect-ratio:9/16;
+    border:1px solid var(--line); border-radius:6px; overflow:hidden;
+    background:var(--surface);
+    transition:box-shadow .2s ease;
+  }
+  .video-frame:hover{ box-shadow:0 0 18px rgba(255,255,255,0.2); }
+  .video-frame iframe{
+    position:absolute; inset:0; width:100%; height:100%; border:0;
+  }
+  @media (max-width:700px){
+    .work-grid{ grid-template-columns:1fr; max-width:280px; margin:0 auto; }
+  }
+
+  /* ---------- MODAL ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,0.75);
+    display:none; align-items:center; justify-content:center;
+    padding:24px; z-index:100;
+  }
+  .overlay.show{ display:flex; }
+
+  .modal{
+    background:var(--surface); border:1px solid var(--line); border-radius:6px;
+    width:100%; max-width:480px; max-height:90vh; overflow-y:auto;
+    padding:32px;
+    position:relative;
+  }
+  .modal-close{
+    position:absolute; top:20px; right:24px;
+    background:none; border:none; color:var(--text-dim);
+    font-size:22px; cursor:pointer; line-height:1;
+    font-family:'Sora',sans-serif;
+  }
+  .modal-close:hover{ color:var(--text); }
+
+  .modal-title{
+    font-family:'Sora',sans-serif; font-weight:700;
+    font-size:30px; letter-spacing:-0.04em; margin-bottom:6px;
+  }
+  .modal-sub{ font-size:14px; color:var(--text-dim); margin-bottom:26px; }
+
+  .sec-tag{
+    font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.08em;
+    color:var(--text-dim); text-transform:uppercase; margin-bottom:12px; display:block;
+  }
+
+  .pricing-list{ border:1px solid var(--line); border-radius:4px; overflow:hidden; margin-bottom:28px; }
+  .price-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 18px; border-top:1px solid var(--line);
+  }
+  .price-row:first-child{ border-top:none; }
+  .price-name{ font-size:15px; font-weight:700; }
+  .price-desc{ font-size:12.5px; color:var(--text-dim); margin-top:2px; }
+  .price-amount{ font-family:'Sora',sans-serif; font-weight:700; font-size:20px; white-space:nowrap; margin-left:16px; }
+
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block; font-family:'DM Mono',monospace; font-size:11px;
+    text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim);
+    margin-bottom:7px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%; background:var(--bg); border:1px solid var(--line);
+    color:var(--text); padding:11px 13px; border-radius:2px;
+    font-family:'Sora',sans-serif; font-size:14px;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:none; border-color:var(--text-dim);
+  }
+  .field textarea{ resize:vertical; min-height:70px; }
+  .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+  .submit-btn{
+    width:100%;
+    background:var(--accent); color:#0A0A0A;
+    font-weight:700; font-size:15px;
+    padding:14px; border-radius:2px;
+    border:none; cursor:pointer; font-family:'Sora',sans-serif;
+    margin-top:6px;
+  }
+  .submit-btn:hover{ background:#D8D8D8; box-shadow:0 0 16px rgba(255,255,255,0.3); }
+
+  .ticket-result{
+    margin-top:18px; padding:16px 18px; border:1px solid var(--line);
+    border-radius:2px; background:var(--bg); display:none;
+  }
+  .ticket-result.show{ display:block; }
+  .ticket-result .tid{ font-family:'DM Mono',monospace; font-size:13px; margin-bottom:6px; }
+  .ticket-result p{ font-size:13px; color:var(--text-dim); line-height:1.6; margin-bottom:12px; }
+  .queue-label{ margin-top:18px; }
+  .ticket-queue{ list-style:none; border:1px solid var(--line); border-radius:2px; overflow:hidden; }
+  .queue-item, .queue-empty{
+    display:flex; align-items:center; gap:10px; padding:11px 12px;
+    border-top:1px solid var(--line); font-size:13px;
+  }
+  .queue-item:first-child, .queue-empty:first-child{ border-top:none; }
+  .queue-icon{ width:17px; height:17px; flex:0 0 auto; fill:var(--text-dim); }
+  .queue-person{ min-width:0; }
+  .queue-name{ display:block; font-weight:700; }
+  .queue-meta{ display:block; margin-top:2px; color:var(--text-dim); font-family:'DM Mono',monospace; font-size:10px; }
+  .queue-empty{ color:var(--text-dim); }
+  .dev-command{ margin-top:20px; padding-top:18px; border-top:1px solid var(--line); }
+  .command-row{ display:flex; gap:8px; }
+  .command-row input{ flex:1; min-width:0; }
+  .command-btn{ padding:0 14px; background:transparent; color:var(--text); border:1px solid var(--line); border-radius:2px; font-family:'Sora',sans-serif; font-weight:600; }
+  .command-btn:hover{ border-color:var(--text-dim); }
+  .command-message{ min-height:18px; margin-top:8px; color:var(--text-dim); font-size:12px; }
+
+  @media (max-width:480px){
+    .field-row{ grid-template-columns:1fr; }
+    .modal{ padding:24px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="snow" id="snow"><div class="snowflake" style="width: 4.69674px; height: 4.69674px; left: 42.2364vw; animation-duration: 6.35385s, 4.1539s; animation-delay: 0.329338s, 0s; opacity: 0.894846;"></div><div class="snowflake" style="width: 3.68328px; height: 3.68328px; left: 85.6612vw; animation-duration: 12.1003s, 4.87967s; animation-delay: 12.062s, 0s; opacity: 0.484095;"></div><div class="snowflake" style="width: 4.44484px; height: 4.44484px; left: 41.0179vw; animation-duration: 12.0435s, 2.7637s; animation-delay: 8.9375s, 0s; opacity: 0.849735;"></div><div class="snowflake" style="width: 4.33346px; height: 4.33346px; left: 97.9119vw; animation-duration: 8.83561s, 4.18514s; animation-delay: 2.36427s, 0s; opacity: 0.757319;"></div><div class="snowflake" style="width: 3.72497px; height: 3.72497px; left: 6.83858vw; animation-duration: 6.77801s, 3.49388s; animation-delay: 0.560725s, 0s; opacity: 0.569518;"></div><div class="snowflake" style="width: 3.33672px; height: 3.33672px; left: 48.709vw; animation-duration: 9.22991s, 4.63952s; animation-delay: 8.76132s, 0s; opacity: 0.775659;"></div><div class="snowflake" style="width: 3.23421px; height: 3.23421px; left: 61.7519vw; animation-duration: 9.37051s, 4.21076s; animation-delay: 3.96623s, 0s; opacity: 0.594107;"></div><div class="snowflake" style="width: 3.02088px; height: 3.02088px; left: 93.684vw; animation-duration: 11.9159s, 2.9953s; animation-delay: 9.86672s, 0s; opacity: 0.432161;"></div><div class="snowflake" style="width: 3.90834px; height: 3.90834px; left: 8.21696vw; animation-duration: 10.6547s, 3.05437s; animation-delay: 5.19218s, 0s; opacity: 0.470395;"></div><div class="snowflake" style="width: 2.02499px; height: 2.02499px; left: 80.1313vw; animation-duration: 6.94926s, 3.46323s; animation-delay: 4.28288s, 0s; opacity: 0.644296;"></div><div class="snowflake" style="width: 2.70093px; height: 2.70093px; left: 62.5905vw; animation-duration: 6.55789s, 3.64852s; animation-delay: 4.69293s, 0s; opacity: 0.806042;"></div><div class="snowflake" style="width: 3.08663px; height: 3.08663px; left: 80.5212vw; animation-duration: 9.79414s, 2.83316s; animation-delay: 0.162083s, 0s; opacity: 0.633031;"></div><div class="snowflake" style="width: 3.6946px; height: 3.6946px; left: 67.5809vw; animation-duration: 7.03046s, 2.70792s; animation-delay: 4.28534s, 0s; opacity: 0.88447;"></div><div class="snowflake" style="width: 4.25097px; height: 4.25097px; left: 98.872vw; animation-duration: 11.6842s, 3.76926s; animation-delay: 5.24127s, 0s; opacity: 0.732211;"></div><div class="snowflake" style="width: 3.05815px; height: 3.05815px; left: 14.1251vw; animation-duration: 8.59689s, 3.9326s; animation-delay: 4.43114s, 0s; opacity: 0.84569;"></div><div class="snowflake" style="width: 3.32274px; height: 3.32274px; left: 33.3832vw; animation-duration: 7.8493s, 3.56084s; animation-delay: 1.396s, 0s; opacity: 0.428673;"></div><div class="snowflake" style="width: 3.96474px; height: 3.96474px; left: 29.3926vw; animation-duration: 11.6459s, 3.11187s; animation-delay: 6.24299s, 0s; opacity: 0.634734;"></div><div class="snowflake" style="width: 4.36725px; height: 4.36725px; left: 10.6758vw; animation-duration: 7.31444s, 3.57973s; animation-delay: 1.72662s, 0s; opacity: 0.405625;"></div><div class="snowflake" style="width: 2.3628px; height: 2.3628px; left: 60.8205vw; animation-duration: 9.48186s, 3.33614s; animation-delay: 5.20928s, 0s; opacity: 0.805423;"></div><div class="snowflake" style="width: 3.48261px; height: 3.48261px; left: 44.7408vw; animation-duration: 12.5374s, 2.40331s; animation-delay: 2.32692s, 0s; opacity: 0.803656;"></div><div class="snowflake" style="width: 3.83296px; height: 3.83296px; left: 3.72579vw; animation-duration: 8.30054s, 2.59578s; animation-delay: 6.0886s, 0s; opacity: 0.739746;"></div><div class="snowflake" style="width: 4.90175px; height: 4.90175px; left: 90.4716vw; animation-duration: 9.78736s, 4.99315s; animation-delay: 2.97157s, 0s; opacity: 0.519701;"></div><div class="snowflake" style="width: 3.36457px; height: 3.36457px; left: 65.313vw; animation-duration: 9.28703s, 3.01823s; animation-delay: 1.63436s, 0s; opacity: 0.745282;"></div><div class="snowflake" style="width: 4.66596px; height: 4.66596px; left: 81.4239vw; animation-duration: 6.56143s, 4.93573s; animation-delay: 2.87106s, 0s; opacity: 0.458939;"></div><div class="snowflake" style="width: 4.4264px; height: 4.4264px; left: 57.3706vw; animation-duration: 12.5198s, 4.54166s; animation-delay: 4.8449s, 0s; opacity: 0.645374;"></div><div class="snowflake" style="width: 4.01482px; height: 4.01482px; left: 31.1704vw; animation-duration: 10.0547s, 3.30056s; animation-delay: 7.58308s, 0s; opacity: 0.763823;"></div><div class="snowflake" style="width: 2.1461px; height: 2.1461px; left: 20.7573vw; animation-duration: 7.321s, 2.03979s; animation-delay: 5.67428s, 0s; opacity: 0.873541;"></div><div class="snowflake" style="width: 2.19684px; height: 2.19684px; left: 96.2434vw; animation-duration: 12.2306s, 4.16325s; animation-delay: 3.46063s, 0s; opacity: 0.604089;"></div><div class="snowflake" style="width: 2.51033px; height: 2.51033px; left: 7.28324vw; animation-duration: 11.7795s, 4.2007s; animation-delay: 3.22406s, 0s; opacity: 0.856392;"></div><div class="snowflake" style="width: 4.84144px; height: 4.84144px; left: 30.0814vw; animation-duration: 13.163s, 3.70134s; animation-delay: 3.66469s, 0s; opacity: 0.525702;"></div><div class="snowflake" style="width: 4.72799px; height: 4.72799px; left: 33.5854vw; animation-duration: 6.96752s, 2.39865s; animation-delay: 5.1601s, 0s; opacity: 0.805848;"></div><div class="snowflake" style="width: 2.64835px; height: 2.64835px; left: 92.0586vw; animation-duration: 13.2887s, 3.71918s; animation-delay: 12.7979s, 0s; opacity: 0.413017;"></div><div class="snowflake" style="width: 4.2429px; height: 4.2429px; left: 40.5213vw; animation-duration: 10.2532s, 4.61266s; animation-delay: 9.55752s, 0s; opacity: 0.807265;"></div><div class="snowflake" style="width: 3.24828px; height: 3.24828px; left: 51.5828vw; animation-duration: 11.3122s, 4.65529s; animation-delay: 2.56707s, 0s; opacity: 0.852627;"></div><div class="snowflake" style="width: 3.094px; height: 3.094px; left: 9.82481vw; animation-duration: 12.8677s, 4.13861s; animation-delay: 3.54534s, 0s; opacity: 0.526601;"></div><div class="snowflake" style="width: 3.2893px; height: 3.2893px; left: 26.4935vw; animation-duration: 11.93s, 2.1192s; animation-delay: 0.963679s, 0s; opacity: 0.427215;"></div><div class="snowflake" style="width: 3.1165px; height: 3.1165px; left: 19.4737vw; animation-duration: 9.76682s, 3.11716s; animation-delay: 1.62955s, 0s; opacity: 0.767456;"></div><div class="snowflake" style="width: 4.28747px; height: 4.28747px; left: 74.8453vw; animation-duration: 7.3904s, 3.05339s; animation-delay: 2.84235s, 0s; opacity: 0.573379;"></div><div class="snowflake" style="width: 2.85623px; height: 2.85623px; left: 68.866vw; animation-duration: 11.334s, 4.47967s; animation-delay: 1.97504s, 0s; opacity: 0.898377;"></div><div class="snowflake" style="width: 2.63318px; height: 2.63318px; left: 25.5082vw; animation-duration: 11.5717s, 3.40267s; animation-delay: 1.55326s, 0s; opacity: 0.45845;"></div><div class="snowflake" style="width: 2.10412px; height: 2.10412px; left: 12.6705vw; animation-duration: 9.63667s, 2.1782s; animation-delay: 6.04725s, 0s; opacity: 0.876921;"></div><div class="snowflake" style="width: 2.77405px; height: 2.77405px; left: 99.6312vw; animation-duration: 13.3019s, 2.14555s; animation-delay: 4.97425s, 0s; opacity: 0.406949;"></div><div class="snowflake" style="width: 3.67827px; height: 3.67827px; left: 28.2301vw; animation-duration: 12.7964s, 4.73315s; animation-delay: 12.6318s, 0s; opacity: 0.779217;"></div><div class="snowflake" style="width: 4.92903px; height: 4.92903px; left: 12.7978vw; animation-duration: 11.7401s, 3.20797s; animation-delay: 7.63676s, 0s; opacity: 0.42232;"></div><div class="snowflake" style="width: 2.36139px; height: 2.36139px; left: 44.6539vw; animation-duration: 13.4339s, 2.12813s; animation-delay: 0.397681s, 0s; opacity: 0.703745;"></div><div class="snowflake" style="width: 3.17681px; height: 3.17681px; left: 63.6157vw; animation-duration: 6.58038s, 4.00923s; animation-delay: 4.98719s, 0s; opacity: 0.549672;"></div><div class="snowflake" style="width: 2.236px; height: 2.236px; left: 21.4373vw; animation-duration: 6.27076s, 2.25935s; animation-delay: 3.3283s, 0s; opacity: 0.873382;"></div><div class="snowflake" style="width: 3.07077px; height: 3.07077px; left: 70.4067vw; animation-duration: 13.207s, 3.98678s; animation-delay: 12.4072s, 0s; opacity: 0.511437;"></div><div class="snowflake" style="width: 3.13283px; height: 3.13283px; left: 67.4641vw; animation-duration: 8.4409s, 2.52995s; animation-delay: 2.06651s, 0s; opacity: 0.6174;"></div><div class="snowflake" style="width: 3.09539px; height: 3.09539px; left: 24.0281vw; animation-duration: 8.62162s, 2.56666s; animation-delay: 5.05406s, 0s; opacity: 0.68733;"></div><div class="snowflake" style="width: 4.19222px; height: 4.19222px; left: 90.5051vw; animation-duration: 11.4167s, 3.02144s; animation-delay: 1.48992s, 0s; opacity: 0.475914;"></div><div class="snowflake" style="width: 2.49894px; height: 2.49894px; left: 1.90552vw; animation-duration: 8.40019s, 4.8385s; animation-delay: 3.42316s, 0s; opacity: 0.495195;"></div><div class="snowflake" style="width: 3.13232px; height: 3.13232px; left: 6.76489vw; animation-duration: 7.26839s, 4.67925s; animation-delay: 0.64208s, 0s; opacity: 0.666813;"></div><div class="snowflake" style="width: 4.69362px; height: 4.69362px; left: 80.1545vw; animation-duration: 11.4845s, 3.95246s; animation-delay: 10.1717s, 0s; opacity: 0.554691;"></div><div class="snowflake" style="width: 2.94314px; height: 2.94314px; left: 88.2719vw; animation-duration: 12.2895s, 3.43796s; animation-delay: 5.9585s, 0s; opacity: 0.748615;"></div><div class="snowflake" style="width: 4.95631px; height: 4.95631px; left: 78.2076vw; animation-duration: 10.9561s, 3.09201s; animation-delay: 9.23933s, 0s; opacity: 0.869536;"></div><div class="snowflake" style="width: 4.04198px; height: 4.04198px; left: 33.6315vw; animation-duration: 13.1737s, 4.01775s; animation-delay: 11.2399s, 0s; opacity: 0.584427;"></div><div class="snowflake" style="width: 4.14297px; height: 4.14297px; left: 85.6701vw; animation-duration: 7.81664s, 2.88801s; animation-delay: 5.58648s, 0s; opacity: 0.710953;"></div><div class="snowflake" style="width: 2.61374px; height: 2.61374px; left: 10.7958vw; animation-duration: 12.0056s, 3.08569s; animation-delay: 2.98555s, 0s; opacity: 0.407005;"></div><div class="snowflake" style="width: 2.27603px; height: 2.27603px; left: 42.8224vw; animation-duration: 10.8495s, 2.67604s; animation-delay: 7.66695s, 0s; opacity: 0.672903;"></div></div>
+
+  <div class="logo"><span id="logoText">ciblo.xyz</span><span class="logo-cursor">|</span></div>
+
+  <div class="crosshair" style="left: 2179px; top: 1px;">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="blurH" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="2.5 0.2"></fegaussianblur>
+        </filter>
+        <filter id="blurV" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="0.2 2.5"></fegaussianblur>
+        </filter>
+      </defs>
+      <g fill="#ffffff">
+        <rect x="0" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="26" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="18.5" y="0" width="3" height="14" filter="url(#blurV)"></rect>
+        <rect x="18.5" y="26" width="3" height="14" filter="url(#blurV)"></rect>
+      </g>
+    </svg>
+  </div>
+  <button class="hire-btn" id="openBtn">Hire me</button>
+
+  <div class="social-row">
+    <a href="https://www.youtube.com/@CibloMC" target="_blank" rel="noopener" class="social-btn">
+      <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8ZM9.6 15.5v-7l6.3 3.5-6.3 3.5Z"></path></svg>
+      YouTube
+    </a>
+    <a href="https://discord.gg/x6KeRJus9E" target="_blank" rel="noopener" class="social-btn">
+      <svg viewBox="0 0 24 24"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3c-.2.4-.5 1-.7 1.4a18.3 18.3 0 0 0-5.4 0A9.7 9.7 0 0 0 8.6 3a19.8 19.8 0 0 0-4.9 1.5C1 8.9.3 13.2.6 17.5A20 20 0 0 0 6.6 20c.5-.7.9-1.4 1.3-2.2-.7-.3-1.4-.6-2-1l.5-.4a14.2 14.2 0 0 0 11.9 0l.5.4c-.6.4-1.3.7-2 1 .4.8.8 1.5 1.3 2.2a20 20 0 0 0 6-2.5c.4-5-.9-9.3-3.8-13.1ZM9.7 15c-1 0-1.9-1-1.9-2.1 0-1.2.8-2.2 1.9-2.2s2 1 1.9 2.2c0 1.1-.9 2.1-1.9 2.1Zm6.6 0c-1 0-1.9-1-1.9-2.1 0-1.2.8-2.2 1.9-2.2s2 1 1.9 2.2c0 1.1-.8 2.1-1.9 2.1Z"></path></svg>
+      Discord
+    </a>
+  </div>
+
+  <div class="work-section">
+    <div class="work-title">My work</div>
+    <div class="work-grid">
+      <div class="video-frame">
+        <iframe src="./ciblo.xyz_files/smSEZE-_M00.html" title="ciblo.xyz edit 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+      </div>
+      <div class="video-frame">
+        <iframe src="./ciblo.xyz_files/tztUDTC4hT4.html" title="ciblo.xyz edit 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+      </div>
+      <div class="video-frame">
+        <iframe src="./ciblo.xyz_files/ujBPBkpoBbQ.html" title="ciblo.xyz edit 3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-copyright">© 2026 ciblo.xyz · All rights reserved</footer>
+
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <button class="modal-close" id="closeBtn">×</button>
+      <div class="modal-title">Hire me</div>
+      <div class="modal-sub">Video editing — payment info and ticket submission.</div>
+
+      <span class="sec-tag">Pricing</span>
+      <div class="pricing-list">
+        <div class="price-row">
+          <div>
+            <div class="price-name">Short</div>
+            <div class="price-desc">Vertical, under 60 seconds</div>
+          </div>
+          <div class="price-amount">$5</div>
+        </div>
+        <div class="price-row">
+          <div>
+            <div class="price-name">Longform</div>
+            <div class="price-desc">Under 10 minutes</div>
+          </div>
+          <div class="price-amount">$10.99</div>
+        </div>
+      </div>
+
+      <span class="sec-tag">Submit a ticket</span>
+      <form id="ticketForm">
+        <div class="field-row">
+          <div class="field">
+            <label for="name">Your name</label>
+            <input type="text" id="name" required="">
+          </div>
+          <div class="field">
+            <label for="contact">Discord username</label>
+            <input type="text" id="contact" placeholder="e.g. ciblo.xyz" required="">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="videoType">Video type</label>
+          <select id="videoType">
+            <option value="Short — $5">Short — $5</option>
+            <option value="Longform (under 10 min) — $10.99">Longform (under 10 min) — $10.99</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="footageLink">Footage link</label>
+          <input type="text" id="footageLink" placeholder="Google Drive, Discord, etc.">
+        </div>
+
+        <div class="field">
+          <label for="details">Details</label>
+          <textarea id="details" placeholder="Style, music, deadline, anything I should know"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit ticket</button>
+      </form>
+
+      <div class="ticket-result" id="ticketResult">
+        <div class="tid" id="ticketId"></div>
+        <p id="ticketStatus">Ticket opened. You are now in the queue.</p>
+        <span class="sec-tag queue-label">Your queue</span>
+        <ul class="ticket-queue" id="ticketQueue"><li class="queue-item"><svg class="queue-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z"></path></svg><span class="queue-person"><span class="queue-name">othertestdummy</span><span class="queue-meta">TICKET-I3CPD · Short — $5</span></span></li></ul>
+      </div>
+
+      <form class="dev-command" id="devCommandForm">
+        <label class="sec-tag" for="devCommand">Developer command</label>
+        <div class="command-row">
+          <input type="text" id="devCommand" autocomplete="off" placeholder="/ticketclose-TICKETNAME">
+          <button type="submit" class="command-btn">Run</button>
+        </div>
+        <div class="command-message" id="commandMessage" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+
+<script>
+  const crosshair = document.querySelector('.crosshair');
+  const smearCount = 7;
+  const smears = Array.from({ length: smearCount }, () => {
+    const smear = crosshair.cloneNode(true);
+    smear.classList.remove('crosshair');
+    smear.classList.add('crosshair-smear');
+    smear.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(smear);
+    return { element: smear, x: 0, y: 0, active: false };
+  });
+  let smearIndex = 0;
+  let lastX = 0;
+  let lastY = 0;
+  let lastFrame = 0;
+  let leftMouseDown = false;
+
+  document.addEventListener('mousedown', (e) => {
+    if (e.button === 0) leftMouseDown = true;
+  });
+  document.addEventListener('mouseup', (e) => {
+    if (e.button === 0) leftMouseDown = false;
+  });
+  document.addEventListener('blur', () => { leftMouseDown = false; });
+
+  document.addEventListener('mousemove', (e) => {
+    const now = performance.now();
+    const distance = Math.hypot(e.clientX - lastX, e.clientY - lastY);
+    crosshair.style.left = e.clientX + 'px';
+    crosshair.style.top = e.clientY + 'px';
+
+    if (leftMouseDown && distance > 3 && now - lastFrame > 14) {
+      const smear = smears[smearIndex];
+      smearIndex = (smearIndex + 1) % smearCount;
+      smear.element.style.left = e.clientX + 'px';
+      smear.element.style.top = e.clientY + 'px';
+      smear.element.style.opacity = '0.52';
+      smear.element.style.transition = 'none';
+      smear.element.style.transform = 'translate(-50%, -50%) scale(1)';
+      requestAnimationFrame(() => {
+        smear.element.style.transition = 'opacity 150ms ease-out, transform 150ms ease-out';
+        smear.element.style.opacity = '0';
+        smear.element.style.transform = 'translate(-50%, -50%) scale(0.82)';
+      });
+      lastFrame = now;
+    }
+
+    lastX = e.clientX;
+    lastY = e.clientY;
+  });
+
+  const snowContainer = document.getElementById('snow');
+  const flakeCount = 60;
+  for(let i = 0; i < flakeCount; i++){
+    const flake = document.createElement('div');
+    flake.className = 'snowflake';
+    const size = Math.random() * 3 + 2;
+    flake.style.width = size + 'px';
+    flake.style.height = size + 'px';
+    flake.style.left = Math.random() * 100 + 'vw';
+    const fallDuration = Math.random() * 8 + 6;
+    const swayDuration = Math.random() * 3 + 2;
+    flake.style.animationDuration = fallDuration + 's, ' + swayDuration + 's';
+    flake.style.animationDelay = (Math.random() * fallDuration) + 's, 0s';
+    flake.style.opacity = Math.random() * 0.5 + 0.4;
+    snowContainer.appendChild(flake);
+  }
+
+  const logoText = document.getElementById('logoText');
+  const fullLogo = 'ciblo.xyz';
+  let logoIdx = 0;
+  let logoDeleting = false;
+
+  function typeLogo(){
+    if(!logoDeleting){
+      logoIdx++;
+      logoText.textContent = fullLogo.slice(0, logoIdx);
+      if(logoIdx === fullLogo.length){
+        logoDeleting = true;
+        setTimeout(typeLogo, 1400);
+        return;
+      }
+      setTimeout(typeLogo, 150);
+    } else {
+      logoIdx--;
+      logoText.textContent = fullLogo.slice(0, logoIdx);
+      if(logoIdx === 0){
+        logoDeleting = false;
+        setTimeout(typeLogo, 500);
+        return;
+      }
+      setTimeout(typeLogo, 90);
+    }
+  }
+  typeLogo();
+
+  const openBtn = document.getElementById('openBtn');
+  const closeBtn = document.getElementById('closeBtn');
+  const overlay = document.getElementById('overlay');
+
+  openBtn.addEventListener('click', () => overlay.classList.add('show'));
+  closeBtn.addEventListener('click', () => overlay.classList.remove('show'));
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay) overlay.classList.remove('show');
+  });
+
+  const form = document.getElementById('ticketForm');
+  const result = document.getElementById('ticketResult');
+  const ticketId = document.getElementById('ticketId');
+  const ticketStatus = document.getElementById('ticketStatus');
+  const ticketQueue = document.getElementById('ticketQueue');
+  const devCommandForm = document.getElementById('devCommandForm');
+  const devCommand = document.getElementById('devCommand');
+  const commandMessage = document.getElementById('commandMessage');
+  const ticketStorageKey = 'ciblo-xyz-ticket-queue';
+  let tickets = [];
+
+  try { tickets = JSON.parse(localStorage.getItem(ticketStorageKey)) || []; } catch { tickets = []; }
+
+  function saveTickets(){ localStorage.setItem(ticketStorageKey, JSON.stringify(tickets)); }
+  function renderQueue(){
+    ticketQueue.replaceChildren();
+    if(!tickets.length){
+      const empty = document.createElement('li');
+      empty.className = 'queue-empty';
+      empty.textContent = 'The queue is empty.';
+      ticketQueue.appendChild(empty);
+      return;
+    }
+    tickets.forEach((ticket) => {
+      const item = document.createElement('li');
+      item.className = 'queue-item';
+      item.innerHTML = '<svg class="queue-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z"/></svg><span class="queue-person"><span class="queue-name"></span><span class="queue-meta"></span></span>';
+      item.querySelector('.queue-name').textContent = ticket.name;
+      item.querySelector('.queue-meta').textContent = ticket.id + ' · ' + ticket.videoType;
+      ticketQueue.appendChild(item);
+    });
+  }
+  renderQueue();
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const contact = document.getElementById('contact').value.trim();
+    const videoType = document.getElementById('videoType').value;
+    const footageLink = document.getElementById('footageLink').value.trim();
+    const details = document.getElementById('details').value.trim();
+
+    const id = 'TICKET-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+    tickets.push({ id, name, contact, videoType, footageLink, details, openedAt: Date.now() });
+    saveTickets();
+    renderQueue();
+    ticketId.textContent = 'Ticket opened: ' + id;
+    ticketStatus.textContent = 'Ticket opened. Use /ticketclose-' + id + ' in the developer command to close it.';
+
+    const subject = encodeURIComponent('New ticket ' + id + ' — ' + videoType);
+    const body = encodeURIComponent(
+      'Ticket: ' + id + '\n' +
+      'Name: ' + name + '\n' +
+      'Discord: ' + contact + '\n' +
+      'Video type: ' + videoType + '\n' +
+      'Footage link: ' + footageLink + '\n\n' +
+      'Details:\n' + details
+    );
+    // Ticket details stay in the local queue instead of opening an email client.
+
+    result.classList.add('show');
+    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    form.reset();
+  });
+
+  devCommandForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const match = devCommand.value.trim().match(/^\/ticketclose-([a-z0-9_-]+)$/i);
+    if(!match){
+      commandMessage.textContent = 'Use /ticketclose-[TICKETNAME].';
+      return;
+    }
+    const ticketName = match[1].toUpperCase();
+    const ticketIndex = tickets.findIndex((ticket) => ticket.id.toUpperCase() === ticketName);
+    if(ticketIndex === -1){
+      commandMessage.textContent = 'Ticket ' + ticketName + ' was not found.';
+      return;
+    }
+    tickets.splice(ticketIndex, 1);
+    saveTickets();
+    renderQueue();
+    commandMessage.textContent = 'Ticket ' + ticketName + ' closed.';
+    devCommand.value = '';
+  });
+</script><div class="crosshair-smear" aria-hidden="true" style="left: 907px; top: 484px; opacity: 0; transition: opacity 150ms ease-out, transform 150ms ease-out; transform: translate(-50%, -50%) scale(0.82);">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="blurH" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="2.5 0.2"></fegaussianblur>
+        </filter>
+        <filter id="blurV" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="0.2 2.5"></fegaussianblur>
+        </filter>
+      </defs>
+      <g fill="#ffffff">
+        <rect x="0" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="26" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="18.5" y="0" width="3" height="14" filter="url(#blurV)"></rect>
+        <rect x="18.5" y="26" width="3" height="14" filter="url(#blurV)"></rect>
+      </g>
+    </svg>
+  </div><div class="crosshair-smear" aria-hidden="true" style="left: 918px; top: 491px; opacity: 0; transition: opacity 150ms ease-out, transform 150ms ease-out; transform: translate(-50%, -50%) scale(0.82);">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="blurH" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="2.5 0.2"></fegaussianblur>
+        </filter>
+        <filter id="blurV" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="0.2 2.5"></fegaussianblur>
+        </filter>
+      </defs>
+      <g fill="#ffffff">
+        <rect x="0" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="26" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="18.5" y="0" width="3" height="14" filter="url(#blurV)"></rect>
+        <rect x="18.5" y="26" width="3" height="14" filter="url(#blurV)"></rect>
+      </g>
+    </svg>
+  </div><div class="crosshair-smear" aria-hidden="true" style="left: 676px; top: 657px; opacity: 0; transition: opacity 150ms ease-out, transform 150ms ease-out; transform: translate(-50%, -50%) scale(0.82);">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="blurH" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="2.5 0.2"></fegaussianblur>
+        </filter>
+        <filter id="blurV" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="0.2 2.5"></fegaussianblur>
+        </filter>
+      </defs>
+      <g fill="#ffffff">
+        <rect x="0" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="26" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="18.5" y="0" width="3" height="14" filter="url(#blurV)"></rect>
+        <rect x="18.5" y="26" width="3" height="14" filter="url(#blurV)"></rect>
+      </g>
+    </svg>
+  </div><div class="crosshair-smear" aria-hidden="true" style="left: 1912px; top: 235px; opacity: 0; transition: opacity 150ms ease-out, transform 150ms ease-out; transform: translate(-50%, -50%) scale(0.82);">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="blurH" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="2.5 0.2"></fegaussianblur>
+        </filter>
+        <filter id="blurV" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="0.2 2.5"></fegaussianblur>
+        </filter>
+      </defs>
+      <g fill="#ffffff">
+        <rect x="0" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="26" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="18.5" y="0" width="3" height="14" filter="url(#blurV)"></rect>
+        <rect x="18.5" y="26" width="3" height="14" filter="url(#blurV)"></rect>
+      </g>
+    </svg>
+  </div><div class="crosshair-smear" aria-hidden="true" style="left: 1923px; top: 237px; opacity: 0; transition: opacity 150ms ease-out, transform 150ms ease-out; transform: translate(-50%, -50%) scale(0.82);">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="blurH" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="2.5 0.2"></fegaussianblur>
+        </filter>
+        <filter id="blurV" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="0.2 2.5"></fegaussianblur>
+        </filter>
+      </defs>
+      <g fill="#ffffff">
+        <rect x="0" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="26" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="18.5" y="0" width="3" height="14" filter="url(#blurV)"></rect>
+        <rect x="18.5" y="26" width="3" height="14" filter="url(#blurV)"></rect>
+      </g>
+    </svg>
+  </div><div class="crosshair-smear" aria-hidden="true" style="left: 1935px; top: 238px; opacity: 0; transition: opacity 150ms ease-out, transform 150ms ease-out; transform: translate(-50%, -50%) scale(0.82);">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="blurH" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="2.5 0.2"></fegaussianblur>
+        </filter>
+        <filter id="blurV" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="0.2 2.5"></fegaussianblur>
+        </filter>
+      </defs>
+      <g fill="#ffffff">
+        <rect x="0" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="26" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="18.5" y="0" width="3" height="14" filter="url(#blurV)"></rect>
+        <rect x="18.5" y="26" width="3" height="14" filter="url(#blurV)"></rect>
+      </g>
+    </svg>
+  </div><div class="crosshair-smear" aria-hidden="true" style="left: 2423px; top: 471px; opacity: 0; transition: opacity 150ms ease-out, transform 150ms ease-out; transform: translate(-50%, -50%) scale(0.82);">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="blurH" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="2.5 0.2"></fegaussianblur>
+        </filter>
+        <filter id="blurV" x="-100%" y="-100%" width="300%" height="300%">
+          <fegaussianblur in="SourceGraphic" stdDeviation="0.2 2.5"></fegaussianblur>
+        </filter>
+      </defs>
+      <g fill="#ffffff">
+        <rect x="0" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="26" y="18.5" width="14" height="3" filter="url(#blurH)"></rect>
+        <rect x="18.5" y="0" width="3" height="14" filter="url(#blurV)"></rect>
+        <rect x="18.5" y="26" width="3" height="14" filter="url(#blurV)"></rect>
+      </g>
+    </svg>
+  </div>
+
+
+
+</body></html>
