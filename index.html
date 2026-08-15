@@ -104,6 +104,25 @@
     transition:background .15s ease, transform .15s ease;
   }
   .payment-btn:hover{ background:#4F46E5; transform:translateY(-2px); box-shadow:0 0 18px rgba(99,91,255,0.5); }
+  .music-player{
+    position:fixed; top:20px; left:20px; z-index:20;
+    width:188px; padding:10px 12px;
+    background:var(--surface); border:1px solid var(--line); border-radius:16px;
+    box-shadow:0 5px 12px rgba(0,0,0,.35);
+  }
+  .music-info{ display:none; }
+  .music-bar{ display:flex; align-items:center; gap:8px; }
+  .music-mute{
+    border:0; color:#FFFFFF; background:transparent; cursor:pointer;
+    transition:transform .15s ease, opacity .15s ease;
+  }
+  .music-mute:hover{ transform:scale(1.1); opacity:.8; }
+  .music-mute{ width:38px; height:38px; display:grid; place-items:center; font-size:0; flex:0 0 auto; }
+  .music-mute::before{ content:''; width:27px; height:27px; background:url('speaker-icon.png') center/contain no-repeat; }
+  .music-mute.is-muted::before{ opacity:.35; }
+  .music-volume{ appearance:none; -webkit-appearance:none; width:100%; height:10px; border-radius:20px; background:rgba(255,255,255,.8); outline:none; cursor:pointer; }
+  .music-volume::-webkit-slider-thumb{ appearance:none; -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:#FFFFFF; box-shadow:0 1px 3px rgba(0,0,0,.25); }
+  .music-volume::-moz-range-thumb{ width:16px; height:16px; border:0; border-radius:50%; background:#FFFFFF; box-shadow:0 1px 3px rgba(0,0,0,.25); }
 
   .social-row{ display:flex; gap:14px; }
   .social-btn{
@@ -225,6 +244,7 @@
 
   @media (max-width:480px){
     .modal{ padding:28px 20px; }
+    .music-player{ top:14px; left:14px; }
   }
 </style>
 </head>
@@ -255,6 +275,18 @@
 
   <button class="hire-btn" id="openBtn">Hire me</button>
   <a class="payment-btn" href="https://buy.stripe.com/test_28EfZg4bOfeJ999fxT7N600" target="_blank" rel="noopener">Pay with Stripe</a>
+
+  <div class="music-player" aria-label="Music player">
+    <div class="music-info">
+      <span class="music-label">Now playing</span>
+      <span class="music-track" id="musicTrack">The Race — Tay-K</span>
+    </div>
+    <div class="music-bar">
+      <button class="music-mute" id="muteToggle" type="button" aria-label="Play music" title="Now playing: The Race — Tay-K">🔊</button>
+      <input class="music-volume" id="volumeSlider" type="range" min="0" max="1" value="0.8" step="0.01" aria-label="Music volume">
+    </div>
+    <audio id="musicAudio" preload="metadata"></audio>
+  </div>
 
   <div class="social-row">
     <a href="https://www.youtube.com/@CibloMC" target="_blank" rel="noopener" class="social-btn">
@@ -424,61 +456,4 @@
   }
 
   // ---------- LOGO TYPING EFFECT ----------
-  const logoText = document.getElementById('logoText');
-  const fullLogo = 'ciblo.xyz';
-  let logoIdx = 0;
-  let logoDeleting = false;
-
-  function typeLogo(){
-    if(!logoDeleting){
-      logoIdx++;
-      logoText.textContent = fullLogo.slice(0, logoIdx);
-      if(logoIdx === fullLogo.length){
-        logoDeleting = true;
-        setTimeout(typeLogo, 1400);
-        return;
-      }
-      setTimeout(typeLogo, 150);
-    } else {
-      logoIdx--;
-      logoText.textContent = fullLogo.slice(0, logoIdx);
-      if(logoIdx === 0){
-        logoDeleting = false;
-        setTimeout(typeLogo, 500);
-        return;
-      }
-      setTimeout(typeLogo, 90);
-    }
-  }
-  typeLogo();
-
-  // ---------- MODAL OPEN/CLOSE ----------
-  const openBtn = document.getElementById('openBtn');
-  const closeBtn = document.getElementById('closeBtn');
-  const overlay = document.getElementById('overlay');
-
-  openBtn.addEventListener('click', () => overlay.classList.add('show'));
-  closeBtn.addEventListener('click', () => overlay.classList.remove('show'));
-  overlay.addEventListener('click', (e) => {
-    if(e.target === overlay) overlay.classList.remove('show');
-  });
-
-  // ---------- WORK VIDEOS ----------
-  document.querySelectorAll('.video-frame').forEach((frame) => {
-    const video = frame.querySelector('video');
-    const playButton = frame.querySelector('.video-play-btn');
-    const playVideo = () => {
-      document.querySelectorAll('.video-frame video').forEach((otherVideo) => {
-        if (otherVideo !== video) otherVideo.pause();
-      });
-      video.play();
-    };
-    playButton.addEventListener('click', playVideo);
-    video.addEventListener('click', () => video.paused ? playVideo() : video.pause());
-    video.addEventListener('play', () => frame.classList.add('is-playing'));
-    video.addEventListener('pause', () => frame.classList.remove('is-playing'));
-    video.addEventListener('ended', () => frame.classList.remove('is-playing'));
-  });
-</script>
-</body>
-</html>
+  const logoText = document.getElementById('
