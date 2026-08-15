@@ -327,6 +327,18 @@
   const counterUrl = 'https://api.counterapi.dev/v1/cibloxyz_website_2026/page_views';
   const alreadyCounted = localStorage.getItem('ciblo_unique_visitor_counted') === 'true';
   const counterRequest = alreadyCounted ? counterUrl : `${counterUrl}/up`;
+  const formatViewCount = (value) => {
+    const count = Math.min(Math.max(0, Number(value) || 0), 1_000_000_000);
+    const units = [
+      { value: 1_000_000_000, suffix: 'B' },
+      { value: 1_000_000, suffix: 'M' },
+      { value: 1_000, suffix: 'K' }
+    ];
+    const unit = units.find(({ value: threshold }) => count >= threshold);
+    if (!unit) return count.toLocaleString();
+    const scaled = count / unit.value;
+    return `${scaled < 10 ? scaled.toFixed(1).replace(/\.0$/, '') : Math.floor(scaled)}${unit.suffix}`;
+  };
 
   fetch(counterRequest)
     .then((response) => {
@@ -335,7 +347,7 @@
     })
     .then((data) => {
       if (!alreadyCounted) localStorage.setItem('ciblo_unique_visitor_counted', 'true');
-      viewCount.textContent = Number(data.count).toLocaleString();
+      viewCount.textContent = formatViewCount(data.count);
     })
     .catch(() => {
       viewCount.textContent = '—';
@@ -454,4 +466,11 @@
       video.play();
     };
     playButton.addEventListener('click', playVideo);
-    video.addEventListener('click', () => video.paused ? playVideo() 
+    video.addEventListener('click', () => video.paused ? playVideo() : video.pause());
+    video.addEventListener('play', () => frame.classList.add('is-playing'));
+    video.addEventListener('pause', () => frame.classList.remove('is-playing'));
+    video.addEventListener('ended', () => frame.classList.remove('is-playing'));
+  });
+</script>
+</body>
+</html>
