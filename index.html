@@ -324,12 +324,17 @@
 <script>
   // ---------- VIEW COUNTER SCRIPT ----------
   const viewCount = document.getElementById('viewCount');
-  fetch('https://api.counterapi.dev/v1/cibloxyz_website_2026/page_views/up')
+  const counterUrl = 'https://api.counterapi.dev/v1/cibloxyz_website_2026/page_views';
+  const alreadyCounted = localStorage.getItem('ciblo_unique_visitor_counted') === 'true';
+  const counterRequest = alreadyCounted ? counterUrl : `${counterUrl}/up`;
+
+  fetch(counterRequest)
     .then((response) => {
       if (!response.ok) throw new Error('Counter request failed');
       return response.json();
     })
     .then((data) => {
+      if (!alreadyCounted) localStorage.setItem('ciblo_unique_visitor_counted', 'true');
       viewCount.textContent = Number(data.count).toLocaleString();
     })
     .catch(() => {
@@ -449,11 +454,4 @@
       video.play();
     };
     playButton.addEventListener('click', playVideo);
-    video.addEventListener('click', () => video.paused ? playVideo() : video.pause());
-    video.addEventListener('play', () => frame.classList.add('is-playing'));
-    video.addEventListener('pause', () => frame.classList.remove('is-playing'));
-    video.addEventListener('ended', () => frame.classList.remove('is-playing'));
-  });
-</script>
-</body>
-</html>
+    video.addEventListener('click', () => video.paused ? playVideo() 
