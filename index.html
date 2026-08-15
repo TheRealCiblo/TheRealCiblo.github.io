@@ -68,6 +68,20 @@
     will-change:transform, opacity;
   }
   .crosshair-smear svg{ width:100%; height:100%; display:block; }
+  .site-gate{
+    position:fixed; inset:0; z-index:2147483645;
+    display:grid; place-items:center;
+    background:rgba(0,0,0,.28); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    transition:opacity .45s ease, visibility .45s ease;
+  }
+  .site-gate.is-open{ opacity:0; visibility:hidden; pointer-events:none; }
+  .site-gate-btn{
+    padding:18px 34px; border:1px solid rgba(255,255,255,.7); border-radius:3px;
+    background:rgba(10,10,10,.88); color:var(--text); font-size:18px;
+    cursor:pointer; box-shadow:0 0 26px rgba(255,255,255,.16);
+    transition:transform .16s ease, background .16s ease;
+  }
+  .site-gate-btn:hover{ transform:scale(1.05); background:#222; }
 
   /* ---------- SNOW ---------- */
   .snow{
@@ -119,8 +133,15 @@
   }
   .music-mute:hover{ transform:scale(1.1); opacity:.8; }
   .music-mute{ width:38px; height:38px; display:grid; place-items:center; font-size:0; flex:0 0 auto; }
-  .music-mute::before{ content:''; width:27px; height:27px; background:url('speaker-icon.png') center/contain no-repeat; }
-  .music-mute.is-muted::before{ opacity:.35; }
+  .music-mute::before{
+    content:''; width:0; height:0; margin-left:4px;
+    border-top:11px solid transparent; border-bottom:11px solid transparent;
+    border-left:17px solid #FFFFFF;
+  }
+  .music-mute.is-playing::before{
+    width:16px; height:21px; margin-left:0; border:0;
+    background:linear-gradient(90deg, #FFFFFF 0 38%, transparent 38% 62%, #FFFFFF 62% 100%);
+  }
   .music-volume{ appearance:none; -webkit-appearance:none; width:100%; height:10px; border-radius:20px; background:rgba(255,255,255,.8); outline:none; cursor:pointer; }
   .music-volume::-webkit-slider-thumb{ appearance:none; -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:#FFFFFF; box-shadow:0 1px 3px rgba(0,0,0,.25); }
   .music-volume::-moz-range-thumb{ width:16px; height:16px; border:0; border-radius:50%; background:#FFFFFF; box-shadow:0 1px 3px rgba(0,0,0,.25); }
@@ -250,6 +271,10 @@
 </style>
 </head>
 <body>
+
+  <div class="site-gate" id="siteGate">
+    <button class="site-gate-btn" id="siteGateBtn" type="button">Click me</button>
+  </div>
 
   <div class="snow" id="snow"></div>
 
@@ -548,7 +573,7 @@
   }
   function pauseMusicForVideo() {
     clearInterval(fadeTimer);
-    if (!musicAudio.paused && !musicAudio.muted) {
+    if (!musicAudio.paused) {
       resumeMusicAfterVideo = true;
       musicAudio.pause();
     }
@@ -557,7 +582,7 @@
     window.setTimeout(() => {
       const videoIsStillPlaying = [...document.querySelectorAll('.video-frame video')]
         .some((workVideo) => !workVideo.paused && !workVideo.ended);
-      if (!videoIsStillPlaying && resumeMusicAfterVideo && !musicAudio.muted) {
+      if (!videoIsStillPlaying && resumeMusicAfterVideo) {
         resumeMusicAfterVideo = false;
         fadeInMusic();
       }
@@ -566,6 +591,11 @@
 
   playNextShuffledTrack();
   musicAudio.volume = Number(volumeSlider.value);
+  document.getElementById('siteGateBtn').addEventListener('click', () => {
+    document.getElementById('siteGate').classList.add('is-open');
+    playMusic();
+  });
+  /* Previous mute behavior retained here for reference.
   muteToggle.addEventListener('click', () => {
     if (musicAudio.paused) {
       musicAudio.muted = false;
@@ -588,6 +618,22 @@
       muteToggle.textContent = '🔊';
       muteToggle.setAttribute('aria-label', 'Mute music');
     }
+  });
+  */
+  muteToggle.addEventListener('click', () => {
+    if (musicAudio.paused) playMusic();
+    else musicAudio.pause();
+  });
+  volumeSlider.addEventListener('input', () => {
+    musicAudio.volume = Number(volumeSlider.value);
+  });
+  musicAudio.addEventListener('play', () => {
+    muteToggle.classList.add('is-playing');
+    muteToggle.setAttribute('aria-label', 'Pause music');
+  });
+  musicAudio.addEventListener('pause', () => {
+    muteToggle.classList.remove('is-playing');
+    muteToggle.setAttribute('aria-label', 'Play music');
   });
   musicAudio.addEventListener('ended', () => {
     playNextShuffledTrack();
