@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- saved from url=(0018)https://ciblo.xyz/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ciblo.xyz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@700&family=Sora:wght@700&display=swap" rel="stylesheet">
+<link href="./ciblo.xyz_files/css2" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root{
     --bg:#0A0A0A;
@@ -105,13 +106,6 @@
     50%{ margin-left:20px; }
   }
 
-  .hire-btn{
-    background:var(--accent); color:#0A0A0A;
-    font-size:16px; padding:18px 40px; border-radius:2px;
-    border:none; cursor:pointer;
-    transition:background .15s ease, transform .15s ease;
-  }
-  .hire-btn:hover{ background:#D8D8D8; transform:translateY(-2px); box-shadow:0 0 18px rgba(255,255,255,0.35); }
   .payment-btn{
     background:#635BFF; color:#FFFFFF;
     font-size:16px; padding:18px 40px; border-radius:2px;
@@ -156,68 +150,129 @@
   .social-btn:hover{ border-color:var(--text-dim); color:var(--text-dim); box-shadow:0 0 14px rgba(255,255,255,0.2); }
   .social-btn svg{ width:16px; height:16px; fill:currentColor; }
 
-  /* ---------- WORK SECTION ---------- */
-  .work-section{ width:100%; max-width:900px; text-align:center; }
-  .work-title{
-    font-size:clamp(28px, 4.5vw, 42px);
-    margin-bottom:28px;
-    letter-spacing:-0.045em;
-  }
-  .work-grid{
-    display:grid; grid-template-columns:repeat(3, minmax(0, 220px));
-    justify-content:center; gap:20px;
-  }
   .site-copyright{
     margin-top:8px; color:var(--text); opacity:0.45;
     font-size:10px; letter-spacing:.08em; text-transform:uppercase;
   }
-  .video-frame{
-    position:relative; width:100%; aspect-ratio:9/16;
-    border:1px solid var(--line); border-radius:6px; overflow:hidden;
-    background:var(--surface);
-    transition:box-shadow .2s ease;
+
+  /* ---------- SHOP TABS ---------- */
+  .shop-section{ width:100%; max-width:640px; text-align:center; }
+  .shop-title{
+    font-size:clamp(28px, 4.5vw, 42px);
+    margin-bottom:28px;
+    letter-spacing:-0.045em;
   }
-  .video-frame:hover{ box-shadow:0 0 18px rgba(255,255,255,0.2); }
-  .video-frame video{
-    position:absolute; inset:0; width:100%; height:100%; border:0;
-    object-fit:cover;
-    filter:grayscale(1) brightness(0.42);
-    transition:filter .2s ease;
+  .shop-panel{
+    display:none;
+    background:var(--surface); border:1px solid var(--line); border-radius:6px;
+    padding:32px 28px;
   }
-  .video-frame.is-playing video{ filter:none; }
-  .video-play-btn{
-    position:absolute; inset:0; z-index:1;
-    display:flex; align-items:center; justify-content:center;
-    border:0; background:transparent; color:var(--text); cursor:pointer;
-    transition:background .2s ease, opacity .2s ease;
+  .shop-panel.is-active{ display:block; }
+  .shop-panel-name{
+    font-size:26px; letter-spacing:-0.03em; margin-bottom:10px;
   }
-  .video-play-btn::before{
-    content:'▶'; display:grid; place-items:center;
-    width:58px; height:58px; padding-left:4px;
-    border:1px solid rgba(255,255,255,.85); border-radius:50%;
-    background:rgba(0,0,0,.42); font-size:22px;
+  .shop-panel-desc{
+    font-size:14px; color:var(--text-dim); line-height:1.5;
+    margin-bottom:18px; font-weight:400 !important;
   }
-  .video-frame.is-playing .video-play-btn{ opacity:0; pointer-events:none; }
-  .video-frame:hover .video-play-btn{
-    background:rgba(0,0,0,.12);
+  .shop-panel-price{
+    font-family:'DM Mono', monospace !important;
+    font-size:32px; letter-spacing:-0.02em; margin-bottom:22px;
   }
-  .video-views{
-    position:absolute; top:10px; right:10px; z-index:2;
-    display:inline-flex; align-items:center; gap:6px;
-    padding:7px 10px; border:1px solid rgba(255,255,255,.35);
-    border-radius:20px; background:rgba(0,0,0,.62);
-    color:var(--text); font-family:'DM Mono', monospace !important;
-    font-size:11px; letter-spacing:.02em;
-    animation:viewBadgeFloat 2.8s ease-in-out infinite;
+  @media (max-width:480px){
+    .shop-panel{ padding:26px 18px; }
   }
-  .video-views svg{ width:14px; height:14px; fill:currentColor; }
-  @keyframes viewBadgeFloat{
-    0%, 100%{ transform:translateY(0); box-shadow:0 0 0 rgba(255,255,255,0); }
-    50%{ transform:translateY(-3px); box-shadow:0 0 14px rgba(255,255,255,.25); }
+  .alt-chooser-title{
+    font-size:16px; letter-spacing:-0.02em; margin-bottom:16px;
+    color:var(--text-dim); text-transform:uppercase; font-size:12px; letter-spacing:.08em;
   }
-  @media (max-width:700px){
-    .work-grid{ grid-template-columns:minmax(0, 280px); max-width:280px; margin:0 auto; }
+  .alt-list{
+    display:flex; flex-direction:column; gap:10px; margin-bottom:4px;
+    max-height:340px; overflow-y:auto; padding-right:4px;
   }
+  .alt-list::-webkit-scrollbar{ width:6px; }
+  .alt-list::-webkit-scrollbar-track{ background:transparent; }
+  .alt-list::-webkit-scrollbar-thumb{ background:var(--line); border-radius:4px; }
+  .alt-item{
+    display:flex; align-items:center; gap:12px;
+    border:1px solid var(--line); border-radius:4px;
+    background:var(--bg); color:var(--text);
+    padding:10px 16px; font-size:15px; text-align:left;
+    transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .alt-item:hover{ border-color:var(--text-dim); box-shadow:0 0 12px rgba(255,255,255,0.15); background:#181818; }
+  .alt-item.is-rare{ border-color:rgba(255,209,102,.45); }
+  .alt-item.is-rare:hover{ border-color:#FFD166; box-shadow:0 0 14px rgba(255,209,102,.35); }
+  .alt-item-avatar{
+    width:32px; height:32px; border-radius:3px; image-rendering:pixelated;
+    border:1px solid var(--line); flex:0 0 auto;
+  }
+  .alt-item-label{ display:flex; align-items:center; gap:8px; }
+  .alt-item-rank{
+    font-family:'DM Mono', monospace !important;
+    font-size:10px; letter-spacing:.08em; color:#FFD166;
+    border:1px solid rgba(255,209,102,.5); border-radius:3px;
+    padding:2px 6px;
+  }
+  .alt-item-price{
+    margin-left:auto; font-family:'DM Mono', monospace !important;
+    font-size:13px; color:var(--text-dim); letter-spacing:.02em; flex:0 0 auto;
+  }
+  .alt-chooser[hidden], .alt-preview[hidden]{ display:none !important; }
+  .alt-preview{ display:flex; flex-direction:column; align-items:center; gap:14px; opacity:0; transition:opacity .35s ease; }
+  .alt-preview.is-visible{ opacity:1; }
+  .alt-chooser{ opacity:0; transition:opacity .35s ease; }
+  .alt-chooser.is-visible{ opacity:1; }
+  .alt-skin{
+    width:120px; image-rendering:pixelated;
+    filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));
+  }
+  .alt-preview-name{
+    font-family:'DM Mono', monospace !important;
+    font-size:15px; color:var(--text-dim); letter-spacing:.02em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .alt-preview-price{
+    font-family:'DM Mono', monospace !important;
+    font-size:24px; letter-spacing:-0.02em; color:var(--text);
+  }
+  .alt-back-btn{
+    border:1px solid var(--line); color:var(--text-dim);
+    font-size:12px; padding:8px 16px; border-radius:2px; background:transparent;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .alt-back-btn:hover{ border-color:var(--text-dim); color:var(--text); }
+
+  .alt-item.is-sold-out{
+    opacity:.4; cursor:not-allowed;
+  }
+  .alt-item.is-sold-out .alt-item-price{ color:var(--text); text-transform:uppercase; letter-spacing:.06em; }
+  .alt-item.is-sold-out:hover{ box-shadow:none; background:var(--bg); border-color:var(--line); }
+
+  /* ---------- ADMIN ---------- */
+  .admin-trigger{
+    position:fixed; bottom:14px; right:16px; z-index:20;
+    width:20px; height:20px; border:0; background:transparent;
+    color:var(--text-dim); opacity:.25; font-size:18px; line-height:1;
+    transition:opacity .15s ease;
+  }
+  .admin-trigger:hover{ opacity:.7; }
+  .admin-input{
+    width:100%; background:var(--bg); border:1px solid var(--line); color:var(--text);
+    padding:12px 14px; border-radius:4px; font-size:14px; margin-bottom:12px;
+  }
+  .admin-input::placeholder{ color:var(--text-dim); }
+  .admin-error{
+    color:#FF6B6B; font-size:13px; min-height:18px; margin-top:4px;
+  }
+  .admin-row{
+    display:flex; align-items:center; gap:10px;
+    border:1px solid var(--line); border-radius:4px;
+    padding:10px 14px; margin-bottom:8px; font-size:14px; text-align:left;
+    cursor:pointer;
+  }
+  .admin-row span:first-child{ flex:1; }
+  .admin-row-note{ color:var(--text-dim); font-size:11px; }
 
   /* ---------- MODAL ---------- */
   .overlay{
@@ -226,10 +281,9 @@
     padding:24px; z-index:100;
   }
   .overlay.show{ display:flex; }
-
   .modal{
     background:var(--surface); border:1px solid var(--line); border-radius:6px;
-    width:100%; max-width:440px; padding:36px 30px;
+    width:100%; max-width:380px; padding:36px 30px;
     position:relative; text-align:center;
   }
   .modal-close{
@@ -238,56 +292,37 @@
     font-size:24px; cursor:pointer; line-height:1;
   }
   .modal-close:hover{ color:var(--text); }
-
   .modal-title{
-    font-size:32px; letter-spacing:-0.04em; margin-bottom:20px;
+    font-size:28px; letter-spacing:-0.04em; margin-bottom:20px;
   }
-  .modal-content-box{
-    display:flex; flex-direction:column; gap:14px;
-    background:var(--bg); border:1px solid var(--line);
-    padding:20px; border-radius:4px; margin-bottom:20px;
-  }
-  .contact-detail{
-    font-size:15px; color:var(--text); line-height:1.4;
-  }
-  .contact-detail strong{
-    color:var(--accent); text-decoration:underline;
-  }
-  .recommended-detail{
-    font-size:13px; color:var(--text-dim); line-height:1.4;
-  }
-  .modal-discord-btn{
-    display:inline-block; width:100%;
-    background:var(--accent); color:#0A0A0A;
-    padding:14px; border-radius:2px; font-size:14px;
-    transition:background .15s ease;
-  }
-  .modal-discord-btn:hover{ background:#D8D8D8; }
-
   @media (max-width:480px){
     .modal{ padding:28px 20px; }
+    .music-player{ top:14px; left:14px; }
+  }
+
+  @media (max-width:480px){
     .music-player{ top:14px; left:14px; }
   }
 </style>
 </head>
 <body>
 
-  <div class="site-gate" id="siteGate">
+  <div class="site-gate is-open" id="siteGate">
     <button class="site-gate-btn" id="siteGateBtn" type="button">Click me</button>
   </div>
 
   <div class="snow" id="snow"></div>
 
-  <div class="logo"><span id="logoText">ciblo.xyz</span><span class="logo-cursor">|</span></div>
+  <div class="logo"><span id="logoText"></span><span class="logo-cursor">|</span></div>
 
   <div class="crosshair">
     <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <filter id="blurH" x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="2.5 0.2"></feGaussianBlur>
+          <fegaussianblur in="SourceGraphic" stdDeviation="2.5 0.2"></fegaussianblur>
         </filter>
         <filter id="blurV" x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="0.2 2.5"></feGaussianBlur>
+          <fegaussianblur in="SourceGraphic" stdDeviation="0.2 2.5"></fegaussianblur>
         </filter>
       </defs>
       <g fill="#ffffff">
@@ -299,126 +334,71 @@
     </svg>
   </div>
 
-  <button class="hire-btn" id="openBtn">Hire me</button>
-  <a class="payment-btn" href="https://buy.stripe.com/test_28EfZg4bOfeJ999fxT7N600" target="_blank" rel="noopener">Pay with Stripe</a>
-
   <div class="music-player" aria-label="Music player">
     <div class="music-info">
       <span class="music-label">Now playing</span>
-      <span class="music-track" id="musicTrack">The Race — Tay-K</span>
+      <span class="music-track" id="musicTrack">LV Sandals — EsDeeKid</span>
     </div>
     <div class="music-bar">
-      <button class="music-mute" id="muteToggle" type="button" aria-label="Play music" title="Now playing: The Race — Tay-K">🔊</button>
+      <button class="music-mute is-playing" id="muteToggle" type="button" aria-label="Pause music" title="Now playing: LV Sandals — EsDeeKid">🔊</button>
       <input class="music-volume" id="volumeSlider" type="range" min="0" max="1" value="0.8" step="0.01" aria-label="Music volume">
     </div>
-    <audio id="musicAudio" preload="metadata"></audio>
+    <audio id="musicAudio" preload="metadata" src="SpotiDown.App%20-%20LV%20Sandals%20-%20EsDeeKid.mp3"></audio>
   </div>
 
   <div class="social-row">
-    <a href="https://www.youtube.com/@CibloMC" target="_blank" rel="noopener" class="social-btn">
-      <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8ZM9.6 15.5v-7l6.3 3.5-6.3 3.5Z"></path></svg>
-      YouTube
-    </a>
     <a href="https://discord.gg/ccbGgm5H43" target="_blank" rel="noopener" class="social-btn">
       <svg viewBox="0 0 24 24"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3c-.2.4-.5 1-.7 1.4a18.3 18.3 0 0 0-5.4 0A9.7 9.7 0 0 0 8.6 3a19.8 19.8 0 0 0-4.9 1.5C1 8.9.3 13.2.6 17.5A20 20 0 0 0 6.6 20c.5-.7.9-1.4 1.3-2.2-.7-.3-1.4-.6-2-1l.5-.4a14.2 14.2 0 0 0 11.9 0l.5.4c-.6.4-1.3.7-2 1 .4.8.8 1.5 1.3 2.2a20 20 0 0 0 6-2.5c.4-5-.9-9.3-3.8-13.1ZM9.7 15c-1 0-1.9-1-1.9-2.1 0-1.2.8-2.2 1.9-2.2s2 1 1.9 2.2c0 1.1-.9 2.1-1.9 2.1Zm6.6 0c-1 0-1.9-1-1.9-2.1 0-1.2.8-2.2 1.9-2.2s2 1 1.9 2.2c0 1.1-.8 2.1-1.9 2.1Z"></path></svg>
       Discord
     </a>
   </div>
 
-  <div class="work-section">
-    <div class="work-title">My work</div>
-    <div class="work-grid">
-      <div class="video-frame">
-        <video preload="metadata" playsinline aria-label="PVP Changed Forever DonutSMP">
-          <source src="PVP%20%20Changed%20Forever%20DonutSMP__%20%20%23donutsmp%20%20%20%23minecraft%20%20%20%23fyp%20%20%20%23viral.mp4" type="video/mp4">
-        </video>
-        <button class="video-play-btn" type="button" aria-label="Play PVP Changed Forever DonutSMP"></button>
-        <span class="video-views" aria-label="1.5 thousand views"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5Zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>1.5K</span>
+  <div class="shop-section">
+    <div class="shop-title">Shop</div>
+
+    <div class="shop-panel is-active" id="tab-alts" role="tabpanel">
+      <div class="shop-panel-name">ALTS</div>
+      <button class="payment-btn" id="altsPurchaseBtn" type="button">Purchase</button>
+
+      <div class="alt-chooser" id="altChooser" hidden="">
+        <div class="alt-chooser-title">Choose alt</div>
+        <div class="alt-list" id="altList"></div>
       </div>
-      <div class="video-frame">
-        <video preload="metadata" playsinline aria-label="Flooding ruining DonutSMP">
-          <source src="%5BTubePull%5D%20Flooding_ruining_DonutSMP_minecraft_donutsmp_fyp.mp4" type="video/mp4">
-        </video>
-        <button class="video-play-btn" type="button" aria-label="Play Flooding ruining DonutSMP"></button>
-        <span class="video-views" aria-label="2 thousand views"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5Zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>2K</span>
-      </div>
-      <div class="video-frame">
-        <video preload="metadata" playsinline aria-label="Best money method on the DonutSMP">
-          <source src="Best%20money%20method%20on%20the%20DonutSMP_%20%20%20%23minecraft%20%20%20%23viral%20%20%20%23fyp%20%20%20%20%23donutsmp%20%20%20%23gaming.mp4" type="video/mp4">
-        </video>
-        <button class="video-play-btn" type="button" aria-label="Play Best money method on the DonutSMP"></button>
-        <span class="video-views" aria-label="1.7 thousand views"><svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5Zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>1.7K</span>
+
+      <div class="alt-preview" id="altPreview" hidden="">
+        <img class="alt-skin" id="altSkinImg" alt="">
+        <div class="alt-preview-name" id="altPreviewName"></div>
+        <div class="alt-preview-price" id="altPreviewPrice"></div>
+        <a class="payment-btn" id="altBuyBtn" href="#" target="_blank" rel="noopener">Buy this alt</a>
+        <button class="alt-back-btn" id="altBackBtn" type="button">Choose a different alt</button>
       </div>
     </div>
   </div>
 
   <footer class="site-copyright">© 2026 ciblo.xyz · All rights reserved</footer>
 
-  <div class="overlay" id="overlay">
+  <button class="admin-trigger" id="adminTrigger" type="button" aria-label="Admin login">·</button>
+
+  <div class="overlay" id="adminOverlay">
     <div class="modal">
-      <button class="modal-close" id="closeBtn">×</button>
-      <div class="modal-title">Reach out to me</div>
-      
-      <div class="modal-content-box">
-        <div class="contact-detail">Discord username - <strong>ciblo.dev</strong></div>
-        <div class="recommended-detail">recomended - or join the discord and make a ticket</div>
+      <button class="modal-close" id="adminClose">×</button>
+      <div class="modal-title">Admin</div>
+
+      <div id="adminLoginForm">
+        <input class="admin-input" id="adminEmail" type="email" placeholder="Email" autocomplete="username">
+        <input class="admin-input" id="adminPassword" type="password" placeholder="Password" autocomplete="current-password">
+        <button class="payment-btn" id="adminLoginBtn" type="button" style="width:100%;">Log in</button>
+        <div class="admin-error" id="adminError"></div>
       </div>
 
-      <a href="https://discord.gg/ccbGgm5H43" target="_blank" rel="noopener" class="modal-discord-btn">
-        Join Discord
-      </a>
+      <div id="adminPanel" hidden="">
+        <div id="adminRows"></div>
+        <button class="alt-back-btn" id="adminLogoutBtn" type="button">Log out</button>
+      </div>
     </div>
   </div>
 
 <script>
-  /* Removed: overall page-view counter. Video badges are shown above instead.
-  const viewCount = document.getElementById('viewCount');
-  const alreadyCounted = localStorage.getItem('ciblo_unique_visitor_counted') === 'true';
-  const isLiveSite = ['ciblo.xyz', 'www.ciblo.xyz'].includes(window.location.hostname);
-  const formatViewCount = (value) => {
-    const count = Math.min(Math.max(0, Number(value) || 0), 1_000_000_000);
-    const units = [
-      { value: 1_000_000_000, suffix: 'B' },
-      { value: 1_000_000, suffix: 'M' },
-      { value: 1_000, suffix: 'K' }
-    ];
-    const unit = units.find(({ value: threshold }) => count >= threshold);
-    if (!unit) return count.toLocaleString();
-    const scaled = count / unit.value;
-    return `${scaled < 10 ? scaled.toFixed(1).replace(/\.0$/, '') : Math.floor(scaled)}${unit.suffix}`;
-  };
-  const visitorApi = 'https://visitor.6developer.com/visit';
-  const getVisitorCount = () => fetch(`${visitorApi}?domain=ciblo.xyz`);
-
-  // Count a browser only once. Refreshing or returning later won't add another view.
-  const visitorRequest = (!alreadyCounted && isLiveSite)
-    ? fetch(visitorApi, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          domain: 'ciblo.xyz',
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          page_path: window.location.pathname,
-          page_title: document.title,
-          referrer: document.referrer
-        })
-      })
-    : getVisitorCount();
-
-  visitorRequest
-    .then((response) => {
-      if (!response.ok) throw new Error('Visitor counter request failed');
-      return response.json();
-    })
-    .then((data) => {
-      if (!alreadyCounted && isLiveSite) localStorage.setItem('ciblo_unique_visitor_counted', 'true');
-      viewCount.textContent = formatViewCount(data.totalCount);
-    })
-    .catch(() => {
-      viewCount.textContent = '—';
-    });
-
-  */
   // ---------- CROSSHAIR & CURSOR SCRIPT ----------
   const crosshair = document.querySelector('.crosshair');
   const smearCount = 7;
@@ -510,16 +490,197 @@
   }
   typeLogo();
 
-  // ---------- MODAL OPEN/CLOSE ----------
-  const openBtn = document.getElementById('openBtn');
-  const closeBtn = document.getElementById('closeBtn');
-  const overlay = document.getElementById('overlay');
+  // ---------- SUPABASE CONFIG ----------
+  // Fill these in with your own project's values (Project Settings > API).
+  // The anon key is meant to be public — it can only do what your Row Level
+  // Security policies allow. The actual admin username/password are never
+  // stored here; they live in Supabase's own Auth system and are only
+  // ever typed into the login form below, never written into this file.
+  const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+  const sb = (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && window.supabase)
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    : null;
 
-  openBtn.addEventListener('click', () => overlay.classList.add('show'));
-  closeBtn.addEventListener('click', () => overlay.classList.remove('show'));
-  overlay.addEventListener('click', (e) => {
-    if(e.target === overlay) overlay.classList.remove('show');
+  // ---------- ALTS: stock list + Mojang/Minecraft skin render ----------
+  // Skin renders are pulled from mc-heads.net, a Mojang-API-backed skin
+  // rendering service — it resolves a username to that account's current
+  // skin and renders a head/body image, without needing a server-side call.
+  // Accounts that don't actually exist on Mojang's records fall back to the
+  // default Steve skin, which is what the random-pool entries render as.
+
+  // Underlying pool of alt usernames used only to pick a skin preview for
+  // the single "Random Alt" listing — these are never listed individually.
+  const RANDOM_POOL_NAMES = Array.from({ length: 30 }, (_, i) => `randomalt${i + 1}`);
+
+  // Local fallback data, used until Supabase is configured above, or if a
+  // fetch fails. Once Supabase is wired up, `sold_out` and `stripe_link`
+  // are driven from the database and can be changed from the admin panel
+  // without editing this file.
+  let ALT_STOCK = [
+    { id: 'gabot', name: 'gabot', price: '25.99', rank: 'RARE', sold_out: false, stripe_link: '#' },
+    { id: 'rarst', name: 'rarst', price: '8.99', rank: 'SEMI RARE', sold_out: false, stripe_link: '#' },
+    { id: 'random_pool', name: 'Random Alt', price: '6.99', rank: null, sold_out: false, stripe_link: '#', isPool: true }
+  ];
+
+  const altsPurchaseBtn = document.getElementById('altsPurchaseBtn');
+  const altChooser = document.getElementById('altChooser');
+  const altList = document.getElementById('altList');
+  const altPreview = document.getElementById('altPreview');
+  const altSkinImg = document.getElementById('altSkinImg');
+  const altPreviewName = document.getElementById('altPreviewName');
+  const altPreviewPrice = document.getElementById('altPreviewPrice');
+  const altBuyBtn = document.getElementById('altBuyBtn');
+  const altBackBtn = document.getElementById('altBackBtn');
+
+  function revealPanel(panel) {
+    panel.hidden = false;
+    panel.classList.remove('is-visible');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => panel.classList.add('is-visible'));
+    });
+  }
+  function hidePanel(panel) {
+    panel.classList.remove('is-visible');
+    panel.hidden = true;
+  }
+
+  async function loadAltStock() {
+    if (!sb) { renderAltList(); return; }
+    const { data, error } = await sb.from('alts').select('*').order('sort_order', { ascending: true });
+    if (!error && data && data.length) {
+      ALT_STOCK = data.map((row) => ({
+        id: row.id,
+        name: row.display_name,
+        price: Number(row.price).toFixed(2),
+        rank: row.rank,
+        sold_out: row.sold_out,
+        stripe_link: row.stripe_link || '#',
+        isPool: row.slug === 'random_pool'
+      }));
+    }
+    renderAltList();
+  }
+
+  function renderAltList() {
+    altList.innerHTML = '';
+    ALT_STOCK.forEach((alt) => {
+      const previewSkinName = alt.isPool
+        ? RANDOM_POOL_NAMES[Math.floor(Math.random() * RANDOM_POOL_NAMES.length)]
+        : alt.name;
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'alt-item' + (alt.rank ? ' is-rare' : '') + (alt.sold_out ? ' is-sold-out' : '');
+      item.disabled = alt.sold_out;
+      item.innerHTML = `
+        <img class="alt-item-avatar" src="https://mc-heads.net/avatar/${previewSkinName}/64" alt="${alt.name} skin">
+        <span class="alt-item-label">${alt.name}${alt.rank ? `<span class="alt-item-rank">${alt.rank}</span>` : ''}</span>
+        <span class="alt-item-price">${alt.sold_out ? 'Sold out' : '$' + alt.price}</span>
+      `;
+      if (!alt.sold_out) {
+        item.addEventListener('click', () => {
+          altPreviewName.innerHTML = `${alt.name}${alt.rank ? `<span class="alt-item-rank">${alt.rank}</span>` : ''}`;
+          altPreviewPrice.textContent = `$${alt.price}`;
+          altBuyBtn.textContent = `Buy this alt — $${alt.price}`;
+          altBuyBtn.href = alt.stripe_link;
+          altSkinImg.src = `https://mc-heads.net/body/${previewSkinName}/160`;
+          altSkinImg.alt = `${alt.name} Minecraft skin`;
+          hidePanel(altChooser);
+          revealPanel(altPreview);
+        });
+      }
+      altList.appendChild(item);
+    });
+  }
+
+  loadAltStock();
+
+  altsPurchaseBtn.addEventListener('click', () => {
+    altsPurchaseBtn.hidden = true;
+    revealPanel(altChooser);
   });
+
+  altBackBtn.addEventListener('click', () => {
+    hidePanel(altPreview);
+    revealPanel(altChooser);
+  });
+
+  // ---------- ADMIN LOGIN + STOCK PANEL ----------
+  const adminTrigger = document.getElementById('adminTrigger');
+  const adminOverlay = document.getElementById('adminOverlay');
+  const adminClose = document.getElementById('adminClose');
+  const adminLoginForm = document.getElementById('adminLoginForm');
+  const adminPanel = document.getElementById('adminPanel');
+  const adminEmail = document.getElementById('adminEmail');
+  const adminPassword = document.getElementById('adminPassword');
+  const adminLoginBtn = document.getElementById('adminLoginBtn');
+  const adminError = document.getElementById('adminError');
+  const adminRows = document.getElementById('adminRows');
+  const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+
+  adminTrigger.addEventListener('click', () => adminOverlay.classList.add('show'));
+  adminClose.addEventListener('click', () => adminOverlay.classList.remove('show'));
+  adminOverlay.addEventListener('click', (e) => {
+    if (e.target === adminOverlay) adminOverlay.classList.remove('show');
+  });
+
+  async function renderAdminPanel() {
+    if (!sb) return;
+    const { data, error } = await sb.from('alts').select('*').order('sort_order', { ascending: true });
+    if (error || !data) return;
+    adminRows.innerHTML = '';
+    data.forEach((row) => {
+      const label = document.createElement('label');
+      label.className = 'admin-row';
+      label.innerHTML = `
+        <span>${row.display_name}</span>
+        <input type="checkbox" ${row.sold_out ? 'checked' : ''}>
+      `;
+      label.querySelector('input').addEventListener('change', async (e) => {
+        await sb.from('alts').update({ sold_out: e.target.checked }).eq('id', row.id);
+        loadAltStock();
+      });
+      adminRows.appendChild(label);
+    });
+  }
+
+  adminLoginBtn.addEventListener('click', async () => {
+    adminError.textContent = '';
+    if (!sb) {
+      adminError.textContent = 'Supabase isn\'t configured yet — add your project URL and anon key in the script.';
+      return;
+    }
+    const { error } = await sb.auth.signInWithPassword({
+      email: adminEmail.value.trim(),
+      password: adminPassword.value
+    });
+    if (error) {
+      adminError.textContent = error.message;
+      return;
+    }
+    adminLoginForm.hidden = true;
+    adminPanel.hidden = false;
+    renderAdminPanel();
+  });
+
+  adminLogoutBtn.addEventListener('click', async () => {
+    if (sb) await sb.auth.signOut();
+    adminPanel.hidden = true;
+    adminLoginForm.hidden = false;
+    adminEmail.value = '';
+    adminPassword.value = '';
+  });
+
+  // Stay logged in across refreshes if there's already a valid session.
+  if (sb) {
+    sb.auth.getSession().then(({ data }) => {
+      if (data.session) {
+        adminLoginForm.hidden = true;
+        adminPanel.hidden = false;
+        renderAdminPanel();
+      }
+    });
+  }
 
   // ---------- MUSIC PLAYER ----------
   const musicAudio = document.getElementById('musicAudio');
@@ -595,31 +756,6 @@
     document.getElementById('siteGate').classList.add('is-open');
     playMusic();
   });
-  /* Previous mute behavior retained here for reference.
-  muteToggle.addEventListener('click', () => {
-    if (musicAudio.paused) {
-      musicAudio.muted = false;
-      muteToggle.classList.remove('is-muted');
-      muteToggle.textContent = '🔊';
-      muteToggle.setAttribute('aria-label', 'Mute music');
-      playMusic();
-      return;
-    }
-    musicAudio.muted = !musicAudio.muted;
-    muteToggle.classList.toggle('is-muted', musicAudio.muted);
-    muteToggle.textContent = musicAudio.muted ? '🔇' : '🔊';
-    muteToggle.setAttribute('aria-label', musicAudio.muted ? 'Unmute music' : 'Mute music');
-  });
-  volumeSlider.addEventListener('input', () => {
-    musicAudio.volume = Number(volumeSlider.value);
-    if (musicAudio.muted && musicAudio.volume > 0) {
-      musicAudio.muted = false;
-      muteToggle.classList.remove('is-muted');
-      muteToggle.textContent = '🔊';
-      muteToggle.setAttribute('aria-label', 'Mute music');
-    }
-  });
-  */
   muteToggle.addEventListener('click', () => {
     if (musicAudio.paused) playMusic();
     else musicAudio.pause();
@@ -640,29 +776,6 @@
     playMusic();
   });
 
-  // ---------- WORK VIDEOS ----------
-  document.querySelectorAll('.video-frame').forEach((frame) => {
-    const video = frame.querySelector('video');
-    const playButton = frame.querySelector('.video-play-btn');
-    const playVideo = () => {
-      document.querySelectorAll('.video-frame video').forEach((otherVideo) => {
-        if (otherVideo !== video) otherVideo.pause();
-      });
-      video.play();
-    };
-    playButton.addEventListener('click', playVideo);
-    video.addEventListener('click', () => video.paused ? playVideo() : video.pause());
-    video.addEventListener('play', () => frame.classList.add('is-playing'));
-    video.addEventListener('play', pauseMusicForVideo);
-    video.addEventListener('pause', () => {
-      frame.classList.remove('is-playing');
-      resumeMusicWhenVideosPause();
-    });
-    video.addEventListener('ended', () => {
-      frame.classList.remove('is-playing');
-      resumeMusicWhenVideosPause();
-    });
-  });
 </script>
-</body>
-</html>
+
+</body></html>
