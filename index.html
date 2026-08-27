@@ -424,18 +424,16 @@
           <img class="alt-item-avatar" id="rareSkinImg" alt="">
           <span id="rareSkinName"></span>
         </div>
-        <input class="admin-input" id="rarePrice" type="number" step="0.01" placeholder="Price, e.g. 19.99">
-        <select class="admin-input" id="rareRank">
-          <option value="RARE">RARE</option>
-          <option value="SEMI RARE">SEMI RARE</option>
+        <select class="admin-input" id="rareTier">
+          <option value="normal">Normal — $6.99</option>
+          <option value="rare">Rare — $25.99</option>
         </select>
-        <input class="admin-input" id="rareStripeLink" type="text" placeholder="Stripe payment link">
         <button class="payment-btn" id="rareAddBtn" type="button" style="width:100%;">Add to listing</button>
         <div class="admin-error" id="rareAddError"></div>
 
         <div class="admin-divider"></div>
 
-        <div class="admin-section-title">Rare accounts</div>
+        <div class="admin-section-title">Accounts</div>
         <div id="adminRareList"></div>
 
         <button class="alt-back-btn" id="adminLogoutBtn" type="button">Log out</button>
@@ -674,12 +672,19 @@
   const rareSkinPreview = document.getElementById('rareSkinPreview');
   const rareSkinImg = document.getElementById('rareSkinImg');
   const rareSkinName = document.getElementById('rareSkinName');
-  const rarePrice = document.getElementById('rarePrice');
-  const rareRank = document.getElementById('rareRank');
-  const rareStripeLink = document.getElementById('rareStripeLink');
+  const rareTier = document.getElementById('rareTier');
   const rareAddBtn = document.getElementById('rareAddBtn');
   const rareAddError = document.getElementById('rareAddError');
   const adminRareList = document.getElementById('adminRareList');
+
+  // The two fixed price tiers. Each maps to one Stripe Payment Link, since
+  // a Payment Link is locked to a single price — every "normal" account
+  // shares the $6.99 link, every "rare" account shares the $25.99 link.
+  // No link needs typing per-account.
+  const ALT_TIERS = {
+    normal: { price: 6.99, rank: null, stripe_link: 'https://buy.stripe.com/test_14AbJ0aAc5E9dpp3Pb7N601' },
+    rare: { price: 25.99, rank: 'RARE', stripe_link: 'https://buy.stripe.com/test_dRm14mbEg0jPgBB1H37N602' }
+  };
 
   adminTrigger.addEventListener('click', () => adminOverlay.classList.add('show'));
   adminClose.addEventListener('click', () => adminOverlay.classList.remove('show'));
@@ -700,22 +705,18 @@
   rareAddBtn.addEventListener('click', async () => {
     rareAddError.textContent = '';
     const name = rareUsername.value.trim();
-    const price = parseFloat(rarePrice.value);
-    const rank = rareRank.value;
-    const link = rareStripeLink.value.trim();
-    if (!name || !price || !link) {
-      rareAddError.textContent = 'Fill in username, price, and Stripe link.';
+    const tier = ALT_TIERS[rareTier.value];
+    if (!name) {
+      rareAddError.textContent = 'Enter a username.';
       return;
     }
     if (!sb) { rareAddError.textContent = 'Supabase isn\'t configured.'; return; }
     const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '') + '-' + Date.now().toString(36);
     const { error } = await sb.from('alts').insert({
-      slug, display_name: name, price, rank, stripe_link: link, sold_out: false, sort_order: 0
+      slug, display_name: name, price: tier.price, rank: tier.rank, stripe_link: tier.stripe_link, sold_out: false, sort_order: 0
     });
     if (error) { rareAddError.textContent = error.message; return; }
     rareUsername.value = '';
-    rarePrice.value = '';
-    rareStripeLink.value = '';
     rareSkinPreview.hidden = true;
     renderAdminPanel();
     loadAltStock();
@@ -740,10 +741,10 @@
       });
       adminRows.appendChild(label);
 
-      if (row.rank) {
+      if (row.slug !== 'random_pool') {
         const rareRow = document.createElement('div');
         rareRow.className = 'admin-rare-row';
-        rareRow.innerHTML = `<span>${row.display_name} — ${row.rank} — $${Number(row.price).toFixed(2)}</span>`;
+        rareRow.innerHTML = `<span>${row.display_name}${row.rank ? ' — ' + row.rank : ''} — $${Number(row.price).toFixed(2)}</span>`;
         const delBtn = document.createElement('button');
         delBtn.type = 'button';
         delBtn.className = 'admin-delete-btn';
