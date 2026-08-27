@@ -733,7 +733,11 @@
 
     fetch(`${SUPABASE_URL}/functions/v1/verify-purchase`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      },
       body: JSON.stringify({ session_id: sessionId })
     })
       .then((res) => res.json().then((body) => ({ ok: res.ok, body })))
@@ -747,9 +751,10 @@
         deliveryPassword.textContent = body.password;
         deliveryContent.hidden = false;
       })
-      .catch(() => {
+      .catch((err) => {
         deliveryLoading.hidden = true;
-        deliveryError.textContent = 'Something went wrong verifying your payment. Contact support on Discord.';
+        console.error('[delivery] verify-purchase call failed:', err);
+        deliveryError.textContent = 'Something went wrong verifying your payment. Check the console for details, or contact support on Discord.';
       });
   })();
 
