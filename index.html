@@ -290,6 +290,7 @@
     display:flex; align-items:center; gap:10px;
     margin-bottom:12px; font-size:13px; color:var(--text-dim);
   }
+  .admin-skin-preview.is-warning{ color:#FFD166; }
   .admin-rare-row{
     display:flex; align-items:center; gap:10px;
     border:1px solid var(--line); border-radius:4px;
@@ -302,6 +303,22 @@
     transition:border-color .15s ease, background .15s ease;
   }
   .admin-delete-btn:hover{ border-color:#FF6B6B; background:rgba(255,107,107,.1); }
+
+  /* ---------- DELIVERY PANEL ---------- */
+  .delivery-row{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    border:1px solid var(--line); border-radius:4px;
+    background:var(--bg); padding:12px 14px; margin-bottom:10px;
+    font-family:'DM Mono', monospace !important; font-size:14px; text-align:left;
+  }
+  .delivery-row-value{ overflow-wrap:anywhere; }
+  .delivery-copy-btn{
+    border:1px solid var(--line); color:var(--text-dim);
+    font-size:11px; padding:6px 10px; border-radius:2px; background:transparent;
+    flex:0 0 auto;
+  }
+  .delivery-copy-btn:hover{ border-color:var(--text-dim); color:var(--text); }
+  .delivery-note{ color:var(--text-dim); font-size:12px; margin-top:14px; }
 
   /* ---------- MODAL ---------- */
   .overlay{
@@ -410,6 +427,26 @@
 
   <button class="admin-trigger" id="adminTrigger" type="button" aria-label="Admin login">Admin</button>
 
+  <div class="overlay" id="deliveryOverlay">
+    <div class="modal">
+      <button class="modal-close" id="deliveryClose">×</button>
+      <div class="modal-title">Your account</div>
+      <div id="deliveryLoading">Verifying your payment…</div>
+      <div id="deliveryError" class="admin-error"></div>
+      <div id="deliveryContent" hidden="">
+        <div class="delivery-row">
+          <span class="delivery-row-value" id="deliveryEmail"></span>
+          <button class="delivery-copy-btn" type="button" data-copy="deliveryEmail">Copy</button>
+        </div>
+        <div class="delivery-row">
+          <span class="delivery-row-value" id="deliveryPassword"></span>
+          <button class="delivery-copy-btn" type="button" data-copy="deliveryPassword">Copy</button>
+        </div>
+        <div class="delivery-note">Save these now — this page won't show them again.</div>
+      </div>
+    </div>
+  </div>
+
   <div class="overlay" id="adminOverlay">
     <div class="modal">
       <button class="modal-close" id="adminClose">×</button>
@@ -438,6 +475,8 @@
           <option value="normal">Normal — $6.99</option>
           <option value="rare">Rare — $25.99</option>
         </select>
+        <input class="admin-input" id="rareEmail" type="text" placeholder="Account login email" autocomplete="off">
+        <input class="admin-input" id="rarePassword" type="text" placeholder="Account login password" autocomplete="off">
         <button class="payment-btn" id="rareAddBtn" type="button" style="width:100%;">Add to listing</button>
         <div class="admin-error" id="rareAddError"></div>
 
@@ -646,7 +685,7 @@
           altPreviewName.innerHTML = `${alt.name}${alt.rank ? `<span class="alt-item-rank">${alt.rank}</span>` : ''}`;
           altPreviewPrice.textContent = `$${alt.price}`;
           altBuyBtn.textContent = `Buy this alt — $${alt.price}`;
-          altBuyBtn.href = alt.stripe_link;
+          altBuyBtn.href = alt.stripe_link + (alt.stripe_link.includes('?') ? '&' : '?') + 'client_reference_id=' + encodeURIComponent(alt.id);
           altSkinImg.src = `https://mc-heads.net/body/${previewSkinName}/160`;
           altSkinImg.alt = `${alt.name} Minecraft skin`;
           hidePanel(altChooser);
@@ -658,6 +697,61 @@
   }
 
   loadAltStock();
+
+  // ---------- POST-PURCHASE DELIVERY ----------
+  // If the page was reached via the Stripe redirect (?session_id=...), verify
+  // the payment server-side (Edge Function) before showing any credentials.
+  (function initDelivery() {
+    const sessionId = new URLSearchParams(window.location.search).get('session_id');
+    if (!sessionId) return;
+
+    const deliveryOverlay = document.getElementById('deliveryOverlay');
+    const deliveryClose = document.getElementById('deliveryClose');
+    const deliveryLoading = document.getElementById('deliveryLoading');
+    const deliveryError = document.getElementById('deliveryError');
+    const deliveryContent = document.getElementById('deliveryContent');
+    const deliveryEmail = document.getElementById('deliveryEmail');
+    const deliveryPassword = document.getElementById('deliveryPassword');
+
+    deliveryOverlay.classList.add('show');
+    deliveryClose.addEventListener('click', () => deliveryOverlay.classList.remove('show'));
+
+    document.querySelectorAll('.delivery-copy-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.copy);
+        navigator.clipboard.writeText(target.textContent);
+        btn.textContent = 'Copied';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 1200);
+      });
+    });
+
+    if (!SUPABASE_URL || SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+      deliveryLoading.hidden = true;
+      deliveryError.textContent = 'Supabase isn\'t configured — can\'t verify this payment.';
+      return;
+    }
+
+    fetch(`${SUPABASE_URL}/functions/v1/verify-purchase`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+      body: JSON.stringify({ session_id: sessionId })
+    })
+      .then((res) => res.json().then((body) => ({ ok: res.ok, body })))
+      .then(({ ok, body }) => {
+        deliveryLoading.hidden = true;
+        if (!ok) {
+          deliveryError.textContent = body.error || 'Could not verify this payment.';
+          return;
+        }
+        deliveryEmail.textContent = body.email;
+        deliveryPassword.textContent = body.password;
+        deliveryContent.hidden = false;
+      })
+      .catch(() => {
+        deliveryLoading.hidden = true;
+        deliveryError.textContent = 'Something went wrong verifying your payment. Contact support on Discord.';
+      });
+  })();
 
   altsPurchaseBtn.addEventListener('click', () => {
     altsPurchaseBtn.hidden = true;
@@ -686,6 +780,8 @@
   const rareSkinImg = document.getElementById('rareSkinImg');
   const rareSkinName = document.getElementById('rareSkinName');
   const rareTier = document.getElementById('rareTier');
+  const rareEmail = document.getElementById('rareEmail');
+  const rarePassword = document.getElementById('rarePassword');
   const rareAddBtn = document.getElementById('rareAddBtn');
   const rareAddError = document.getElementById('rareAddError');
   const adminRareList = document.getElementById('adminRareList');
@@ -707,29 +803,70 @@
 
   // Live skin preview as the admin types a username — pulled from the same
   // Mojang-API-backed renderer used on the storefront.
+  // Debounced live lookup against PlayerDB (reads Mojang's session server),
+  // so the preview reflects the account that actually owns this username
+  // today — not just a guessed render. NameMC has no public browser-callable
+  // API, so PlayerDB is the CORS-friendly equivalent.
+  let rareLookupTimer = null;
+  let rareLookupToken = 0;
   rareUsername.addEventListener('input', () => {
     const name = rareUsername.value.trim();
+    const token = ++rareLookupToken;
+    clearTimeout(rareLookupTimer);
     if (!name) { rareSkinPreview.hidden = true; return; }
-    rareSkinImg.src = `https://mc-heads.net/avatar/${name}/64`;
-    rareSkinName.textContent = name;
+
     rareSkinPreview.hidden = false;
+    rareSkinPreview.classList.remove('is-warning');
+    rareSkinImg.src = `https://mc-heads.net/avatar/${name}/64`;
+    rareSkinName.textContent = 'Looking up…';
+
+    rareLookupTimer = setTimeout(async () => {
+      try {
+        const res = await fetch(`https://playerdb.co/api/player/minecraft/${encodeURIComponent(name)}`);
+        const json = await res.json();
+        if (token !== rareLookupToken) return; // user kept typing, ignore stale result
+        if (json && json.success && json.data && json.data.player) {
+          const player = json.data.player;
+          rareSkinImg.src = player.avatar;
+          rareSkinName.textContent = `${player.username} — found (current skin)`;
+          rareSkinPreview.classList.remove('is-warning');
+        } else {
+          rareSkinName.textContent = `No Mojang account found for "${name}" — will use default Steve skin`;
+          rareSkinPreview.classList.add('is-warning');
+        }
+      } catch (err) {
+        if (token !== rareLookupToken) return;
+        rareSkinName.textContent = 'Couldn\'t verify account right now — showing fallback preview';
+        rareSkinPreview.classList.add('is-warning');
+      }
+    }, 400);
   });
 
   rareAddBtn.addEventListener('click', async () => {
     rareAddError.textContent = '';
     const name = rareUsername.value.trim();
+    const email = rareEmail.value.trim();
+    const password = rarePassword.value;
     const tier = ALT_TIERS[rareTier.value];
-    if (!name) {
-      rareAddError.textContent = 'Enter a username.';
+    if (!name || !email || !password) {
+      rareAddError.textContent = 'Enter a username, login email, and password.';
       return;
     }
     if (!sb) { rareAddError.textContent = 'Supabase isn\'t configured.'; return; }
     const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '') + '-' + Date.now().toString(36);
-    const { error } = await sb.from('alts').insert({
+    const { data: inserted, error } = await sb.from('alts').insert({
       slug, display_name: name, price: tier.price, rank: tier.rank, stripe_link: tier.stripe_link, sold_out: false, sort_order: 0
-    });
+    }).select().single();
     if (error) { rareAddError.textContent = error.message; return; }
+    const { error: credErr } = await sb.from('alt_credentials').insert({
+      alt_id: inserted.id, email, password
+    });
+    if (credErr) {
+      rareAddError.textContent = 'Listing added, but saving credentials failed: ' + credErr.message;
+    }
     rareUsername.value = '';
+    rareEmail.value = '';
+    rarePassword.value = '';
     rareSkinPreview.hidden = true;
     renderAdminPanel();
     loadAltStock();
