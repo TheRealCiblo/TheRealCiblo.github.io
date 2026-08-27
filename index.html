@@ -273,6 +273,27 @@
   }
   .admin-row span:first-child{ flex:1; }
   .admin-row-note{ color:var(--text-dim); font-size:11px; }
+  .admin-section-title{
+    font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-dim); margin:16px 0 10px; text-align:left;
+  }
+  .admin-divider{ border-top:1px solid var(--line); margin:18px 0; }
+  .admin-skin-preview{
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:12px; font-size:13px; color:var(--text-dim);
+  }
+  .admin-rare-row{
+    display:flex; align-items:center; gap:10px;
+    border:1px solid var(--line); border-radius:4px;
+    padding:9px 12px; margin-bottom:8px; font-size:13px; text-align:left;
+  }
+  .admin-rare-row span{ flex:1; }
+  .admin-delete-btn{
+    border:1px solid rgba(255,107,107,.4); color:#FF6B6B;
+    font-size:11px; padding:6px 12px; border-radius:2px; background:transparent;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .admin-delete-btn:hover{ border-color:#FF6B6B; background:rgba(255,107,107,.1); }
 
   /* ---------- MODAL ---------- */
   .overlay{
@@ -392,7 +413,31 @@
       </div>
 
       <div id="adminPanel" hidden="">
+        <div class="admin-section-title">Sold out</div>
         <div id="adminRows"></div>
+
+        <div class="admin-divider"></div>
+
+        <div class="admin-section-title">Add rare account</div>
+        <input class="admin-input" id="rareUsername" type="text" placeholder="Minecraft username">
+        <div class="admin-skin-preview" id="rareSkinPreview" hidden="">
+          <img class="alt-item-avatar" id="rareSkinImg" alt="">
+          <span id="rareSkinName"></span>
+        </div>
+        <input class="admin-input" id="rarePrice" type="number" step="0.01" placeholder="Price, e.g. 19.99">
+        <select class="admin-input" id="rareRank">
+          <option value="RARE">RARE</option>
+          <option value="SEMI RARE">SEMI RARE</option>
+        </select>
+        <input class="admin-input" id="rareStripeLink" type="text" placeholder="Stripe payment link">
+        <button class="payment-btn" id="rareAddBtn" type="button" style="width:100%;">Add to listing</button>
+        <div class="admin-error" id="rareAddError"></div>
+
+        <div class="admin-divider"></div>
+
+        <div class="admin-section-title">Rare accounts</div>
+        <div id="adminRareList"></div>
+
         <button class="alt-back-btn" id="adminLogoutBtn" type="button">Log out</button>
       </div>
     </div>
@@ -625,6 +670,16 @@
   const adminError = document.getElementById('adminError');
   const adminRows = document.getElementById('adminRows');
   const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+  const rareUsername = document.getElementById('rareUsername');
+  const rareSkinPreview = document.getElementById('rareSkinPreview');
+  const rareSkinImg = document.getElementById('rareSkinImg');
+  const rareSkinName = document.getElementById('rareSkinName');
+  const rarePrice = document.getElementById('rarePrice');
+  const rareRank = document.getElementById('rareRank');
+  const rareStripeLink = document.getElementById('rareStripeLink');
+  const rareAddBtn = document.getElementById('rareAddBtn');
+  const rareAddError = document.getElementById('rareAddError');
+  const adminRareList = document.getElementById('adminRareList');
 
   adminTrigger.addEventListener('click', () => adminOverlay.classList.add('show'));
   adminClose.addEventListener('click', () => adminOverlay.classList.remove('show'));
@@ -632,11 +687,46 @@
     if (e.target === adminOverlay) adminOverlay.classList.remove('show');
   });
 
+  // Live skin preview as the admin types a username — pulled from the same
+  // Mojang-API-backed renderer used on the storefront.
+  rareUsername.addEventListener('input', () => {
+    const name = rareUsername.value.trim();
+    if (!name) { rareSkinPreview.hidden = true; return; }
+    rareSkinImg.src = `https://mc-heads.net/avatar/${name}/64`;
+    rareSkinName.textContent = name;
+    rareSkinPreview.hidden = false;
+  });
+
+  rareAddBtn.addEventListener('click', async () => {
+    rareAddError.textContent = '';
+    const name = rareUsername.value.trim();
+    const price = parseFloat(rarePrice.value);
+    const rank = rareRank.value;
+    const link = rareStripeLink.value.trim();
+    if (!name || !price || !link) {
+      rareAddError.textContent = 'Fill in username, price, and Stripe link.';
+      return;
+    }
+    if (!sb) { rareAddError.textContent = 'Supabase isn\'t configured.'; return; }
+    const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '') + '-' + Date.now().toString(36);
+    const { error } = await sb.from('alts').insert({
+      slug, display_name: name, price, rank, stripe_link: link, sold_out: false, sort_order: 0
+    });
+    if (error) { rareAddError.textContent = error.message; return; }
+    rareUsername.value = '';
+    rarePrice.value = '';
+    rareStripeLink.value = '';
+    rareSkinPreview.hidden = true;
+    renderAdminPanel();
+    loadAltStock();
+  });
+
   async function renderAdminPanel() {
     if (!sb) return;
     const { data, error } = await sb.from('alts').select('*').order('sort_order', { ascending: true });
     if (error || !data) return;
     adminRows.innerHTML = '';
+    adminRareList.innerHTML = '';
     data.forEach((row) => {
       const label = document.createElement('label');
       label.className = 'admin-row';
@@ -649,6 +739,24 @@
         loadAltStock();
       });
       adminRows.appendChild(label);
+
+      if (row.rank) {
+        const rareRow = document.createElement('div');
+        rareRow.className = 'admin-rare-row';
+        rareRow.innerHTML = `<span>${row.display_name} — ${row.rank} — $${Number(row.price).toFixed(2)}</span>`;
+        const delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'admin-delete-btn';
+        delBtn.textContent = 'Delete';
+        delBtn.addEventListener('click', async () => {
+          if (!confirm(`Delete ${row.display_name} from the listing?`)) return;
+          await sb.from('alts').delete().eq('id', row.id);
+          renderAdminPanel();
+          loadAltStock();
+        });
+        rareRow.appendChild(delBtn);
+        adminRareList.appendChild(rareRow);
+      }
     });
   }
 
