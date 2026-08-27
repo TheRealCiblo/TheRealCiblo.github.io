@@ -630,7 +630,7 @@
     altList.innerHTML = '';
     ALT_STOCK.forEach((alt) => {
       const previewSkinName = alt.isPool
-        ? RANDOM_POOL_NAMES[Math.floor(Math.random() * RANDOM_POOL_NAMES.length)]
+        ? RANDOM_POOL_SKIN
         : alt.name;
       const item = document.createElement('button');
       item.type = 'button';
