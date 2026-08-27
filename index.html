@@ -157,6 +157,14 @@
 
   /* ---------- SHOP TABS ---------- */
   .shop-section{ width:100%; max-width:640px; text-align:center; }
+  .sell-cta{
+    font-size:14px; color:var(--text-dim);
+  }
+  .sell-cta a{
+    color:var(--text); text-decoration:underline; text-underline-offset:3px;
+    transition:color .15s ease;
+  }
+  .sell-cta a:hover{ color:var(--text-dim); }
   .shop-title{
     font-size:clamp(28px, 4.5vw, 42px);
     margin-bottom:28px;
@@ -396,6 +404,8 @@
     </div>
   </div>
 
+  <div class="sell-cta">Want to sell an alt?? <a href="https://discord.gg/ccbGgm5H43" target="_blank" rel="noopener">Join Discord here</a></div>
+
   <footer class="site-copyright">© 2026 ciblo.xyz · All rights reserved</footer>
 
   <button class="admin-trigger" id="adminTrigger" type="button" aria-label="Admin login">Admin</button>
@@ -554,7 +564,10 @@
 
   // Underlying pool of alt usernames used only to pick a skin preview for
   // the single "Random Alt" listing — these are never listed individually.
-  const RANDOM_POOL_NAMES = Array.from({ length: 30 }, (_, i) => `randomalt${i + 1}`);
+  // Fixed reference account that always renders the classic Steve skin —
+  // used for every Random Alt preview so it doesn't flip to Alex, which
+  // happens because Mojang's default skin alternates by username hash.
+  const RANDOM_POOL_SKIN = 'MHF_Steve';
 
   // Local fallback data, used until Supabase is configured above, or if a
   // fetch fails. Once Supabase is wired up, `sold_out` and `stripe_link`
