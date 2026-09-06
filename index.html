@@ -408,14 +408,10 @@
 
       <div class="alt-chooser is-visible" id="altChooser">
         <div class="alt-chooser-title">Choose alt</div>
-        <div class="alt-list" id="altList"><button type="button" class="alt-item is-rare">
+      <div class="alt-list" id="altList"><button type="button" class="alt-item is-rare">
         <img class="alt-item-avatar" src="./ciblo.xyz_files/64" alt="gabot skin">
         <span class="alt-item-label">gabot<span class="alt-item-rank">RARE</span></span>
         <span class="alt-item-price">$25.99</span>
-      </button><button type="button" class="alt-item">
-        <img class="alt-item-avatar" src="./ciblo.xyz_files/64(1)" alt="Random Alt skin">
-        <span class="alt-item-label">Random Alt</span>
-        <span class="alt-item-price">$6.99</span>
       </button></div>
       </div>
 
@@ -472,14 +468,11 @@
         <div id="adminRows"><label class="admin-row">
         <span>gabot</span>
         <input type="checkbox">
-      </label><label class="admin-row">
-        <span>Random Alt</span>
-        <input type="checkbox">
       </label></div>
 
         <div class="admin-divider"></div>
 
-        <div class="admin-section-title">Add rare account</div>
+        <div class="admin-section-title">Add listing</div>
         <input class="admin-input" id="rareUsername" type="text" placeholder="Minecraft username">
         <div class="admin-skin-preview" id="rareSkinPreview" hidden="">
           <img class="alt-item-avatar" id="rareSkinImg" alt="">
@@ -489,8 +482,6 @@
           <option value="normal">Normal — $6.99</option>
           <option value="rare">Rare — $25.99</option>
         </select>
-        <input class="admin-input" id="rareEmail" type="text" placeholder="Account login email" autocomplete="off">
-        <input class="admin-input" id="rarePassword" type="text" placeholder="Account login password" autocomplete="off">
         <button class="payment-btn" id="rareAddBtn" type="button" style="width:100%;">Add to listing</button>
         <div class="admin-error" id="rareAddError"></div>
 
@@ -615,20 +606,12 @@
   // Accounts that don't actually exist on Mojang's records fall back to the
   // default Steve skin, which is what the random-pool entries render as.
 
-  // Underlying pool of alt usernames used only to pick a skin preview for
-  // the single "Random Alt" listing — these are never listed individually.
-  // Fixed reference account that always renders the classic Steve skin —
-  // used for every Random Alt preview so it doesn't flip to Alex, which
-  // happens because Mojang's default skin alternates by username hash.
-  const RANDOM_POOL_SKIN = 'MHF_Steve';
-
   // Local fallback data, used until Supabase is configured above, or if a
   // fetch fails. Once Supabase is wired up, `sold_out` and `stripe_link`
   // are driven from the database and can be changed from the admin panel
   // without editing this file.
   let ALT_STOCK = [
-    { id: 'gabot', name: 'gabot', price: '25.99', rank: 'RARE', sold_out: false, stripe_link: '#' },
-    { id: 'random_pool', name: 'Random Alt', price: '6.99', rank: null, sold_out: false, stripe_link: '#', isPool: true }
+    { id: 'gabot', name: 'gabot', price: '25.99', rank: 'RARE', sold_out: false, stripe_link: '#' }
   ];
 
   const altsPurchaseBtn = document.getElementById('altsPurchaseBtn');
@@ -666,14 +649,13 @@
       console.warn('[alts] Supabase returned no rows, using fallback data.');
     } else {
       console.log('[alts] Loaded from Supabase:', data);
-      ALT_STOCK = data.map((row) => ({
+      ALT_STOCK = data.filter((row) => row.slug !== 'random_pool').map((row) => ({
         id: row.id,
         name: row.display_name,
         price: Number(row.price).toFixed(2),
         rank: row.rank,
         sold_out: row.sold_out,
         stripe_link: row.stripe_link || '#',
-        isPool: row.slug === 'random_pool'
       }));
     }
     renderAltList();
@@ -682,9 +664,7 @@
   function renderAltList() {
     altList.innerHTML = '';
     ALT_STOCK.forEach((alt) => {
-      const previewSkinName = alt.isPool
-        ? RANDOM_POOL_SKIN
-        : alt.name;
+      const previewSkinName = alt.name;
       const item = document.createElement('button');
       item.type = 'button';
       item.className = 'alt-item' + (alt.rank ? ' is-rare' : '') + (alt.sold_out ? ' is-sold-out' : '');
@@ -799,8 +779,6 @@
   const rareSkinImg = document.getElementById('rareSkinImg');
   const rareSkinName = document.getElementById('rareSkinName');
   const rareTier = document.getElementById('rareTier');
-  const rareEmail = document.getElementById('rareEmail');
-  const rarePassword = document.getElementById('rarePassword');
   const rareAddBtn = document.getElementById('rareAddBtn');
   const rareAddError = document.getElementById('rareAddError');
   const adminRareList = document.getElementById('adminRareList');
@@ -864,11 +842,9 @@
   rareAddBtn.addEventListener('click', async () => {
     rareAddError.textContent = '';
     const name = rareUsername.value.trim();
-    const email = rareEmail.value.trim();
-    const password = rarePassword.value;
     const tier = ALT_TIERS[rareTier.value];
-    if (!name || !email || !password) {
-      rareAddError.textContent = 'Enter a username, login email, and password.';
+    if (!name) {
+      rareAddError.textContent = 'Enter a Minecraft username.';
       return;
     }
     if (!sb) { rareAddError.textContent = 'Supabase isn\'t configured.'; return; }
@@ -877,15 +853,7 @@
       slug, display_name: name, price: tier.price, rank: tier.rank, stripe_link: tier.stripe_link, sold_out: false, sort_order: 0
     }).select().single();
     if (error) { rareAddError.textContent = error.message; return; }
-    const { error: credErr } = await sb.from('alt_credentials').insert({
-      alt_id: inserted.id, email, password
-    });
-    if (credErr) {
-      rareAddError.textContent = 'Listing added, but saving credentials failed: ' + credErr.message;
-    }
     rareUsername.value = '';
-    rareEmail.value = '';
-    rarePassword.value = '';
     rareSkinPreview.hidden = true;
     renderAdminPanel();
     loadAltStock();
