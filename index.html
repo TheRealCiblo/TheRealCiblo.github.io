@@ -129,7 +129,7 @@ dialog{width:min(850px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding
 </footer>
 <dialog id="altPreview" aria-labelledby="altPreviewName">
   <button class="dialog-close" type="button" data-close="altPreview" aria-label="Close account details"><svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg></button>
-  <div class="product-layout"><div class="product-visual"><span class="mono">Player preview</span><img id="altSkinImg" width="256" height="615" alt=""></div><div class="product-details"><span class="tag" id="altPreviewRank">Rare account</span><h2 id="altPreviewName"></h2><p class="product-description" id="altPreviewDescription"></p><p class="product-price"><span id="altPreviewPrice"></span><small>USD</small></p><p class="product-availability"><span class="status-dot" aria-hidden="true"></span><span id="altPreviewAvailability"></span></p><a class="button" id="altBuyBtn" href="https://discord.gg/ccbGgm5H43" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-disc"></use></svg>Continue on Discord<svg class="icon" aria-hidden="true"><use href="#i-up-right"></use></svg></a><button class="back-button" id="altBackBtn" type="button" data-close="altPreview">Back to accounts</button></div></div>
+  <div class="product-layout"><div class="product-visual"><span class="mono">Player preview</span><img id="altSkinImg" width="256" height="615" alt=""></div><div class="product-details"><span class="tag" id="altPreviewRank">Rare account</span><h2 id="altPreviewName"></h2><p class="product-description" id="altPreviewDescription"></p><p class="product-price"><span id="altPreviewPrice"></span><small>USD</small></p><p class="product-availability"><span class="status-dot" aria-hidden="true"></span><span id="altPreviewAvailability"></span></p><a class="button" id="altBuyBtn" href="https://discord.gg/ccbGgm5H43" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-disc"></use></svg>Buy on Discord<svg class="icon" aria-hidden="true"><use href="#i-up-right"></use></svg></a><button class="back-button" id="altBackBtn" type="button" data-close="altPreview">Back to accounts</button></div></div>
 </dialog>
 <dialog id="deliveryOverlay" class="modal-compact" aria-labelledby="deliveryTitle">
   <button class="dialog-close" type="button" data-close="deliveryOverlay" aria-label="Close account delivery"><svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg></button><p class="mono">Account delivery</p><h2 id="deliveryTitle">Your account.</h2><p class="modal-intro">Your account details appear here after your payment is verified.</p><div class="delivery-loading" id="deliveryLoading" role="status">Verifying your payment...</div><div class="admin-error" id="deliveryError" role="alert"></div><div id="deliveryContent" hidden=""><p class="form-label">Email</p><div class="delivery-row"><span class="delivery-row-value" id="deliveryEmail"></span><button class="delivery-copy-btn" type="button" data-copy="deliveryEmail" aria-label="Copy account email">Copy</button></div><p class="form-label">Password</p><div class="delivery-row"><span class="delivery-row-value" id="deliveryPassword"></span><button class="delivery-copy-btn" type="button" data-copy="deliveryPassword" aria-label="Copy account password">Copy</button></div><p class="delivery-note">Save these details now. They may only be shown once.</p></div><p class="delivery-note" style="margin-top:22px">Need a hand? <a class="text-button" href="https://discord.gg/ccbGgm5H43" target="_blank" rel="noopener noreferrer">Contact us on Discord</a></p>
@@ -142,6 +142,7 @@ dialog{width:min(850px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding
 </dialog>
 <div class="toast" id="toast" role="status"></div>
 <audio id="redirectSound" src="lock1.ogg" preload="auto"></audio>
+<audio id="clickSound" src="cherrywood_click.ogg" preload="auto"></audio>
 <noscript><p style="padding:20px;text-align:center">Turn on JavaScript to check availability and open account details, or <a href="https://discord.gg/ccbGgm5H43" style="text-decoration:underline">shop through Discord</a>.</p></noscript>
 <script>
 (() => {
@@ -645,18 +646,26 @@ document.querySelectorAll('[data-copy]').forEach(button => button.addEventListen
 initDelivery();
 
 
-// lock1.ogg is reserved for external redirects; ordinary UI controls are silent.
+// Button clicks use cherrywood_click.ogg; lock1.ogg is reserved for non-button redirects.
 const redirectSound = $('redirectSound');
+const clickSound = $('clickSound');
 document.addEventListener('click', event => {
   const link = event.target.closest('a[href]');
   if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.hasAttribute('download')) return;
   const destination = new URL(link.href, window.location.href);
   const samePageAnchor = destination.origin === location.origin && destination.pathname === location.pathname && destination.hash;
-  if (samePageAnchor) return;
+  if (samePageAnchor || link.matches('.button')) return;
   redirectSound.pause();
   redirectSound.currentTime = 0;
   redirectSound.play().catch(() => {});
 }, true);
+document.addEventListener('click', event => {
+  const button = event.target.closest('button, a.button');
+  if (!button || button.disabled || button.getAttribute('aria-disabled') === 'true') return;
+  clickSound.pause();
+  clickSound.currentTime = 0;
+  clickSound.play().catch(() => {});
+});
 })();
 
 </script>
