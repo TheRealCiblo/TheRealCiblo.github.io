@@ -65,7 +65,7 @@ dialog{width:min(850px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding
 .theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:42px;min-height:42px;padding:10px 12px;background:transparent;border:1px solid var(--line);color:var(--text);font-size:12px}.theme-toggle:hover{background:var(--surface-hover)}.theme-toggle .icon{width:17px;height:17px}.feature-top .tag{font-size:12px}.sell h2{max-width:580px}.hero h1{font-size:clamp(50px,5.7vw,82px)}.hero-description{font-size:16px}
 @media(max-width:800px){.nav{gap:18px}.nav-link.sell-nav{display:none}.feature-type{display:none}.theme-toggle span{display:none}.theme-toggle{padding:10px}.hero h1{font-size:clamp(43px,6.1vw,54px)}}
 @media(max-width:580px){.nav{gap:13px}.nav-link{font-size:12px}.theme-toggle{min-width:37px;min-height:37px;padding:8px}.hero h1{font-size:clamp(52px,13.4vw,73px)}.sell h2{font-size:39px}.feature-top .feature-type{font-size:12px}}
-  .catalog-pagination{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px;font-family:var(--mono);font-size:12px}.page-button{display:grid;place-items:center;min-width:34px;height:34px;padding:0 8px;border:1px solid var(--panel-line);background:transparent;color:var(--text);cursor:pointer}.page-button:hover:not(:disabled),.page-button[aria-current="page"]{border-color:var(--action);background:var(--action);color:var(--action-ink)}.page-button:disabled{opacity:.4;cursor:not-allowed}.page-ellipsis{padding:0 2px;color:var(--panel-muted)}
+  .sell{scroll-margin-top:24px}.catalog-pagination{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px;font-family:var(--mono);font-size:12px}.page-button{display:grid;place-items:center;min-width:34px;height:34px;padding:0 8px;border:1px solid var(--panel-line);background:transparent;color:var(--text);cursor:pointer}.page-button:hover:not(:disabled),.page-button[aria-current="page"]{border-color:var(--action);background:var(--action);color:var(--action-ink)}.page-button:disabled{opacity:.4;cursor:not-allowed}.page-ellipsis{padding:0 2px;color:var(--panel-muted)}
   </style>
 </head>
 <body>
@@ -84,7 +84,7 @@ dialog{width:min(850px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding
   <a class="brand" href="file:///C:/Users/chiil/Documents/Codex/2026-09-07/ok-x20/outputs/ciblo-ui-sounds-pages.html#top" aria-label="ciblo.xyz home">ciblo<span>.xyz</span><i class="brand-mark" aria-hidden="true"></i></a>
   <nav class="nav" aria-label="Main navigation">
     <a class="nav-link" href="file:///C:/Users/chiil/Documents/Codex/2026-09-07/ok-x20/outputs/ciblo-ui-sounds-pages.html#accounts" aria-current="page">Shop accounts</a>
-    <a class="nav-link sell-nav" href="file:///C:/Users/chiil/Documents/Codex/2026-09-07/ok-x20/outputs/ciblo-ui-sounds-pages.html#sell">Sell an account</a>
+    <a class="nav-link sell-nav" id="sellNav" href="file:///C:/Users/chiil/Documents/Codex/2026-09-07/ok-x20/outputs/ciblo-ui-sounds-pages.html#sell">Sell an account</a>
     <button class="theme-toggle" id="themeToggle" type="button" role="switch" aria-checked="false" aria-label="Light theme" title="Switch to light theme"><svg class="icon" aria-hidden="true"><use id="themeIcon" href="#i-sun"></use></svg><span>Theme</span></button>
     <a class="nav-discord" aria-label="Join our Discord" href="https://discord.gg/ccbGgm5H43" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-disc"></use></svg><span>Join Discord</span></a>
   </nav>
@@ -646,15 +646,24 @@ document.querySelectorAll('[data-copy]').forEach(button => button.addEventListen
 initDelivery();
 
 
-// Button clicks use cherrywood_click.ogg; lock1.ogg is reserved for non-button redirects.
+// The sell navigation is explicit so it works consistently from local files and GitHub Pages.
+$('sellNav')?.addEventListener('click', event => {
+  event.preventDefault();
+  $('sell').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start'});
+  history.replaceState(null, '', '#sell');
+});
+
+// lock1.ogg is used only for real redirects; ordinary buttons use the click sound.
 const redirectSound = $('redirectSound');
 const clickSound = $('clickSound');
+function isSamePageAnchor(link) {
+  const destination = new URL(link.href, window.location.href);
+  return destination.origin === location.origin && destination.pathname === location.pathname && Boolean(destination.hash);
+}
 document.addEventListener('click', event => {
   const link = event.target.closest('a[href]');
   if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.hasAttribute('download')) return;
-  const destination = new URL(link.href, window.location.href);
-  const samePageAnchor = destination.origin === location.origin && destination.pathname === location.pathname && destination.hash;
-  if (samePageAnchor || link.matches('.button')) return;
+  if (isSamePageAnchor(link)) return;
   redirectSound.pause();
   redirectSound.currentTime = 0;
   redirectSound.play().catch(() => {});
@@ -662,6 +671,7 @@ document.addEventListener('click', event => {
 document.addEventListener('click', event => {
   const button = event.target.closest('button, a.button');
   if (!button || button.disabled || button.getAttribute('aria-disabled') === 'true') return;
+  if (button.matches('a[href]') && !isSamePageAnchor(button)) return;
   clickSound.pause();
   clickSound.currentTime = 0;
   clickSound.play().catch(() => {});
