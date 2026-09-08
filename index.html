@@ -67,6 +67,8 @@ dialog{width:min(850px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding
 @media(max-width:580px){.nav{gap:13px}.nav-link{font-size:12px}.theme-toggle{min-width:37px;min-height:37px;padding:8px}.hero h1{font-size:clamp(52px,13.4vw,73px)}.sell h2{font-size:39px}.feature-top .feature-type{font-size:12px}}
   .sell{scroll-margin-top:24px}.catalog-pagination{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px;font-family:var(--mono);font-size:12px}.page-button{display:grid;place-items:center;min-width:34px;height:34px;padding:0 8px;border:1px solid var(--panel-line);background:transparent;color:var(--text);cursor:pointer}.page-button:hover:not(:disabled),.page-button[aria-current="page"]{border-color:var(--action);background:var(--action);color:var(--action-ink)}.page-button:disabled{opacity:.4;cursor:not-allowed}.page-ellipsis{padding:0 2px;color:var(--panel-muted)}
 .cape-list{margin:0 0 16px;min-height:128px;padding:8px}.listing-editor{display:grid;grid-template-columns:minmax(0,1fr) 105px;gap:10px;align-items:end;width:100%}.listing-editor .admin-input{margin:0}.listing-editor .cape-list{grid-column:1/-1;margin:0}.listing-actions{display:flex;gap:8px;align-items:center}.product-capes{font-size:13px;color:var(--panel-muted);line-height:1.55;margin-top:13px}.product-capes strong{color:var(--text);font-weight:500}
+/* Admin workspace: grouped operations make a larger inventory easier to scan and edit. */
+.admin-dialog{width:min(900px,calc(100% - 32px));padding:0}.admin-dialog .dialog-close{position:sticky;float:right;margin:16px 16px -56px 0}.admin-dialog>.mono,.admin-dialog>h2,.admin-dialog>#adminLoginForm,.admin-dialog>#adminError,.admin-dialog>#adminPanel{margin-left:clamp(22px,4vw,42px);margin-right:clamp(22px,4vw,42px)}.admin-dialog>.mono{display:block;padding-top:36px}.admin-dialog>h2{margin-bottom:26px}.admin-workspace{display:grid;grid-template-columns:minmax(220px,.72fr) minmax(0,1.28fr);gap:22px;align-items:start;padding-bottom:38px}.admin-card{border:1px solid var(--panel-line);background:color-mix(in srgb,var(--field) 72%,var(--panel));padding:18px}.admin-card h3{font-size:18px;letter-spacing:-.5px;margin:3px 0 5px}.admin-card-intro{font-size:12px;line-height:1.5;color:var(--panel-muted);margin-bottom:16px}.admin-availability{margin:0}.admin-availability .admin-row:first-child{border-top:1px solid var(--panel-line)}.admin-listings{grid-column:1/-1}.admin-listings-header{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:12px}.admin-listings-header h3{margin:0}.admin-listing-count{font:12px var(--mono);color:var(--panel-muted)}.admin-rare-row{display:grid;grid-template-columns:minmax(150px,.55fr) minmax(0,1fr);align-items:start;gap:18px;padding:17px 0}.admin-rare-row>span{font-weight:600;line-height:1.5}.listing-editor{grid-template-columns:minmax(0,1fr) auto;gap:10px}.listing-editor .cape-list{min-height:112px}.listing-actions .button{min-height:43px;padding:9px 13px;gap:8px}.admin-delete-btn{min-height:43px;padding:8px 11px}.admin-add-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.admin-add-grid .wide{grid-column:1/-1}.admin-add-grid .admin-input{margin-bottom:13px}@media(max-width:680px){.admin-workspace{grid-template-columns:1fr}.admin-listings{grid-column:auto}.admin-rare-row{grid-template-columns:1fr;gap:12px}.admin-add-grid{grid-template-columns:1fr}.admin-add-grid .wide{grid-column:auto}.admin-dialog>.mono{padding-top:29px}}
 </style>
 </head>
 <body>
@@ -135,7 +137,7 @@ dialog{width:min(850px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding
 <dialog id="deliveryOverlay" class="modal-compact" aria-labelledby="deliveryTitle">
   <button class="dialog-close" type="button" data-close="deliveryOverlay" aria-label="Close account delivery"><svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg></button><p class="mono">Account delivery</p><h2 id="deliveryTitle">Your account.</h2><p class="modal-intro">Your account details appear here after your payment is verified.</p><div class="delivery-loading" id="deliveryLoading" role="status">Verifying your payment...</div><div class="admin-error" id="deliveryError" role="alert"></div><div id="deliveryContent" hidden=""><p class="form-label">Email</p><div class="delivery-row"><span class="delivery-row-value" id="deliveryEmail"></span><button class="delivery-copy-btn" type="button" data-copy="deliveryEmail" aria-label="Copy account email">Copy</button></div><p class="form-label">Password</p><div class="delivery-row"><span class="delivery-row-value" id="deliveryPassword"></span><button class="delivery-copy-btn" type="button" data-copy="deliveryPassword" aria-label="Copy account password">Copy</button></div><p class="delivery-note">Save these details now. They may only be shown once.</p></div><p class="delivery-note" style="margin-top:22px">Need a hand? <a class="text-button" href="https://discord.gg/ccbGgm5H43" target="_blank" rel="noopener noreferrer">Contact us on Discord</a></p>
 </dialog>
-<dialog id="adminOverlay" class="modal-compact" aria-labelledby="adminTitle">
+<dialog id="adminOverlay" class="modal-compact admin-dialog" aria-labelledby="adminTitle">
   <button class="dialog-close" type="button" data-close="adminOverlay" aria-label="Close admin panel"><svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg></button><p class="mono">Store management</p><h2 id="adminTitle">Admin access.</h2>
   <form id="adminLoginForm"><p class="modal-intro" id="adminLoginStatus">Sign in to manage account listings.</p><label class="form-label" for="adminEmail">Email</label><input class="admin-input" id="adminEmail" name="email" type="email" placeholder="you@example.com" autocomplete="username" required=""><label class="form-label" for="adminPassword">Password</label><input class="admin-input" id="adminPassword" name="password" type="password" placeholder="Your password" autocomplete="current-password" required=""><button class="button full-width" id="adminLoginBtn" type="submit">Log in<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button></form>
   <div class="admin-error" id="adminError" role="alert"></div>
@@ -172,6 +174,30 @@ function makeCapePicker(selected = []) {
   return picker;
 }
 const $ = (id) => document.getElementById(id);
+// Reflow the existing controls into a compact workspace while retaining their IDs and event handlers.
+function organizeAdminWorkspace() {
+  const panel = $('adminPanel');
+  if (!panel || panel.dataset.organized) return;
+  const header = panel.querySelector('.admin-panel-header');
+  const availability = $('adminRows');
+  const addForm = $('addListingForm');
+  const listings = $('adminRareList');
+  const workspace = document.createElement('div'); workspace.className = 'admin-workspace';
+  const availabilityCard = document.createElement('section'); availabilityCard.className = 'admin-card admin-availability';
+  availabilityCard.innerHTML = '<h3>Availability</h3><p class="admin-card-intro">Mark accounts sold after each completed sale.</p>';
+  availabilityCard.append(availability);
+  const addCard = document.createElement('section'); addCard.className = 'admin-card';
+  addCard.innerHTML = '<h3>Add listing</h3><p class="admin-card-intro">Verify the Minecraft name, then set its price, rank, and capes.</p>';
+  addForm.querySelectorAll('label,input,select,div.admin-skin-preview').forEach(node => node.classList.add('admin-add-item'));
+  const addGrid = document.createElement('div'); addGrid.className = 'admin-add-grid';
+  Array.from(addForm.children).forEach(node => { if (node.matches('.admin-section-title')) node.remove(); else addGrid.append(node); });
+  addForm.append(addGrid); addCard.append(addForm);
+  const listCard = document.createElement('section'); listCard.className = 'admin-card admin-listings';
+  listCard.innerHTML = '<div class="admin-listings-header"><div><h3>Manage listings</h3><p class="admin-card-intro">Update a listed account’s price and cape collection, or delete it.</p></div><span class="admin-listing-count" id="adminListingCount"></span></div>';
+  listCard.append(listings); workspace.append(availabilityCard,addCard,listCard);
+  panel.replaceChildren(header,workspace); panel.dataset.organized = 'true';
+}
+organizeAdminWorkspace();
 function applyTheme(theme) {
   const light = theme === 'light';
   document.documentElement.dataset.theme = light ? 'light' : 'dark';
@@ -576,6 +602,7 @@ async function renderAdminPanel() {
     });
     $('adminRows').replaceChildren(rows);
     $('adminRareList').replaceChildren(listings);
+    $('adminListingCount').textContent = `${data.filter(row => row.slug !== 'random_pool').length} listed`;
     if (!data.length) $('adminRows').textContent = 'No accounts listed yet.';
   } catch(error) {if (token === adminRefreshToken) $('adminError').textContent = error.message || 'Inventory could not be loaded.';}
 }
