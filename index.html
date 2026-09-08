@@ -69,6 +69,8 @@ dialog{width:min(850px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding
 .cape-list{margin:0 0 16px;min-height:128px;padding:8px}.listing-editor{display:grid;grid-template-columns:minmax(0,1fr) 105px;gap:10px;align-items:end;width:100%}.listing-editor .admin-input{margin:0}.listing-editor .cape-list{grid-column:1/-1;margin:0}.listing-actions{display:flex;gap:8px;align-items:center}.product-capes{font-size:13px;color:var(--panel-muted);line-height:1.55;margin-top:13px}.product-capes strong{color:var(--text);font-weight:500}
 /* Admin workspace: grouped operations make a larger inventory easier to scan and edit. */
 .admin-dialog{width:min(900px,calc(100% - 32px));padding:0}.admin-dialog .dialog-close{position:sticky;float:right;margin:16px 16px -56px 0}.admin-dialog>.mono,.admin-dialog>h2,.admin-dialog>#adminLoginForm,.admin-dialog>#adminError,.admin-dialog>#adminPanel{margin-left:clamp(22px,4vw,42px);margin-right:clamp(22px,4vw,42px)}.admin-dialog>.mono{display:block;padding-top:36px}.admin-dialog>h2{margin-bottom:26px}.admin-workspace{display:grid;grid-template-columns:minmax(220px,.72fr) minmax(0,1.28fr);gap:22px;align-items:start;padding-bottom:38px}.admin-card{border:1px solid var(--panel-line);background:color-mix(in srgb,var(--field) 72%,var(--panel));padding:18px}.admin-card h3{font-size:18px;letter-spacing:-.5px;margin:3px 0 5px}.admin-card-intro{font-size:12px;line-height:1.5;color:var(--panel-muted);margin-bottom:16px}.admin-availability{margin:0}.admin-availability .admin-row:first-child{border-top:1px solid var(--panel-line)}.admin-listings{grid-column:1/-1}.admin-listings-header{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:12px}.admin-listings-header h3{margin:0}.admin-listing-count{font:12px var(--mono);color:var(--panel-muted)}.admin-rare-row{display:grid;grid-template-columns:minmax(150px,.55fr) minmax(0,1fr);align-items:start;gap:18px;padding:17px 0}.admin-rare-row>span{font-weight:600;line-height:1.5}.listing-editor{grid-template-columns:minmax(0,1fr) auto;gap:10px}.listing-editor .cape-list{min-height:112px}.listing-actions .button{min-height:43px;padding:9px 13px;gap:8px}.admin-delete-btn{min-height:43px;padding:8px 11px}.admin-add-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.admin-add-grid .wide{grid-column:1/-1}.admin-add-grid .admin-input{margin-bottom:13px}@media(max-width:680px){.admin-workspace{grid-template-columns:1fr}.admin-listings{grid-column:auto}.admin-rare-row{grid-template-columns:1fr;gap:12px}.admin-add-grid{grid-template-columns:1fr}.admin-add-grid .wide{grid-column:auto}.admin-dialog>.mono{padding-top:29px}}
+/* Expandable multi-cape dropdown. The native details marker provides a familiar arrow. */
+.cape-picker{position:relative;margin:0;border:1px solid var(--panel-line);background:var(--field);font-size:14px}.cape-picker summary{display:flex;align-items:center;justify-content:space-between;min-height:47px;padding:12px;cursor:pointer;list-style:none;user-select:none}.cape-picker summary::-webkit-details-marker{display:none}.cape-picker summary::after{content:'⌄';font-size:20px;line-height:1;transition:transform .15s}.cape-picker[open] summary::after{transform:rotate(180deg)}.cape-picker.is-disabled{opacity:.55;pointer-events:none}.cape-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;border-top:1px solid var(--panel-line);padding:8px;max-height:270px;overflow:auto;background:var(--field)}.cape-options label{display:flex;align-items:center;gap:8px;padding:7px 6px;line-height:1.25;cursor:pointer}.cape-options label:hover{background:var(--surface-hover)}.cape-options input{width:16px;height:16px;accent-color:var(--action);flex:0 0 auto}@media(max-width:500px){.cape-options{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -164,15 +166,23 @@ const ALT_TIERS = {
   rare: { price: 25.99, rank: 'RARE', stripe_link: 'https://buy.stripe.com/test_dRm14mbEg0jPgBB1H37N602' }
 };
 // Official cape names, including the Java/Bedrock/Minecraft Experience sets and newer releases.
-const CAPE_OPTIONS = ['Bacon','Birthday','Cherry Blossom','Cobalt','Common','Follower’s',"Founder's",'Globe','Hammer','Menace','Millionth Customer','Minecon 2011','Minecon 2012','Minecon 2013','Minecon 2015','Minecon 2016','Migrator','Mojang','Mojang Classic','Mojang Studios','Moonlight','Pan','Pearlescent','Purple Heart','Realms Mapmaker','Scrolls','Sniffer','Turtle','Translator','Vanilla','Vex','Yearn','Minecraft Experience','Minecraft 15th Anniversary','Trial Chamber','Trial Chambers','Minecraft Live 2023','Minecraft Live 2024'];
+const CAPE_OPTIONS = ['Migrator','Mojang Studios','Mojang Classic','Minecon 2011','Minecon 2012','Minecon 2013','Minecon 2015','Minecon 2016','Vanilla','Experience','Cherry','TikTok','Twitch','15th Anniversary','Purple Heart',"Founder's",'Panape','Millionth Customer','Bacon','DannyBstyle','juliancl','cheapshot','MrMessiah','MGGband','Drullkus','BillyK_','Yves','Cobalt','Scroll','Mojira Moderator','Turtle','Translator','Chinese Translator','Bug Tracker','Prismarine','Birthday','Modern Birthday','Pride','Progress Pride','MCC 15th Year','Followers','Birthday 2024'];
 const capeValues = (value) => Array.isArray(value) ? value.filter(cape => CAPE_OPTIONS.includes(cape)) : [];
 function makeCapePicker(selected = []) {
-  const picker = document.createElement('select');
-  picker.className = 'admin-input cape-list'; picker.multiple = true; picker.size = 5;
-  picker.setAttribute('aria-label','Capes this account owns (hold Ctrl or Command to choose more than one)');
-  CAPE_OPTIONS.forEach(cape => { const option = new Option(cape,cape,false,selected.includes(cape)); picker.add(option); });
-  return picker;
+  const picker = document.createElement('details');
+  picker.className = 'cape-picker';
+  const summary = document.createElement('summary'); summary.textContent = 'Select capes';
+  const options = document.createElement('div'); options.className = 'cape-options';
+  CAPE_OPTIONS.forEach(cape => {
+    const label = document.createElement('label');
+    const input = document.createElement('input'); input.type = 'checkbox'; input.value = cape; input.checked = selected.includes(cape);
+    input.addEventListener('change',() => { summary.textContent = selectedCapes(picker).length ? `${selectedCapes(picker).length} cape(s) selected` : 'Select capes'; });
+    label.append(input,document.createTextNode(cape)); options.append(label);
+  });
+  picker.append(summary,options); return picker;
 }
+const selectedCapes = picker => Array.from(picker.querySelectorAll('input:checked'), input => input.value);
+const setCapePickerDisabled = (picker, disabled) => { picker.classList.toggle('is-disabled',disabled); picker.querySelectorAll('input').forEach(input => input.disabled = disabled); };
 const $ = (id) => document.getElementById(id);
 // Reflow the existing controls into a compact workspace while retaining their IDs and event handlers.
 function organizeAdminWorkspace() {
@@ -585,15 +595,15 @@ async function renderAdminPanel() {
       save.addEventListener('click',async () => {
         const price = listingPrice.value.trim();
         if (!price) { $('adminError').textContent = 'Enter a price or price note.'; return; }
-        save.disabled = true; listingPrice.disabled = true; listingCapes.disabled = true; $('adminError').textContent = '';
+        save.disabled = true; listingPrice.disabled = true; setCapePickerDisabled(listingCapes,true); $('adminError').textContent = '';
         try {
-          const capes = Array.from(listingCapes.selectedOptions, option => option.value);
+          const capes = selectedCapes(listingCapes);
           if (!capesSupported) throw new Error('Run the capes SQL migration before saving cape selections.');
           const {error} = await sb.from('alts').update({price,capes}).eq('id',row.id).select(STOCK_COLUMNS).single();
           if (error) throw error;
           await Promise.all([renderAdminPanel(),loadAltStock()]); notify('Price and capes saved.');
         } catch(error) { $('adminError').textContent = error.message || 'Listing changes could not be saved.'; }
-        finally { save.disabled = false; listingPrice.disabled = false; listingCapes.disabled = false; }
+        finally { save.disabled = false; listingPrice.disabled = false; setCapePickerDisabled(listingCapes,false); }
       });
       const actions = document.createElement('div'); actions.className = 'listing-actions'; actions.append(save,remove);
       editor.append(listingPrice,actions,listingCapes);
@@ -645,15 +655,16 @@ $('rareUsername').addEventListener('input',() => {
   },400);
 });
 const priceField = $('rarePrice');
-const addCapePicker = $('rareCapes');
-CAPE_OPTIONS.forEach(cape => addCapePicker.add(new Option(cape,cape)));
+const oldAddCapePicker = $('rareCapes');
+const addCapePicker = makeCapePicker();
+oldAddCapePicker.replaceWith(addCapePicker);
 $('addListingForm').addEventListener('submit',async event => {
   event.preventDefault();
   if ($('rareAddBtn').disabled || !$('addListingForm').reportValidity()) return;
   const name = $('rareUsername').value.trim();
   const tier = ALT_TIERS[$('rareTier').value];
   const price = priceField.value.trim();
-  const capes = Array.from(addCapePicker.selectedOptions, option => option.value);
+  const capes = selectedCapes(addCapePicker);
   $('rareAddError').textContent = '';
   if (!/^[A-Za-z0-9_]{1,16}$/.test(name) || !tier || !price) {$('rareAddError').textContent = 'Enter a valid username, tier, and price or price note.';return;}
   if (!sb || $('adminPanel').hidden) {$('rareAddError').textContent = 'Sign in before adding an account.';return;}
@@ -668,7 +679,7 @@ $('addListingForm').addEventListener('submit',async event => {
     clearTimeout(lookupTimer);
     lookupAbort?.abort();
     $('rareUsername').value = '';
-    priceField.value = ''; addCapePicker.selectedIndex = -1;
+    priceField.value = ''; addCapePicker.querySelectorAll('input').forEach(input => input.checked = false); addCapePicker.querySelector('summary').textContent = 'Select capes';
     $('rareSkinPreview').hidden = true;
     await Promise.all([renderAdminPanel(),loadAltStock()]);
     notify(`${name} added to the inventory.`);
