@@ -139,7 +139,7 @@ dialog{width:min(850px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding
   <button class="dialog-close" type="button" data-close="adminOverlay" aria-label="Close admin panel"><svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg></button><p class="mono">Store management</p><h2 id="adminTitle">Admin access.</h2>
   <form id="adminLoginForm"><p class="modal-intro" id="adminLoginStatus">Sign in to manage account listings.</p><label class="form-label" for="adminEmail">Email</label><input class="admin-input" id="adminEmail" name="email" type="email" placeholder="you@example.com" autocomplete="username" required=""><label class="form-label" for="adminPassword">Password</label><input class="admin-input" id="adminPassword" name="password" type="password" placeholder="Your password" autocomplete="current-password" required=""><button class="button full-width" id="adminLoginBtn" type="submit">Log in<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button></form>
   <div class="admin-error" id="adminError" role="alert"></div>
-  <div id="adminPanel" hidden=""><div class="admin-panel-header"><p>Inventory management</p><button class="text-button" id="adminLogoutBtn" type="button">Log out</button></div><p class="admin-section-title">Mark accounts as sold out</p><div id="adminRows"></div><form id="addListingForm"><p class="admin-section-title">Add an account</p><label class="form-label" for="rareUsername">Minecraft username</label><input class="admin-input" id="rareUsername" name="username" type="text" placeholder="Minecraft username" autocomplete="off" autocapitalize="none" spellcheck="false" required="" pattern="[A-Za-z0-9_]{1,16}" maxlength="16"><div class="admin-skin-preview" id="rareSkinPreview" hidden=""><img id="rareSkinImg" width="36" height="44" alt="Account skin preview"><span id="rareSkinName"></span></div><label class="form-label" for="rareCapes">Capes this account owns</label><select class="admin-input cape-list" id="rareCapes" name="capes" multiple="" size="5" aria-label="Capes this account owns; hold Ctrl or Command to choose more than one"><option value="Migrator">Migrator</option><option value="Vanilla">Vanilla</option><option value="Minecon 2011">Minecon 2011</option><option value="Minecon 2012">Minecon 2012</option><option value="Minecon 2013">Minecon 2013</option><option value="Minecon 2015">Minecon 2015</option><option value="Minecon 2016">Minecon 2016</option><option value="Realms Mapmaker">Realms Mapmaker</option><option value="Turtle">Turtle</option><option value="Mojang">Mojang</option><option value="Translator">Translator</option><option value="Cobalt">Cobalt</option><option value="Cherry Blossom">Cherry Blossom</option><option value="Follower’s">Follower’s</option><option value="Purple Heart">Purple Heart</option><option value="Common">Common</option><option value="Menace">Menace</option></select><label class="form-label" for="rarePrice">Custom price (USD)</label><input class="admin-input" id="rarePrice" name="price" type="number" min="0" step="0.01" placeholder="e.g. 12.99" required=""><label class="form-label" for="rareTier">Account rank</label><select class="admin-input" id="rareTier" name="tier"><option value="normal">Normal</option><option value="rare">Rare</option></select><button class="button full-width" id="rareAddBtn" type="submit">Add account<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button><div class="admin-error" id="rareAddError" role="alert"></div></form><p class="admin-section-title">Manage listings</p><div id="adminRareList"></div></div>
+  <div id="adminPanel" hidden=""><div class="admin-panel-header"><p>Inventory management</p><button class="text-button" id="adminLogoutBtn" type="button">Log out</button></div><p class="admin-section-title">Mark accounts as sold out</p><div id="adminRows"></div><form id="addListingForm"><p class="admin-section-title">Add an account</p><label class="form-label" for="rareUsername">Minecraft username</label><input class="admin-input" id="rareUsername" name="username" type="text" placeholder="Minecraft username" autocomplete="off" autocapitalize="none" spellcheck="false" required="" pattern="[A-Za-z0-9_]{1,16}" maxlength="16"><div class="admin-skin-preview" id="rareSkinPreview" hidden=""><img id="rareSkinImg" width="36" height="44" alt="Account skin preview"><span id="rareSkinName"></span></div><label class="form-label" for="rareCapes">Capes this account owns</label><select class="admin-input cape-list" id="rareCapes" name="capes" multiple="" size="8" aria-label="Capes this account owns; hold Ctrl or Command to choose more than one"></select><label class="form-label" for="rarePrice">Custom price</label><input class="admin-input" id="rarePrice" name="price" type="text" maxlength="80" placeholder="e.g. $12.99, offer, or trade" required=""><label class="form-label" for="rareTier">Account rank</label><select class="admin-input" id="rareTier" name="tier"><option value="normal">Normal</option><option value="rare">Rare</option></select><button class="button full-width" id="rareAddBtn" type="submit">Add account<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button><div class="admin-error" id="rareAddError" role="alert"></div></form><p class="admin-section-title">Manage listings</p><div id="adminRareList"></div></div>
 </dialog>
 <div class="toast" id="toast" role="status"></div>
 <audio id="redirectSound" src="lock1.ogg" preload="auto"></audio>
@@ -161,7 +161,8 @@ const ALT_TIERS = {
   normal: { price: 6.99, rank: null, stripe_link: 'https://buy.stripe.com/test_14AbJ0aAc5E9dpp3Pb7N601' },
   rare: { price: 25.99, rank: 'RARE', stripe_link: 'https://buy.stripe.com/test_dRm14mbEg0jPgBB1H37N602' }
 };
-const CAPE_OPTIONS = ['Migrator','Vanilla','Minecon 2011','Minecon 2012','Minecon 2013','Minecon 2015','Minecon 2016','Realms Mapmaker','Turtle','Mojang','Translator','Cobalt','Cherry Blossom','Follower’s','Purple Heart','Common','Menace'];
+// Official cape names, including the Java/Bedrock/Minecraft Experience sets and newer releases.
+const CAPE_OPTIONS = ['Bacon','Birthday','Cherry Blossom','Cobalt','Common','Follower’s',"Founder's",'Globe','Hammer','Menace','Millionth Customer','Minecon 2011','Minecon 2012','Minecon 2013','Minecon 2015','Minecon 2016','Migrator','Mojang','Mojang Classic','Mojang Studios','Moonlight','Pan','Pearlescent','Purple Heart','Realms Mapmaker','Scrolls','Sniffer','Turtle','Translator','Vanilla','Vex','Yearn','Minecraft Experience','Minecraft 15th Anniversary','Trial Chamber','Trial Chambers','Minecraft Live 2023','Minecraft Live 2024'];
 const capeValues = (value) => Array.isArray(value) ? value.filter(cape => CAPE_OPTIONS.includes(cape)) : [];
 function makeCapePicker(selected = []) {
   const picker = document.createElement('select');
@@ -189,10 +190,11 @@ window.addEventListener('storage', event => {
   if (event.key === 'ciblo-theme') applyTheme(event.newValue === 'light' ? 'light' : 'dark');
 });
 const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const money = (value) => '$' + Number(value).toFixed(2);
+// Prices are deliberately free-form: the admin can use $12, "offer", "trade", etc.
+const money = (value) => String(value ?? '').trim() || 'Price on request';
 const skinURL = (name) => `https://mc-heads.net/body/${encodeURIComponent(name)}/256`;
 const skinFor = (name) => SKINS[String(name).toLowerCase()] || skinURL(name);
-const normalizeStock = (rows) => rows.filter(row => row.slug !== 'random_pool' && row.id && typeof row.display_name === 'string' && !HIDDEN_LISTINGS.has(row.display_name.toLowerCase()) && Number.isFinite(Number(row.price)) && Number(row.price) >= 0).map(row => ({...row, price:Number(row.price), capes:capeValues(row.capes), sold_out: row.sold_out === true}));
+const normalizeStock = (rows) => rows.filter(row => row.slug !== 'random_pool' && row.id && typeof row.display_name === 'string' && !HIDDEN_LISTINGS.has(row.display_name.toLowerCase())).map(row => ({...row, price:String(row.price ?? '').trim(), capes:capeValues(row.capes), sold_out: row.sold_out === true}));
 let ALT_STOCK = normalizeStock(INITIAL_STOCK);
 let stockConfirmed = false;
 let stockLoading = false;
@@ -288,7 +290,7 @@ function renderAltList() {
   $('inventoryCount').textContent = `${String(ALT_STOCK.length).padStart(2,'0')} ${ALT_STOCK.length === 1 ? 'account' : 'accounts'}`;
   const available = ALT_STOCK.filter(alt => !alt.sold_out);
   $('startingPrice').hidden = !available.length;
-  if (available.length) $('startingPrice').lastElementChild.textContent = money(Math.min(...available.map(alt => alt.price)));
+  if (available.length) $('startingPrice').lastElementChild.textContent = money(available[0].price);
   const featured = available.find(alt => alt.id === featuredId) || available.find(alt => alt.rank) || available[0];
   $('featuredAccount').hidden = !featured;
   if (featured) {
@@ -549,14 +551,14 @@ async function renderAdminPanel() {
       const editor = document.createElement('div');
       editor.className = 'listing-editor';
       const listingPrice = document.createElement('input');
-      listingPrice.className = 'admin-input'; listingPrice.type = 'number'; listingPrice.min = '0'; listingPrice.step = '0.01'; listingPrice.value = Number(row.price).toFixed(2);
-      listingPrice.setAttribute('aria-label',`Custom price for ${row.display_name} in USD`);
+      listingPrice.className = 'admin-input'; listingPrice.type = 'text'; listingPrice.maxLength = 80; listingPrice.value = String(row.price ?? '');
+      listingPrice.setAttribute('aria-label',`Custom price for ${row.display_name}`);
       const listingCapes = makeCapePicker(capeValues(row.capes));
       const save = document.createElement('button');
       save.type = 'button'; save.className = 'button'; save.textContent = 'Save';
       save.addEventListener('click',async () => {
-        const price = Number(listingPrice.value);
-        if (!Number.isFinite(price) || price < 0) { $('adminError').textContent = 'Enter a non-negative price.'; return; }
+        const price = listingPrice.value.trim();
+        if (!price) { $('adminError').textContent = 'Enter a price or price note.'; return; }
         save.disabled = true; listingPrice.disabled = true; listingCapes.disabled = true; $('adminError').textContent = '';
         try {
           const capes = Array.from(listingCapes.selectedOptions, option => option.value);
@@ -598,13 +600,12 @@ $('rareUsername').addEventListener('input',() => {
     lookupAbort = controller;
     const timeout = setTimeout(() => controller.abort(),8000);
     try {
-      const response = await fetch(`https://playerdb.co/api/player/minecraft/${encodeURIComponent(name)}`,{signal:controller.signal});
+      const response = await fetch(`https://api.mojang.com/users/profiles/minecraft/${encodeURIComponent(name)}`,{signal:controller.signal});
       const json = await response.json();
       if (token !== lookupToken) return;
-      const player = json?.data?.player;
-      if (response.ok && json.success && typeof player?.username === 'string') {
-        setSkin($('rareSkinImg'),player.username,true);
-        $('rareSkinName').textContent = `${player.username} · Current skin found`;
+      if (response.ok && typeof json?.name === 'string' && typeof json?.id === 'string') {
+        setSkin($('rareSkinImg'),json.name,true);
+        $('rareSkinName').textContent = `${json.name} · Verified by Mojang`;
       } else {
         $('rareSkinName').textContent = 'This username could not be verified. Check the spelling before adding it.';
         $('rareSkinPreview').classList.add('is-warning');
@@ -624,10 +625,10 @@ $('addListingForm').addEventListener('submit',async event => {
   if ($('rareAddBtn').disabled || !$('addListingForm').reportValidity()) return;
   const name = $('rareUsername').value.trim();
   const tier = ALT_TIERS[$('rareTier').value];
-  const price = Number(priceField.value);
+  const price = priceField.value.trim();
   const capes = Array.from(addCapePicker.selectedOptions, option => option.value);
   $('rareAddError').textContent = '';
-  if (!/^[A-Za-z0-9_]{1,16}$/.test(name) || !tier || !Number.isFinite(price) || price < 0) {$('rareAddError').textContent = 'Enter a valid username, tier, and non-negative custom price.';return;}
+  if (!/^[A-Za-z0-9_]{1,16}$/.test(name) || !tier || !price) {$('rareAddError').textContent = 'Enter a valid username, tier, and price or price note.';return;}
   if (!sb || $('adminPanel').hidden) {$('rareAddError').textContent = 'Sign in before adding an account.';return;}
   $('rareAddBtn').disabled = true;
   $('rareAddBtn').textContent = 'Adding account...';
