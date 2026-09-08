@@ -776,4 +776,13 @@ document.addEventListener('click', event => {
   if (!button || button.disabled || button.getAttribute('aria-disabled') === 'true') return;
   if (button.matches('a[href]') && !isSamePageAnchor(button)) return;
   clickSound.pause();
-  cl
+  clickSound.currentTime = 0;
+  clickSound.play().catch(() => {});
+});
+})();
+
+</script>
+
+
+
+</body></html>
