@@ -39,7 +39,7 @@ dialog{width:min(850px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding
 .theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:42px;min-height:42px;padding:10px 12px;background:transparent;border:1px solid var(--line);color:var(--text);font-size:12px}.theme-toggle:hover{background:var(--surface-hover)}.theme-toggle .icon{width:17px;height:17px}
 .catalog-pagination{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px;font-family:var(--mono);font-size:12px}.page-button{display:grid;place-items:center;min-width:34px;height:34px;padding:0 8px;border:1px solid var(--panel-line);background:transparent;color:var(--text);cursor:pointer}.page-button:hover:not(:disabled),.page-button[aria-current="page"]{border-color:var(--action);background:var(--action);color:var(--action-ink)}.page-button:disabled{opacity:.4;cursor:not-allowed}.page-ellipsis{padding:0 2px;color:var(--panel-muted)}
 .cape-list{margin:0 0 16px;min-height:128px;padding:8px}.listing-editor{display:grid;grid-template-columns:minmax(0,1fr) 105px;gap:10px;align-items:end;width:100%}.listing-editor .admin-input{margin:0}.listing-editor .cape-list{grid-column:1/-1;margin:0}.listing-actions{display:flex;gap:8px;align-items:center}.product-capes{font-size:13px;color:var(--panel-muted);line-height:1.55;margin-top:13px}.product-capes strong{color:var(--text);font-weight:500}
-.listing-capes{position:absolute;right:9px;bottom:10px;z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:3px;max-width:44%;pointer-events:none}.listing-capes[hidden]{display:none}.listing-cape{display:inline-flex;align-items:center;max-width:100%;padding:3px 5px;background:color-mix(in srgb,var(--bg) 86%,transparent);border:1px solid var(--line);color:var(--text);font:10px var(--mono);line-height:1.15;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.listing-cape-more{color:var(--panel-muted)}.listing-cape-status{color:var(--panel-muted);font:10px var(--mono);background:color-mix(in srgb,var(--bg) 86%,transparent);padding:3px 5px}.feature-capes{position:absolute;right:18px;bottom:18px;z-index:3;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px;max-width:42%}.feature-capes .listing-cape{font-size:11px}@media(max-width:580px){.listing-capes{right:6px;bottom:7px;max-width:38%}.listing-cape{font-size:9px}.feature-capes{right:12px;bottom:12px;max-width:48%}}
+.listing-capes{position:absolute;right:9px;bottom:10px;z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:3px;max-width:45%;pointer-events:none}.listing-capes[hidden]{display:none}.listing-cape{display:inline-flex;max-width:100%;padding:3px 5px;background:color-mix(in srgb,var(--bg) 88%,transparent);border:1px solid var(--line);color:var(--text);font:10px var(--mono);line-height:1.15;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.listing-cape-status{color:var(--panel-muted)}.listing-cape-more{color:var(--panel-muted)}@media(max-width:580px){.listing-capes{right:6px;bottom:7px;max-width:40%}.listing-cape{font-size:9px}}
 .admin-dialog{width:min(900px,calc(100% - 32px));padding:0}.admin-dialog .dialog-close{position:sticky;float:right;margin:16px 16px -56px 0}.admin-dialog>.mono,.admin-dialog>h2,.admin-dialog>#adminLoginForm,.admin-dialog>#adminError,.admin-dialog>#adminPanel{margin-left:clamp(22px,4vw,42px);margin-right:clamp(22px,4vw,42px)}.admin-dialog>.mono{display:block;padding-top:36px}.admin-workspace{display:grid;grid-template-columns:minmax(220px,.72fr) minmax(0,1.28fr);gap:22px;align-items:start;padding-bottom:38px}.admin-card{border:1px solid var(--panel-line);background:color-mix(in srgb,var(--field) 72%,var(--panel));padding:18px}.admin-card h3{font-size:18px;letter-spacing:-.5px;margin:3px 0 5px}.admin-card-intro{font-size:12px;line-height:1.5;color:var(--panel-muted);margin-bottom:16px}.admin-availability{margin:0}.admin-availability .admin-row:first-child{border-top:1px solid var(--panel-line)}.admin-listings{grid-column:1/-1}.admin-listings-header{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:12px}.admin-listings-header h3{margin:0}.admin-listing-count{font:12px var(--mono);color:var(--panel-muted)}.admin-rare-row{display:grid;grid-template-columns:minmax(150px,.55fr) minmax(0,1fr);align-items:start;gap:18px;padding:17px 0}.admin-rare-row>span{font-weight:600;line-height:1.5}.listing-editor{grid-template-columns:minmax(0,1fr) auto;gap:10px}.listing-editor .cape-list{min-height:112px}.listing-actions .button{min-height:43px;padding:9px 13px;gap:8px}.admin-delete-btn{min-height:43px;padding:8px 11px}.admin-add-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.admin-add-grid .wide{grid-column:1/-1}.admin-add-grid .admin-input{margin-bottom:13px}@media(max-width:680px){.admin-workspace{grid-template-columns:1fr}.admin-listings{grid-column:auto}.admin-rare-row{grid-template-columns:1fr;gap:12px}.admin-add-grid{grid-template-columns:1fr}.admin-add-grid .wide{grid-column:auto}.admin-dialog>.mono{padding-top:29px}}
 .cape-picker{position:relative;margin:0;border:1px solid var(--panel-line);background:var(--field);font-size:14px}.cape-picker summary{display:flex;align-items:center;justify-content:space-between;min-height:47px;padding:12px;cursor:pointer;list-style:none;user-select:none}.cape-picker summary::-webkit-details-marker{display:none}.cape-picker summary::after{content:'⌄';font-size:20px;line-height:1;transition:transform .15s}.cape-picker[open] summary::after{transform:rotate(180deg)}.cape-picker.is-disabled{opacity:.55;pointer-events:none}.cape-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;border-top:1px solid var(--panel-line);padding:8px;max-height:270px;overflow:auto;background:var(--field)}.cape-options label{display:flex;align-items:center;gap:8px;padding:7px 6px;line-height:1.25;cursor:pointer}.cape-options label:hover{background:var(--surface-hover)}.cape-options input{width:16px;height:16px;accent-color:var(--action);flex:0 0 auto}@media(max-width:500px){.cape-options{grid-template-columns:1fr}}
 .cape-search{display:block;width:calc(100% - 16px);margin:8px 8px 0;padding:9px 10px;border:1px solid var(--panel-line);background:var(--field);color:var(--text);font:inherit;font-size:13px}.cape-search:focus{outline:2px solid var(--text);outline-offset:1px}
@@ -134,7 +134,7 @@ dialog{width:min(850px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding
 const SUPABASE_URL = 'https://acyqynumllpxwrigwztr.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_PImxnsEtucJMkfTpssE6sw_0NtiBaw4';
 const DISCORD_URL = 'https://discord.gg/ccbGgm5H43';
-const CAPE_API_URL = 'https://api.viewmc.com/user/minecon/';
+const MINECRAFT_API_URL = 'https://api.minecraftapi.net/v3/profile/';
 const STOCK_COLUMNS = 'id,slug,display_name,price,rank,sold_out,stripe_link,sort_order,capes';
 const BASE_STOCK_COLUMNS = 'id,slug,display_name,price,rank,sold_out,stripe_link,sort_order';
 const HIDDEN_LISTINGS = new Set(['oact','e_rr']);
@@ -263,7 +263,7 @@ const money = (value) => {
   return /^\d+(?:\.\d{1,2})?$/.test(price) ? `$${Number(price).toFixed(2)}` : price || 'Price on request';
 };
 const skinURL = (name) => `https://mc-heads.net/body/${encodeURIComponent(name)}/256`;
-const skinFor = (name) => SKINS[String(name).toLowerCase()] || skinURL(name);
+const skinFor = (name) => skinURL(name);
 const normalizeStock = (rows) => rows.filter(row => row.slug !== 'random_pool' && row.id && typeof row.display_name === 'string' && !HIDDEN_LISTINGS.has(row.display_name.toLowerCase())).map(row => ({...row, price:String(row.price ?? '').trim(), capes:capeValues(row.capes), sold_out: row.sold_out === true}));
 let ALT_STOCK = normalizeStock(INITIAL_STOCK);
 let stockConfirmed = false;
@@ -293,40 +293,47 @@ async function fetchWithTimeout(url, options = {}, timeout = 12000) {
   try { return await fetch(url, {...options, signal: controller.signal}); }
   finally { clearTimeout(timer); }
 }
-function capeNamesFromResponse(data) {
-  const values = Array.isArray(data) ? data : (Array.isArray(data?.capes) ? data.capes : []);
-  return [...new Set(values.map(value => typeof value === 'string' ? value : value?.name).filter(Boolean).map(name => name.trim()).filter(Boolean))];
+function capeEntries(data) {
+  const entries = [];
+  const add = (value, provider = '') => {
+    if (!value) return;
+    if (Array.isArray(value)) { value.forEach(item => add(item, provider)); return; }
+    if (typeof value === 'string') { entries.push(value); return; }
+    if (typeof value !== 'object') return;
+    const label = value.name || value.alias || value.display_name || value.id || (provider ? `${provider} cape` : 'Cape');
+    entries.push(label);
+  };
+  if (Array.isArray(data)) add(data);
+  else if (Array.isArray(data?.capes)) add(data.capes);
+  else if (data && typeof data === 'object') Object.entries(data).forEach(([provider,value]) => add(value,provider));
+  return [...new Set(entries.map(value => String(value).trim()).filter(Boolean))];
 }
 async function fetchAccountCapes(name) {
   const key = String(name || '').trim().toLowerCase();
   if (!key) return [];
   if (!capeLookupCache.has(key)) {
-    const request = fetchWithTimeout(`${CAPE_API_URL}${encodeURIComponent(name)}`, {headers:{Accept:'application/json'}}, 8000)
+    capeLookupCache.set(key, fetchWithTimeout(`${MINECRAFT_API_URL}${encodeURIComponent(name)}/capes`, {headers:{Accept:'application/json'}}, 8000)
       .then(response => {
         if (!response.ok) throw new Error('Cape lookup failed.');
         return response.json();
-      })
-      .then(capeNamesFromResponse);
-    capeLookupCache.set(key, request);
+      }).then(capeEntries));
   }
   return capeLookupCache.get(key);
 }
-function renderLiveCapeLabels(container, capes, state = '') {
+function renderListingCapes(container, capes, status = '') {
   if (!container) return;
-  if (state) { container.hidden = false; container.innerHTML = `<span class="listing-cape-status">${escapeHTML(state)}</span>`; return; }
+  if (status) { container.hidden = false; container.innerHTML = `<span class="listing-cape listing-cape-status">${escapeHTML(status)}</span>`; return; }
   if (!capes.length) { container.hidden = true; container.innerHTML = ''; return; }
-  const shown = capes.slice(0, 3);
-  const extra = capes.length - shown.length;
+  const shown = capes.slice(0,3), extra = capes.length - shown.length;
   container.hidden = false;
   container.innerHTML = `${shown.map(cape => `<span class="listing-cape" title="${escapeHTML(cape)}">${escapeHTML(cape)}</span>`).join('')}${extra ? `<span class="listing-cape listing-cape-more">+${extra} more</span>` : ''}`;
 }
 function hydrateListingCapes(root = document) {
   root.querySelectorAll('[data-cape-account]').forEach(container => {
-    const name = container.dataset.capeAccount;
-    if (!name || container.dataset.capeLoaded === 'true') return;
+    if (container.dataset.capeLoaded) return;
     container.dataset.capeLoaded = 'true';
-    renderLiveCapeLabels(container, [], 'Loading capes…');
-    fetchAccountCapes(name).then(capes => renderLiveCapeLabels(container, capes)).catch(() => renderLiveCapeLabels(container, [], 'Cape lookup unavailable'));
+    renderListingCapes(container, [], 'Loading capes…');
+    fetchAccountCapes(container.dataset.capeAccount).then(capes => renderListingCapes(container,capes)).catch(() => renderListingCapes(container,[],''));
   });
 }
 function openDialog(id) {
@@ -409,14 +416,6 @@ function renderAltList() {
     $('featureTag').textContent = featured.rank ? 'Rare account' : 'Featured account';
     $('featuredAccount').setAttribute('aria-label', `View ${featured.display_name}, ${featured.rank ? 'rare' : 'normal'} Minecraft account, ${money(featured.price)}`);
     setSkin($('featureSkin'), featured.display_name);
-    let featureCapes = $('featureCapeStrip');
-    if (!featureCapes) {
-      featureCapes = document.createElement('div'); featureCapes.id = 'featureCapeStrip'; featureCapes.className = 'feature-capes';
-      $('featureSkin').insertAdjacentElement('afterend', featureCapes);
-    }
-    featureCapes.dataset.capeAccount = featured.display_name;
-    delete featureCapes.dataset.capeLoaded;
-    hydrateListingCapes($('featuredAccount'));
   }
   if ($('altPreview').open && selectedId) updateProduct(ALT_STOCK.find(alt => alt.id === selectedId));
 }
@@ -468,36 +467,17 @@ function updateProduct(alt) {
     const value = document.createElement('span'); capeNote.append(title,value);
     $('altPreviewDescription').insertAdjacentElement('afterend',capeNote);
   }
-  capeNote.hidden = true; capeNote.querySelector('span').textContent = '';
+  const capes = capeValues(alt.capes); capeNote.hidden = !capes.length; capeNote.querySelector('span').textContent = capes.join(', ');
   let capeStrip = $('altPreviewCapeStrip');
   if (!capeStrip) {
     capeStrip = document.createElement('div'); capeStrip.id = 'altPreviewCapeStrip'; capeStrip.className = 'cape-strip';
     capeNote.insertAdjacentElement('afterend', capeStrip);
   }
-  renderCapeStrip(capeStrip, []);
+  renderCapeStrip(capeStrip, alt.capes);
   $('altPreviewAvailability').textContent = alt.sold_out ? 'This account is sold out.' : stockConfirmed ? 'Available in the current inventory' : 'Confirm availability on Discord';
   buy.setAttribute('aria-disabled',String(alt.sold_out));
   if (alt.sold_out) buy.removeAttribute('href'); else buy.href = DISCORD_URL;
   setSkin($('altSkinImg'),alt.display_name,true);
-  let visualCapes = $('altPreviewLiveCapes');
-  if (!visualCapes) {
-    visualCapes = document.createElement('div'); visualCapes.id = 'altPreviewLiveCapes'; visualCapes.className = 'listing-capes';
-    $('altSkinImg').insertAdjacentElement('afterend', visualCapes);
-  }
-  visualCapes.dataset.capeAccount = alt.display_name;
-  renderLiveCapeLabels(visualCapes, [], 'Loading capes…');
-  fetchAccountCapes(alt.display_name).then(liveCapes => {
-    if (visualCapes.dataset.capeAccount !== alt.display_name) return;
-    renderLiveCapeLabels(visualCapes, liveCapes);
-    capeNote.hidden = !liveCapes.length;
-    capeNote.querySelector('span').textContent = liveCapes.join(', ');
-    renderCapeStrip(capeStrip, []);
-  }).catch(() => {
-    if (visualCapes.dataset.capeAccount !== alt.display_name) return;
-    renderLiveCapeLabels(visualCapes, [], 'Cape lookup unavailable');
-    capeNote.hidden = true;
-    renderCapeStrip(capeStrip, []);
-  });
 }
 function selectAccount(id) {
   const alt = ALT_STOCK.find(item => item.id === id);
