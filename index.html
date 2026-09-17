@@ -360,7 +360,7 @@ dialog{width:min(850px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding
               <span class="account-type">${acc.type}</span>
               <span class="account-index">#0${index + 1}</span>
             </div>
-            <img src="${getSkinUrl(acc.skin, 'body')}" alt="${acc.name} preview" loading="lazy">
+            <img src="${getSkinUrl(acc.skin, 'body')}" alt="${acc.name} preview" loading="lazy" onerror="this.src='https://mc-heads.net/body/MHF_Steve'">
           </div>
           <div class="account-bottom">
             <div class="account-name">${acc.name}</div>
