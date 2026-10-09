@@ -89,7 +89,7 @@ h1{margin:0;font-weight:400;font-size:clamp(34px,9vw,88px);letter-spacing:.03em;
 
 <script>
 (function(){
-  var IP="157.85.91.49:23154",btn=document.getElementById("ip"),hint=document.getElementById("hint"),addr=document.getElementById("addr"),t;
+  var IP="135.148.252.150:27871",btn=document.getElementById("ip"),hint=document.getElementById("hint"),addr=document.getElementById("addr"),t;
   function say(m,ok){hint.textContent=m;hint.className="hint"+(ok?" ok":"");btn.classList.toggle("done",!!ok);clearTimeout(t);t=setTimeout(function(){hint.textContent="Click the IP to copy";hint.className="hint";btn.classList.remove("done")},2200)}
   function fallback(){
     try{var r=document.createRange();r.selectNodeContents(addr);var s=getSelection();s.removeAllRanges();s.addRange(r);
