@@ -1,397 +1,43 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ciblo.xyz | Vanilla Semi-Anarchy Minecraft Server</title>
-<meta name="description" content="Vanilla semi-anarchy Minecraft server. Rules, punishments, appeals and staff applications. Join: 135.148.252.150:27871">
-<meta name="theme-color" content="#ff9eb4">
-<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAGeklEQVR42u2aW4hVVRjHf2ufM5maTsmYD5bd0LAHwbS00oRMIlpYdBkjCWNVJiWVD9ZbRBQOGL3UQ5rs0oxMjQh2BRqW2EVizIfujIkJkwNJ5XhB8+y9ejjfqsXhjLP3PvuME50PNsOcc/be6/uv/3df0JKWtKQlLWlJS/6voprxUBtGCigpoyveZ6OBmcANwAxgCjABGAuMkJ+dAv4EeoFvgV3ATmV0j/eckjI6HrYA+Au0YVQC5gP3ADcBl+d45DHgC+AtYKsy+oQArJTRybABwF+UDaORwAPAMmBazU9j792qzhqsdykg8L7bB6xSRodFsUE1Ydc7gWeBqfJ1IldQo0zqx8v9ACX5ux1Yqow+0CgIqgDly8roig2jC4GXgU75qtKA0gOJA7MMHAIWKqO7bRgFec1BFaT89WKjlwrFVcGK10pFQDgMzFJG788LQlCA8ncCO0T5itC0mcojyleADmCjONtcEjSo/N3AVuAcj5pDJQ6E64BOcb7lpgMgTqdiw2gBsMnz2AFDL0rebTwf0TwfYMMokBdeAuwBxnkePheZGvRHLlT2AVe4HEEZbQtngIvzcm0Q5eMcyidC3dpcIPZyhKwyEhjdbB8QSLxdDsz1HF7WeB54vuII8IcoXpIryUBlZ379wNGmhUGP+hOAH4ExA2Rxg1EV4CvgTcnzfxXlx0uNsAS4sSbUpQmH7yij782TFJUz7H7FhtFTQHvKxdUqfxx4Uhm9rs5vfgd+AkIbRncAXcCVNaxRNc+MPcZ0iYnapjlBG0bjJRcfk+FeR9GTwC3K6M+ETYEs3HrPCoBEwtkY4DngCe89SZ36IAYeVEavz5sIZYmb90npmmX3E9mlx0X5c5TRf9Wx8X/yfaHxUWCFDaPNwNPAAmCU9/sjwE4pjHY3Ug9kYcCXwCxPqcHEUXSPMnqmS54yRJzAK7AmAZOlb9AP7FNG9xVREZZTLmgKMF0AK2WwfYB1mXelGsdjMReU0QeBg3UcM42Ww2mpPE/Qz5L0lIUFn+bO0sSmRVmfrUkRzZAsAFxTJ3MbzPYDKVkPZLx3QCCaIWl386qc6WqfMvpk1vR0KCUtABdnBMAp29+s3uNQA3BBTkVKDHNJC8CInOH1/EbtP03IlLDZVCdocwIw0YbRWGV0f5F+wM0dgNg9s95nRQJwOiMLXF7eQXUA0i1siwtQ3iU+Ffm/HbDK6H7vs9RgpwXgGHBeTVWXJhMsUx2IdFNMB7qkjI5tGHUAS4HbgcuAxIZRj1SZrymjbVoQ0vqAvhym4BTuzJsI1elDxjaMFgJ7gReAa6WUngDMAdYA22wYjSvaCf6SAwBXqs6wYTRPqrxSA8pXbBg9BrwPXCR0T7yKMxZTvRnYnDYCpQXg+wZ7fl2OFVk9tg2jNlF+OfCKKOo60IHXmCkBbQLCfOChIgHoztFCcyyIgdk2jFZKNdiWUfnTNoyWUJ06uR5kMMg7rfiIwpzgbsnqxmZ0hHjev8uG0XfK6A9tGLVJuErO0IILRPnFwBue8irlpk4uuh+wXaiVth9QzxROAfcro7c6r15nDYlXBa4AXpJ3qozA9yuj24vsCG0RB5MnmXF5wbnAFhtGrwKrldH7BwD7auAZCXNZlXeVaG/RDOgAfs7YExyICQo4AXwiIe2QsGqShLa5/DsryMo2d88aZfSyojpCZWX0YRtGG6jOBSrkmwMqb5GjgNvkOpMieeubt4uMAomEr9Wyc0GDBU7Ji92VmiuW7/IoH3tOe1dhAIhTCqQ392JBeb2L3eWaq9RA2uwi1PNpu0hZ4noi4WkV8IPX8xsu4szyI2X0B2mzztQAuMJCGX0SWCwhTTWa4xckLjM8DDycZUqUKbNz+bwyei/VU2CBl4ufTeVdxFikjO4Vcy3cBBwIsUSFTcAjnrOKzxLt3ZhtkTJ6h6sai64Ga0GoyIvWChNcyKoM4a47m/8NuFUZ/W6W6VNDANSAsF5S5B4vN4ibZBaJVxOUgW3AbGX09jzK583mBqrV26lOdB/1gGj0rKDzL0lNeOyhOhh9vaZNxpADULsAG0bTgZXAXVRPj/m7ZznzEVlf6XpnDb8G1gIbldHHizgzXPRZYX+iOwVYJAXNtCx9AE9OSzPmY+A9ZfTn9UBvNBsrVNwg01+csGIO1fH6VGCi9BZGeuw4RvW8UC/VYzjdVE+Jf+PvsJwFjIfrqK0lLWlJS1rSkpb8d+RveOrko/YwmtgAAAAASUVORK5CYII=">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="ciblo.xyz">
-<meta property="og:url" content="https://ciblo.xyz">
-<meta property="og:title" content="ciblo.xyz | Vanilla Semi-Anarchy">
-<meta property="og:description" content="Vanilla semi-anarchy Minecraft server. Rules, punishments, appeals and staff applications. Join: 135.148.252.150:27871">
-<meta property="og:image" content="https://ciblo.xyz/ciblo-embed.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="ciblo.xyz, a vanilla semi-anarchy Minecraft server">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ciblo.xyz | Vanilla Semi-Anarchy">
-<meta name="twitter:description" content="Vanilla semi-anarchy Minecraft server. Rules, punishments, appeals and staff applications. Join: 135.148.252.150:27871">
-<meta name="twitter:image" content="https://ciblo.xyz/ciblo-embed.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&display=swap">
-<style>
-:root{--bg:#060609;--surface:#0c0c11;--surface2:#13131a;--line:#22222b;--text:#ffffff;--muted:#aaaaaa;--pink:#ff9eb4;--shadow:#3f272d;--ink:#1a0f13;
---sans:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;--pix:"Pixelify Sans","Minecraft Ten","Courier New",monospace;
-color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-*,*::before,*::after{box-sizing:border-box;border-radius:0}
-html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px)}
-body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
-.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
-a{color:var(--pink)}
-:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--surface);border-bottom:1px solid var(--line)}
-.hd{display:flex;align-items:center;gap:20px;height:60px}
-.logo{font:600 22px var(--pix);color:var(--pink);text-shadow:2px 2px 0 var(--shadow);text-decoration:none;white-space:nowrap}
-nav{display:flex;gap:2px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
-nav a{padding:8px 12px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}
-nav a:hover{color:var(--text);background:var(--surface2)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:11px 20px;font:600 14px var(--sans);border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer;text-decoration:none;line-height:1.2}
-.btn:hover{background:var(--surface2);border-color:#3a3a46}
-.btn.pri{background:var(--pink);border-color:var(--pink);color:var(--ink)}
-.btn.pri:hover{filter:brightness(1.08)}
-.ic{width:18px;height:18px;fill:currentColor;flex:none}
-.btn.sm{padding:8px 14px;font-size:13px}
-.hero{padding:84px 0 60px;border-bottom:1px solid var(--line)}
-.eyebrow{font:500 13px var(--pix);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 16px}
-h1{margin:0 0 18px;font:600 clamp(48px,11vw,104px)/1 var(--pix);color:var(--pink);text-shadow:.06em .06em 0 var(--shadow);letter-spacing:.01em}
-h2{margin:0 0 12px;font:600 clamp(28px,4.4vw,38px)/1.1 var(--pix);color:var(--text)}
-h3{margin:0 0 6px;font-size:16px}
-.lead{max-width:600px;color:var(--muted);font-size:17px;margin:0 0 32px}
-.acts{display:flex;flex-wrap:wrap;gap:12px}
-.ip{font:500 15px var(--pix);gap:16px;padding:12px 20px;letter-spacing:.02em}
-.ip small{color:var(--muted);font:500 12px var(--pix);letter-spacing:.12em}
-.ip .cp{color:var(--pink);font-size:12px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:60px}
-.cards a{background:var(--surface);padding:22px;text-decoration:none;color:var(--text);display:block}
-.cards a:hover{background:var(--surface2)}
-.cards .n{font:500 13px var(--pix);color:var(--pink)}
-.cards strong{display:block;margin:6px 0 2px;font-size:16px}
-.cards span.d{color:var(--muted);font-size:14px}
-section{padding:76px 0;border-bottom:1px solid var(--line)}
-.sub{color:var(--muted);max-width:640px;margin:0 0 36px}
-.gl{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
-.gl>div{background:var(--surface);padding:24px}
-.gl p{margin:0;color:var(--muted);font-size:14.5px}
-.gl .n{font:500 13px var(--pix);color:var(--pink);margin-bottom:8px}
-.tw{overflow-x:auto;border:1px solid var(--line);background:var(--surface)}
-table{width:100%;border-collapse:collapse;min-width:520px}
-th,td{text-align:left;padding:14px 20px;border-bottom:1px solid var(--line);font-size:14.5px;vertical-align:top}
-th{font:500 12px var(--pix);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--surface2)}
-tr:last-child td{border-bottom:0}
-td:last-child{font-weight:600;color:var(--pink)}
-.note{color:var(--muted);font-size:13.5px;margin-top:14px}
-.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:start;margin-top:32px}
-@media (max-width:860px){.split{grid-template-columns:1fr}}
-.panel{background:var(--surface);border:1px solid var(--line)}
-.pb{padding:24px}
-.list{list-style:none;margin:10px 0 0;padding:0}
-.list li{position:relative;padding:5px 0 5px 20px;font-size:14.5px;color:var(--muted)}
-.list li::before{content:"";position:absolute;left:0;top:14px;width:7px;height:7px;background:var(--pink)}
-.list.no li::before{background:#555560}
-.steps{counter-reset:s}
-.steps>div::before{counter-increment:s;content:"0" counter(s);display:block;font:500 13px var(--pix);color:var(--pink);margin-bottom:8px}
-.cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;background:var(--surface);border:1px solid var(--line);padding:28px;margin-top:32px}
-.cta h3{font:600 20px var(--pix);margin:0 0 4px}
-.cta p{margin:0;color:var(--muted);font-size:14.5px}
-footer{padding:36px 0;color:var(--muted);font-size:13px}
-.ft{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-
-/* ===== motion + atmosphere ===== */
-main,footer{position:relative;z-index:1}
-.bg{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none}
-.orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:.26;translate:calc(var(--px,0) * 50px) calc(var(--py,0) * 50px);transition:translate .6s ease-out}
-.o1{width:540px;height:540px;background:var(--pink);top:-160px;left:-140px;animation:drift 24s ease-in-out infinite alternate}
-.o2{width:480px;height:480px;background:#c4568a;right:-160px;top:38vh;opacity:.18;animation:drift 30s ease-in-out infinite alternate-reverse}
-.grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.4;-webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 15%,transparent 72%);mask-image:radial-gradient(ellipse at 50% 0%,#000 15%,transparent 72%);animation:gridmove 18s linear infinite}
-@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(140px,90px) scale(1.18)}}
-@keyframes gridmove{to{background-position:0 56px,56px 0}}
-.bar{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;height:2px;background:var(--pink);transform:scaleX(0);transform-origin:0 50%;z-index:150}
-.curtain{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:var(--bg);font:600 clamp(34px,9vw,68px) var(--pix);color:var(--pink);text-shadow:.06em .06em 0 var(--shadow);pointer-events:none;animation:curtain 1s cubic-bezier(.7,0,.2,1) .6s forwards}
-@keyframes curtain{to{opacity:0;filter:blur(26px);visibility:hidden}}
-@keyframes blurIn{to{opacity:1;filter:blur(0);transform:none}}
-.ch{display:inline-block;opacity:0;filter:blur(16px);transform:translateY(.3em);animation:blurIn 1s cubic-bezier(.2,.7,.2,1) var(--d,0s) forwards}
-h1{animation:glow 4.5s ease-in-out 2.6s infinite}
-@keyframes glow{0%,100%{filter:drop-shadow(0 0 0 rgba(255,158,180,0))}50%{filter:drop-shadow(0 0 22px rgba(255,158,180,.32))}}
-.js .in{opacity:0;filter:blur(14px);transform:translateY(20px);animation:blurIn 1s cubic-bezier(.2,.7,.2,1) var(--d,0s) forwards}
-.js .rv{opacity:0;filter:blur(12px);transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),filter .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
-.js .rv.vis{opacity:1;filter:none;transform:none}
-.ticker{font:500 18px var(--pix);color:var(--pink);margin:0 0 14px;min-height:1.5em}
-.ticker .tg{color:var(--muted)}
-#tk{display:inline-block;transition:opacity .45s,filter .45s,transform .45s}
-#tk.out{opacity:0;filter:blur(8px);transform:translateY(-6px)}
-h2::after{content:"";display:block;width:0;height:3px;background:var(--pink);margin-top:14px;transition:width .9s cubic-bezier(.2,.7,.2,1) .3s}
-h2.vis::after{width:56px}
-nav a{position:relative}
-nav a::after{content:"";position:absolute;left:12px;right:12px;bottom:2px;height:2px;background:var(--pink);transform:scaleX(0);transform-origin:0 50%;transition:transform .35s}
-nav a.on{color:var(--text)}
-nav a.on::after{transform:scaleX(1)}
-.btn{position:relative;overflow:hidden;transition:background .2s,border-color .2s,transform .15s}
-.btn::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.2),transparent);transform:skewX(-18deg);pointer-events:none}
-.btn:hover::after{animation:shine .8s}
-.btn:active{transform:scale(.98)}
-@keyframes shine{to{left:130%}}
-.ip{animation:ring 3.2s ease-out 2.4s infinite}
-@keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,158,180,.35)}70%,100%{box-shadow:0 0 0 14px rgba(255,158,180,0)}}
-.cards a,.gl>div,.panel,.stat{position:relative;overflow:hidden}
-.cards a::after,.gl>div::after,.panel::after{content:"";position:absolute;inset:0;background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%),rgba(255,158,180,.14),transparent 70%);opacity:0;transition:opacity .35s;pointer-events:none}
-.cards a:hover::after,.gl>div:hover::after,.panel:hover::after{opacity:1}
-.strip{padding:56px 0;border-bottom:1px solid var(--line)}
-.stat b{display:block;font:600 clamp(40px,6vw,58px)/1 var(--pix);color:var(--pink);text-shadow:3px 3px 0 var(--shadow);margin-bottom:10px}
-.stat span{color:var(--muted);font-size:14.5px}
-.faq{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
-.qa{background:var(--surface)}
-.q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 24px;background:none;color:var(--text);border:0;font:600 15px var(--sans);text-align:left;cursor:pointer;transition:background .2s}
-.q:hover{background:var(--surface2)}
-.q i{position:relative;width:14px;height:14px;flex:none}
-.q i::before,.q i::after{content:"";position:absolute;background:var(--pink);transition:transform .35s}
-.q i::before{left:0;right:0;top:6px;height:2px}
-.q i::after{top:0;bottom:0;left:6px;width:2px}
-.qa.open .q i::after{transform:scaleY(0)}
-.a{display:grid;grid-template-rows:0fr;opacity:0;filter:blur(6px);transition:grid-template-rows .45s cubic-bezier(.2,.7,.2,1),opacity .45s,filter .45s}
-.a>div{overflow:hidden}
-.a p{margin:0;padding:0 24px 22px;max-width:720px;color:var(--muted);font-size:14.5px}
-.qa.open .a{grid-template-rows:1fr;opacity:1;filter:none}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv,.in,.ch{opacity:1!important;filter:none!important;transform:none!important}.curtain{display:none}}
-
-/* ===== centered layout + progressive blur ===== */
-.hd{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;height:64px}
-.logo{font-size:25px;text-align:center}
-.nl,.nr{flex:none;overflow:visible}
-.nl{justify-content:flex-start}
-.rt{display:flex;align-items:center;justify-content:flex-end;gap:8px}
-.pbl{position:fixed;left:0;right:0;z-index:5;pointer-events:none;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-.pbl.t{top:0;height:46vh;opacity:var(--tp,0);-webkit-mask-image:linear-gradient(#000 0%,transparent 100%);mask-image:linear-gradient(#000 0%,transparent 100%)}
-.pbl.b{bottom:0;height:34vh;opacity:var(--bp,1);-webkit-mask-image:linear-gradient(transparent 0%,#000 100%);mask-image:linear-gradient(transparent 0%,#000 100%)}
-.hero,section,.strip{text-align:center}
-.lead,.sub{margin-left:auto;margin-right:auto}
-.acts{justify-content:center}
-h2::after{margin:14px auto 0}
-.list{text-align:center}
-.list li{padding:5px 0}
-.list li::before{position:static;display:inline-block;margin-right:10px;vertical-align:middle}
-th,td{text-align:center}
-.cta{flex-direction:column;justify-content:center;text-align:center}
-.q{position:relative;justify-content:center;text-align:center;padding:20px 56px}
-.q i{position:absolute;right:24px;top:50%;margin-top:-7px}
-.a p{margin:0 auto;text-align:center}
-.note{text-align:center}
-.ft{justify-content:center;text-align:center}
-@media (max-width:860px){
-.hd{display:flex;flex-wrap:wrap;justify-content:center;height:auto;padding:10px 20px;gap:2px 0}
-.logo{order:-1;flex:0 0 100%}
-.rt{display:contents}
-.rt .btn{display:none}
-nav a{padding:6px 9px;font-size:13px}
-html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 120px)}
-}
-@media (prefers-reduced-motion:reduce){.pbl{display:none}}
-
-/* ===== gap-free grids + pink and white theme ===== */
-.gl{display:flex;flex-wrap:wrap;gap:1px}
-.gl>div{flex:1 1 calc(33.333% - 1px);min-width:240px}
-.gl.c4>div{flex-basis:calc(25% - 1px);min-width:200px}
-.gl.c5>div{flex-basis:calc(20% - 1px);min-width:170px}
-::selection{background:var(--pink);color:var(--ink)}
-.eyebrow{color:var(--pink)}
-.bar{background:linear-gradient(90deg,var(--pink),#fff)}
-.o2{background:#fff;opacity:.07}
-.btn.pri{background:#fff;border-color:#fff;color:var(--ink)}
-.btn.pri:hover{background:var(--pink);border-color:var(--pink);filter:none}
-.ip{border-color:var(--pink);color:#fff}
-.ip:hover{background:var(--pink);color:var(--ink)}
-.ip:hover small,.ip:hover .cp{color:var(--ink)}
-.stat b{color:#fff;text-shadow:3px 3px 0 var(--pink)}
-.list li{color:#d6d6dc}
-td:first-child{color:#fff}
-.q{color:#fff}
-/* ===== more white ===== */
-:root{--muted:#c6c6ce;--line:#2d2d37}
-nav a{color:#e9e9ef}
-nav a:hover{color:#fff}
-.eyebrow{color:#fff}
-.eyebrow::before{content:"";display:inline-block;width:8px;height:8px;background:var(--pink);margin-right:10px}
-.ticker .tg{color:#fff}
-h2::after{background:#fff}
-.steps>div::before{color:#fff}
-.gl .n{color:#fff}
-th{color:#fff}
-.list li::before{background:#fff}
-.q i::before,.q i::after{background:#fff}
-.cards a:hover,.gl>div:hover,.panel:hover{box-shadow:inset 0 2px 0 #fff}
-.cta{border-top:2px solid #fff}
-.lead{color:#d8d8df}
-footer{color:#c6c6ce}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff7fa">
+  <title>ciblo.xyz — Vanilla Semi-Anarchy</title>
+  <meta name="description" content="The official guide to ciblo.xyz: rules, tickets, punishments and staff applications.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Pixelify+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--pink:#ef5f93;--hot:#d9467f;--blush:#fff0f5;--pale:#fff8fb;--ink:#281720;--body:#654d59;--line:#f1dce5;--white:#fff;--shadow:0 18px 55px rgba(122,39,73,.12)}
+    *{box-sizing:border-box} html{scroll-behavior:smooth;scroll-padding-top:92px} body{margin:0;background:var(--pale);color:var(--ink);font:500 16px/1.7 Manrope,Arial,sans-serif} a{color:inherit} .wrap{width:min(1120px,calc(100% - 40px));margin:auto}
+    .announce{background:var(--ink);color:#fff;text-align:center;padding:9px 20px;font-size:13px}.announce b{color:#ffabc8}.announce a{margin-left:8px;color:white;font-weight:800}
+    header{position:sticky;top:0;z-index:5;background:rgba(255,248,251,.87);backdrop-filter:blur(16px);border-bottom:1px solid rgba(241,220,229,.8)}.nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{font:700 30px/1 "Pixelify Sans",monospace;color:var(--pink);text-decoration:none;letter-spacing:-1px}.links{display:flex;align-items:center;gap:26px}.links a{font-size:14px;font-weight:800;text-decoration:none;color:#745767}.links a:hover{color:var(--hot)}
+    .button{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:13px;padding:13px 20px;background:var(--pink);color:white;font:800 14px Manrope,sans-serif;text-decoration:none;cursor:pointer;box-shadow:0 8px 18px rgba(239,95,147,.2);transition:.2s}.button:hover{background:var(--hot);transform:translateY(-2px)}.button.light{background:#fff;color:var(--ink);box-shadow:0 8px 22px rgba(78,25,47,.11)}.button.ghost{background:transparent;color:var(--hot);box-shadow:inset 0 0 0 1.5px #ef9ab8}
+    .hero{position:relative;overflow:hidden;padding:100px 0 76px;background:radial-gradient(circle at 76% 10%,#ffd1e1 0,transparent 28%),radial-gradient(circle at 5% 82%,#ffe3ed 0,transparent 27%),var(--pale)}.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;border:1px solid #fac8d9;opacity:.7}.hero:before{width:520px;height:520px;right:-230px;top:-180px}.hero:after{width:260px;height:260px;left:-120px;bottom:-130px}.hero-grid{position:relative;display:grid;grid-template-columns:1.25fr .75fr;align-items:center;gap:64px}.eyebrow{display:inline-flex;align-items:center;gap:8px;margin:0 0 18px;color:var(--hot);font:500 12px "DM Mono",monospace;letter-spacing:.13em;text-transform:uppercase}.eyebrow:before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}h1,h2,h3,p{margin-top:0}h1{max-width:720px;margin-bottom:22px;font-size:clamp(52px,7.5vw,90px);line-height:.98;letter-spacing:-.07em}h1 em{font-family:"Pixelify Sans",monospace;font-style:normal;color:var(--pink);letter-spacing:-.04em}.lead{max-width:630px;margin-bottom:30px;color:var(--body);font-size:18px}.hero-actions{display:flex;flex-wrap:wrap;gap:12px}.ip{font:500 13px "DM Mono",monospace}.ip span{font-size:11px;opacity:.75;letter-spacing:.08em}.hero-card{position:relative;padding:28px;border:1px solid #fff;background:rgba(255,255,255,.76);border-radius:24px;box-shadow:var(--shadow);transform:rotate(2deg)}.hero-card:before{content:"";position:absolute;inset:10px;border:1px dashed #f5b6cb;border-radius:16px}.hero-card>*{position:relative}.card-title{font:700 18px "Pixelify Sans",monospace}.online{display:flex;align-items:center;gap:9px;margin:20px 0;color:var(--body);font-size:14px}.dot{width:10px;height:10px;background:#4cbb85;border-radius:50%;box-shadow:0 0 0 5px #e3f8ee}.mini-rule{height:1px;background:var(--line);margin:18px 0}.tiny{font-size:13px;color:var(--body)}
+    .quick{position:relative;margin-top:-1px;background:var(--ink);color:white}.quick-grid{display:grid;grid-template-columns:repeat(4,1fr)}.quick a{padding:28px 22px;color:white;text-decoration:none;border-right:1px solid #49323d;transition:.2s}.quick a:last-child{border:0}.quick a:hover{background:#36212b}.quick b{display:block;margin-bottom:4px;color:#ff9fbd;font:600 20px "Pixelify Sans",monospace}.quick span{font-size:13px;color:#e3cbd5}
+    section{padding:96px 0;border-bottom:1px solid var(--line)}.heading{max-width:680px;margin-bottom:42px}.heading h2{margin-bottom:12px;font-size:clamp(34px,5vw,55px);line-height:1.05;letter-spacing:-.055em}.heading p{margin:0;color:var(--body)}.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.rule{padding:27px;border:1px solid var(--line);border-radius:18px;background:var(--white);transition:.2s}.rule:hover{transform:translateY(-4px);border-color:#f4aac2;box-shadow:0 16px 35px rgba(133,42,77,.08)}.label{display:inline-block;margin-bottom:16px;padding:4px 9px;border-radius:7px;background:var(--blush);color:var(--hot);font:500 12px "DM Mono",monospace}.rule h3{margin-bottom:8px;font-size:17px;letter-spacing:-.03em}.rule p{margin:0;color:var(--body);font-size:14px;line-height:1.65}
+    .punishment{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;align-items:start;background:var(--blush)}.table{overflow:hidden;border:1px solid var(--line);border-radius:18px;background:white;box-shadow:var(--shadow)}.row{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:17px 22px;border-bottom:1px solid var(--line);font-size:14px}.row:last-child{border:0}.row:first-child{padding:13px 22px;background:#fff8fb;color:#9e6b7f;font:500 11px "DM Mono",monospace;letter-spacing:.1em;text-transform:uppercase}.row span:last-child{color:var(--hot);font-weight:800}
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.step{padding:24px;background:white;border:1px solid var(--line);border-radius:18px}.number{margin-bottom:18px;color:var(--pink);font:600 28px/1 "Pixelify Sans",monospace}.step h3{margin-bottom:8px;font-size:16px}.step p{margin:0;color:var(--body);font-size:14px}.ticket-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.ticket{padding:28px;border-radius:18px;background:white;border:1px solid var(--line)}.ticket.bad{background:#fffafb}.ticket h3{font-size:19px}.ticket ul{padding-left:19px;margin:12px 0 0;color:var(--body);font-size:14px}.ticket li+li{margin-top:6px}
+    .apply{background:linear-gradient(135deg,#fff 0%,#fff1f6 100%)}.apply-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.checklist{padding:30px;border-radius:20px;background:var(--ink);color:white}.checklist h3{font-size:22px}.checklist ul{padding:0;margin:18px 0 0;list-style:none}.checklist li{position:relative;padding:10px 0 10px 28px;border-bottom:1px solid #49323d;font-size:14px;color:#ead7de}.checklist li:before{content:"✓";position:absolute;left:0;color:#ffa4c1;font-weight:800}.apply-box{display:flex;flex-direction:column;justify-content:center;padding:40px;border-radius:20px;background:white;border:1px solid var(--line)}.apply-box h3{font-size:28px;letter-spacing:-.05em}.apply-box p{color:var(--body)}
+    .faq{display:grid;gap:10px}.faq details{border:1px solid var(--line);border-radius:14px;background:white;padding:0 21px}.faq summary{padding:18px 0;cursor:pointer;font-size:15px;font-weight:800}.faq p{max-width:750px;margin:0;padding:0 0 19px;color:var(--body);font-size:14px}footer{padding:42px 0;background:var(--ink);color:#dbc5cf}.foot{display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:13px}.foot .brand{font-size:23px}.copy{font-size:12px}
+    @media(max-width:760px){.links{display:none}.nav{height:64px}.hero{padding:70px 0 60px}.hero-grid,.punishment,.apply-grid{grid-template-columns:1fr;gap:32px}.hero-card{display:none}.quick-grid,.rules,.steps{grid-template-columns:1fr 1fr}.quick a{padding:20px 14px}.quick a:nth-child(2){border-right:0}.quick a:nth-child(-n+2){border-bottom:1px solid #49323d}section{padding:65px 0}.ticket-cards{grid-template-columns:1fr}.foot{align-items:flex-start;flex-direction:column}.row{grid-template-columns:1fr}.row:first-child{display:none}}@media(max-width:430px){.quick-grid,.rules,.steps{grid-template-columns:1fr}.quick a{border-right:0;border-bottom:1px solid #49323d}.quick a:last-child{border-bottom:0}h1{font-size:50px}.button{width:100%}}
+  </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="dc" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></symbol></svg>
-<div class="bg" aria-hidden="true"><i class="grid"></i><i class="orb o1"></i><i class="orb o2"></i></div>
-<div class="bar" id="bar"></div>
-<div class="pbl t" aria-hidden="true"></div>
-<div class="pbl b" aria-hidden="true"></div>
-<div class="curtain" aria-hidden="true">ciblo.xyz</div>
-<header>
-  <div class="wrap hd">
-    <nav class="nl" aria-label="Primary"><a href="#rules">Rules</a><a href="#punishments">Punishments</a><a href="#tickets">Tickets</a></nav>
-    <a class="logo" href="#top">ciblo.xyz</a>
-    <div class="rt"><nav class="nr" aria-label="More"><a href="#apply">Staff Applications</a><a href="#faq">FAQ</a></nav><a class="btn pri sm" href="https://discord.gg/JX94BcJuCH" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#dc"/></svg>Discord</a></div>
-  </div>
-</header>
-
-<main id="top">
-<div class="hero"><div class="wrap">
-  <p class="eyebrow">Vanilla Semi-Anarchy</p>
-  <h1>ciblo.xyz</h1>
-  <p class="ticker"><span class="tg">&gt;</span> <span id="tk">Vanilla survival.</span></p>
-  <p class="lead">The official hub for server rules, punishments, Discord tickets and staff applications.</p>
-  <div class="acts">
-    <button class="btn ip" id="ip" type="button" aria-label="Copy server IP 135.148.252.150:27871"><small>IP</small><span>135.148.252.150:27871</span><span class="cp" id="cp">COPY</span></button>
-    <a class="btn pri" href="https://discord.gg/JX94BcJuCH" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#dc"/></svg>Join the Discord</a>
-  </div>
-  <div class="cards">
-    <a href="#rules"><span class="n">01</span><strong>Rules</strong><span class="d">What is allowed and what is not</span></a>
-    <a href="#punishments"><span class="n">02</span><strong>Punishments</strong><span class="d">What happens when rules are broken</span></a>
-    <a href="#tickets"><span class="n">03</span><strong>Tickets</strong><span class="d">Appeals and reports, Discord only</span></a>
-    <a href="#apply"><span class="n">04</span><strong>Staff Applications</strong><span class="d">Requirements and process</span></a>
-  </div>
-</div></div>
-
-<div class="strip"><div class="wrap"><div class="gl c4">
-  <div class="stat"><b data-to="3">3</b><span>Tempbans lead to a permanent ban</span></div>
-  <div class="stat"><b data-to="100" data-sf="%">100%</b><span>Staff commands logged and audited</span></div>
-  <div class="stat"><b data-to="0">0</b><span>Tolerance for staff sharing coordinates</span></div>
-  <div class="stat"><b data-to="1">1</b><span>Discord for every ticket and application</span></div>
-</div></div></div>
-
-<section id="rules"><div class="wrap">
-  <p class="eyebrow">Rules</p>
-  <h2>Play hard. Play fair.</h2>
-  <p class="sub">Griefing and PvP are part of the game. Cheating and abuse are not. By playing on ciblo.xyz you accept these rules.</p>
-  <div class="gl">
-    <div><div class="n">A</div><h3>Allowed</h3><p>Griefing, raiding, stealing, PvP, trap kills, base hunting and AFK farms. Staff do not restore griefed bases, lost items or scammed trades.</p></div>
-    <div><div class="n">B</div><h3>No cheating</h3><p>No hacked clients, x-ray (including texture packs and ore finders), dupes, exploits, kill aura, auto-clickers, macros, fly hacks, lag machines or crashers. Report exploits instead of using them. Cheating results in a tempban, and three tempbans result in a permanent ban.</p></div>
-    <div><div class="n">C</div><h3>Mods</h3><p>Performance and visual mods are allowed. Freecam, entity radar and cave or entity minimaps are not.</p></div>
-    <div><div class="n">D</div><h3>Real-life harm</h3><p>No doxxing, threats or DDoS. Never share anyone's real-life personal information. Sharing in-game coordinates is allowed for players.</p></div>
-    <div><div class="n">E</div><h3>Conduct</h3><p>No harassment, hate speech, spam or advertising. No ban evasion or alt accounts used to dodge punishment. Do not argue punishments in public chat.</p></div>
-    <div><div class="n">F</div><h3>Staff conduct</h3><p>Staff may not spy, scout bases, share coordinates or player information, take items, accept payment or favors, or punish someone they are in a dispute with. All staff commands are logged and audited.</p></div>
-  </div>
-</div></section>
-
-<section id="punishments"><div class="wrap">
-  <p class="eyebrow">Punishments</p>
-  <h2>Consistent and proportionate.</h2>
-  <p class="sub">Action depends on the offense and is at staff discretion. Evidence is required before any punishment is issued.</p>
-  <div class="tw"><table>
-    <thead><tr><th>Offense</th><th>Typical action</th></tr></thead>
-    <tbody>
-      <tr><td>Chat violations: spam, advertising, harassment</td><td>Warning, then tempmute, then tempban</td></tr>
-      <tr><td>Cheating: hacks, x-ray, dupes, exploits</td><td>Tempban</td></tr>
-      <tr><td>Three tempbans</td><td>Permanent ban</td></tr>
-      <tr><td>Doxxing, threats, DDoS</td><td>Permanent ban</td></tr>
-      <tr><td>Staff sharing coordinates or player information</td><td>Immediate removal</td></tr>
-      <tr><td>Ban evasion</td><td>Permanent ban</td></tr>
-      <tr><td>Staff abuse of powers</td><td>Immediate removal</td></tr>
-    </tbody>
-  </table></div>
-  <p class="note">Decisions are final unless new evidence is provided through an appeal. Every tempban counts toward your total, and three tempbans result in a permanent ban.</p>
-</div></section>
-
-<section id="tickets"><div class="wrap">
-  <p class="eyebrow">Tickets</p>
-  <h2>All tickets are handled in Discord.</h2>
-  <p class="sub">We do not accept appeals, reports or support requests anywhere else. Not on this site, not in game, and not in private messages.</p>
-  <div class="gl steps c4">
-    <div><h3>Join the Discord</h3><p>Use the button below if you have not joined yet.</p></div>
-    <div><h3>Open a ticket</h3><p>Go to the tickets channel and choose the category that fits.</p></div>
-    <div><h3>Include everything</h3><p>Username, date, what happened and evidence. Incomplete tickets may be closed.</p></div>
-    <div><h3>Wait for a reply</h3><p>One ticket per issue. Do not ping or message staff about it.</p></div>
-  </div>
-  <div class="gl" style="margin-top:32px">
-    <div><h3>Ban or mute appeal</h3><ul class="list"><li>Your Minecraft username</li><li>Punishment type and date</li><li>Staff member, if known</li><li>Why it should be lifted</li></ul></div>
-    <div><h3>Player report</h3><ul class="list"><li>Your username and the reported player</li><li>Date, time and type of violation</li><li>What happened</li><li>Screenshots or clips</li></ul></div>
-    <div><h3>Staff report</h3><ul class="list"><li>Your username and the staff member</li><li>Command or action involved</li><li>Date, time and what happened</li><li>Screenshots or clips</li></ul></div>
-  </div>
-  <div class="split">
-    <div class="panel"><div class="pb"><h3>Open a ticket for</h3>
-      <ul class="list"><li>Cheating reports with evidence</li><li>Staff abuse reports with evidence</li><li>Doxxing, threats or staff leaking coordinates</li><li>Ban or mute appeals</li><li>Bugs that affect gameplay</li></ul></div></div>
-    <div class="panel"><div class="pb"><h3>Do not open a ticket for</h3>
-      <ul class="list no"><li>Griefed bases, stolen items or PvP deaths</li><li>Scammed trades</li><li>Questions answered in the rules</li><li>Requests for items, ranks or teleports</li><li>Appeals already answered without new evidence</li></ul></div></div>
-  </div>
-  <div class="cta"><div><h3>Need help?</h3><p>Misuse of tickets can lead to ticket access being removed.</p></div><a class="btn pri" href="https://discord.gg/JX94BcJuCH" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#dc"/></svg>Open Discord</a></div>
-</div></section>
-
-<section id="apply"><div class="wrap">
-  <p class="eyebrow">Staff Applications</p>
-  <h2>Moderate ciblo.xyz.</h2>
-  <p class="sub">Moderators hold powerful commands, so trust matters more than experience. We vet carefully and audit continuously. Staff applications are handled in our Discord.</p>
-  <div class="gl steps c5">
-    <div><h3>Apply</h3><p>Open a staff application in the Discord and answer every question in detail.</p></div>
-    <div><h3>Review</h3><p>Answers and history are reviewed and verified.</p></div>
-    <div><h3>Interview</h3><p>Shortlisted applicants speak with senior staff.</p></div>
-    <div><h3>Trial</h3><p>Limited permissions with mentor oversight and weekly audits.</p></div>
-    <div><h3>Full access</h3><p>Granted only after a clean trial.</p></div>
-  </div>
-  <div class="split">
-    <div class="panel"><div class="pb"><h3>Requirements</h3>
-      <ul class="list"><li>Active member of the server and Discord</li><li>Honest history. Past bans or cheating must be disclosed</li><li>Accept that every staff command is logged and audited</li><li>Accept a trial period with reduced permissions</li><li>Secure accounts with two-factor authentication</li></ul></div></div>
-    <div class="panel"><div class="pb"><h3>Ready to apply?</h3>
-      <p class="note" style="margin:0 0 18px">Read the rules first. Applications with vague or dishonest answers are rejected.</p>
-      <a class="btn pri" href="https://discord.gg/JX94BcJuCH" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#dc"/></svg>Apply in Discord</a></div></div>
-  </div>
-</div></section>
-<section id="faq"><div class="wrap">
-  <p class="eyebrow">FAQ</p>
-  <h2>Quick answers.</h2>
-  <p class="sub">The questions we get asked most. Anything else goes through a ticket in the Discord.</p>
-  <div class="faq">
-    <div class="qa"><button class="q" type="button" aria-expanded="false"><span>Is griefing allowed?</span><i aria-hidden="true"></i></button><div class="a"><div><p>Yes. ciblo.xyz is semi-anarchy, so griefing, raiding, stealing and PvP are part of the game. Staff do not restore griefed bases or lost items.</p></div></div></div>
-    <div class="qa"><button class="q" type="button" aria-expanded="false"><span>What counts as cheating?</span><i aria-hidden="true"></i></button><div class="a"><div><p>Hacked clients, x-ray (including texture packs), dupes, exploits, kill aura, macros, fly hacks and lag machines. Cheating results in a tempban, and three tempbans result in a permanent ban.</p></div></div></div>
-    <div class="qa"><button class="q" type="button" aria-expanded="false"><span>How do I appeal a punishment?</span><i aria-hidden="true"></i></button><div class="a"><div><p>Open a ticket in our Discord with your username, the punishment and date, and why it should be lifted. Decisions are final unless you provide new evidence.</p></div></div></div>
-    <div class="qa"><button class="q" type="button" aria-expanded="false"><span>Can I share coordinates?</span><i aria-hidden="true"></i></button><div class="a"><div><p>Players can. Sharing coordinates is part of semi-anarchy. Staff and moderators can never share coordinates, and doing so means immediate removal.</p></div></div></div>
-    <div class="qa"><button class="q" type="button" aria-expanded="false"><span>How do I become staff?</span><i aria-hidden="true"></i></button><div class="a"><div><p>Open a staff application in the Discord. Applicants are vetted, interviewed and put through a trial with limited permissions before getting full access.</p></div></div></div>
-  </div>
-</div></section>
-</main>
-
-<footer><div class="wrap ft"><span>&copy; ciblo.xyz. All rights reserved.</span><span>Not affiliated with Mojang Studios or Microsoft.</span></div></footer>
-
-<script>
-(function(){
-var DISCORD="https://discord.gg/JX94BcJuCH",IP="135.148.252.150:27871";
-var b=document.getElementById("ip"),cp=document.getElementById("cp"),t;
-function say(m){cp.textContent=m;clearTimeout(t);t=setTimeout(function(){cp.textContent="COPY"},2000)}
-function fb(){var x=document.createElement("textarea");x.value=IP;x.style.cssText="position:fixed;opacity:0";document.body.appendChild(x);x.select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}document.body.removeChild(x);say(ok?"COPIED":"PRESS CTRL+C")}
-b.addEventListener("click",function(){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(IP).then(function(){say("COPIED")},fb)}else fb()});
-})();
-</script>
-<script>
-(function(){
-var d=document,r=d.documentElement,rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
-r.classList.add("js");
-/* headline: letters blur in one by one */
-var h=d.querySelector("h1");
-if(h&&!rm){var t=h.textContent;h.setAttribute("aria-label",t);h.textContent="";
-  Array.prototype.forEach.call(t,function(c,i){var s=d.createElement("span");s.className="ch";s.textContent=c;s.setAttribute("aria-hidden","true");s.style.setProperty("--d",(0.9+i*0.07).toFixed(2)+"s");h.appendChild(s)})}
-/* hero blur-in stagger */
-d.querySelectorAll(".hero .eyebrow,.hero .ticker,.hero .lead,.hero .acts").forEach(function(el,i){el.classList.add("in");el.style.setProperty("--d",(1.0+i*0.14).toFixed(2)+"s")});
-/* scroll reveal */
-var io=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("vis");io.unobserve(e.target)}})},{threshold:.12,rootMargin:"0px 0px -6% 0px"}):null;
-d.querySelectorAll("section .eyebrow,section h2,section .sub,.cards a,.gl>div,.tw,.panel,.cta,.note,.faq").forEach(function(el){
-  el.classList.add("rv");var i=Array.prototype.indexOf.call(el.parentNode.children,el);el.style.setProperty("--d",Math.min(i*0.08,0.5).toFixed(2)+"s");
-  if(io)io.observe(el);else el.classList.add("vis")});
-/* count-up stats */
-var cio=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){count(e.target);cio.unobserve(e.target)}})},{threshold:.6}):null;
-function count(el){var to=+el.dataset.to,sf=el.dataset.sf||"",t0=null;
-  function f(t){if(!t0)t0=t;var p=Math.min((t-t0)/1400,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(to*e)+sf;if(p<1)requestAnimationFrame(f)}requestAnimationFrame(f)}
-if(cio&&!rm)d.querySelectorAll(".stat b").forEach(function(el){el.textContent="0"+(el.dataset.sf||"");cio.observe(el)});
-/* rotating ticker with blur transition */
-var tk=d.getElementById("tk"),ph=["Vanilla survival.","Semi-anarchy rules.","Griefing is part of the game.","Cheaters get removed.","Every staff action is audited."],pi=0;
-if(tk&&!rm)setInterval(function(){tk.classList.add("out");setTimeout(function(){pi=(pi+1)%ph.length;tk.textContent=ph[pi];tk.classList.remove("out")},450)},2800);
-/* FAQ accordion */
-d.querySelectorAll(".q").forEach(function(b){b.addEventListener("click",function(){var o=b.parentNode.classList.toggle("open");b.setAttribute("aria-expanded",o?"true":"false")})});
-/* progress bar + active nav */
-var bar=d.getElementById("bar"),links=Array.prototype.slice.call(d.querySelectorAll("nav a[href^=\"#\"]")),secs=links.map(function(a){return d.querySelector(a.getAttribute("href"))});
-function sc(){var m=r.scrollHeight-innerHeight;bar.style.transform="scaleX("+(m>0?Math.min(scrollY/m,1):0)+")";r.style.setProperty("--tp",Math.min(scrollY/240,1).toFixed(3));r.style.setProperty("--bp",Math.max(0,Math.min((m-scrollY)/160,1)).toFixed(3));var y=scrollY+140,c=-1;secs.forEach(function(s,i){if(s&&s.offsetTop<=y)c=i});links.forEach(function(a,i){a.classList.toggle("on",i===c)})}
-addEventListener("scroll",sc,{passive:true});sc();
-/* cursor spotlight + background parallax */
-var tick=false,mx=0,my=0,tg=null;
-addEventListener("pointermove",function(e){mx=e.clientX;my=e.clientY;tg=e.target;if(tick)return;tick=true;
-  requestAnimationFrame(function(){tick=false;r.style.setProperty("--px",(mx/innerWidth-.5).toFixed(3));r.style.setProperty("--py",(my/innerHeight-.5).toFixed(3));
-    var el=tg&&tg.closest?tg.closest(".cards a,.gl>div,.panel"):null;if(el){var b=el.getBoundingClientRect();el.style.setProperty("--mx",(mx-b.left)+"px");el.style.setProperty("--my",(my-b.top)+"px")}})},{passive:true});
-})();
-</script>
+  <div class="announce"><b>✦</b> Vanilla semi-anarchy, with a few rules that matter. <a href="#rules">Read the rules →</a></div>
+  <header><nav class="wrap nav"><a class="brand" href="#top">ciblo.xyz</a><div class="links"><a href="#rules">Rules</a><a href="#punishments">Punishments</a><a href="#tickets">Tickets</a><a href="#apply">Staff</a><a href="#faq">FAQ</a></div><a class="button" href="https://discord.gg/JX94BcJuCH" target="_blank" rel="noopener">Join Discord ↗</a></nav></header>
+  <main id="top">
+    <section class="hero"><div class="wrap hero-grid"><div><p class="eyebrow">Vanilla semi-anarchy</p><h1>Survive your way.<br><em>Play it fair.</em></h1><p class="lead">Welcome to ciblo.xyz — a vanilla Minecraft server where raiding, griefing, and PvP are part of the story. Just keep cheats and abuse out of it.</p><div class="hero-actions"><button class="button ip light" id="copy" type="button"><span>SERVER IP</span>135.148.252.150:27871</button><a class="button ghost" href="#rules">Explore the rules</a></div></div><aside class="hero-card"><div class="card-title">Ready when you are.</div><div class="online"><i class="dot"></i> Server information</div><div class="mini-rule"></div><p class="tiny">Copy the IP, launch Minecraft, and make your own mark. Need help? Every ticket starts in Discord.</p><a class="button" style="margin-top:18px" href="https://discord.gg/JX94BcJuCH" target="_blank" rel="noopener">Open Discord ↗</a></aside></div></section>
+    <div class="quick"><div class="wrap quick-grid"><a href="#rules"><b>01</b><span>Rules &amp; conduct</span></a><a href="#punishments"><b>02</b><span>How punishments work</span></a><a href="#tickets"><b>03</b><span>Appeals &amp; reports</span></a><a href="#apply"><b>04</b><span>Join the staff team</span></a></div></div>
+    <section id="rules"><div class="wrap"><div class="heading"><p class="eyebrow">The basics</p><h2>Big freedom. Clear boundaries.</h2><p>Griefing and PvP are part of the experience. Cheating and real-world harm are not. By playing on ciblo.xyz, you agree to the rules below.</p></div><div class="rules"><article class="rule"><span class="label">01 / Allowed</span><h3>Play the game hard</h3><p>Griefing, raiding, stealing, PvP, trap kills, base hunting, and AFK farms are allowed. Lost items and griefed bases are not restored.</p></article><article class="rule"><span class="label">02 / No cheats</span><h3>Keep it vanilla</h3><p>No hacked clients, x-ray, dupes, exploits, macros, fly hacks, lag machines, or crashers. Report exploits instead of using them.</p></article><article class="rule"><span class="label">03 / Mods</span><h3>Performance is fine</h3><p>Visual and performance mods are welcome. Freecam, entity radar, and cave or entity minimaps are not.</p></article><article class="rule"><span class="label">04 / Real-life safety</span><h3>Never cross the line</h3><p>No doxxing, threats, or DDoS. Never share real-life personal information. Players may share in-game coordinates.</p></article><article class="rule"><span class="label">05 / Conduct</span><h3>Respect the server</h3><p>No harassment, hate speech, spam, advertising, ban evasion, or punishment arguments in public chat.</p></article><article class="rule"><span class="label">06 / Staff accountability</span><h3>Power is audited</h3><p>Staff cannot scout bases, leak information, take items, or favor friends. Every staff command is logged and audited.</p></article></div></div></section>
+    <section class="punishment" id="punishments"><div class="wrap" style="display:contents"></div><div style="max-width:520px;justify-self:end;padding-left:20px"><p class="eyebrow">Punishments</p><h2 style="font-size:clamp(34px,5vw,55px);line-height:1.05;letter-spacing:-.055em">Fair, consistent, documented.</h2><p style="color:var(--body)">Staff issue punishment only after reviewing evidence. Context matters, but our standards stay consistent.</p><p class="tiny"><b>Remember:</b> three tempbans become a permanent ban.</p></div><div class="table" style="margin-right:20px"><div class="row"><span>Offense</span><span>Typical action</span></div><div class="row"><span>Spam, advertising, harassment</span><span>Warning → mute → tempban</span></div><div class="row"><span>Hacks, x-ray, dupes, exploits</span><span>Tempban</span></div><div class="row"><span>Three tempbans</span><span>Permanent ban</span></div><div class="row"><span>Doxxing, threats, DDoS</span><span>Permanent ban</span></div><div class="row"><span>Staff abuse or leaked coordinates</span><span>Immediate removal</span></div></div></section>
+    <section id="tickets"><div class="wrap"><div class="heading"><p class="eyebrow">Tickets</p><h2>Every ticket starts in Discord.</h2><p>Appeals, reports, and support are handled there — not in game or private messages. Include the right details to help us resolve things quickly.</p></div><div class="steps"><article class="step"><div class="number">01</div><h3>Join Discord</h3><p>Use the link at the top of this page if you are not already in.</p></article><article class="step"><div class="number">02</div><h3>Open a ticket</h3><p>Choose the category that best matches what you need.</p></article><article class="step"><div class="number">03</div><h3>Add evidence</h3><p>Share usernames, dates, a clear explanation, and any screenshots or clips.</p></article><article class="step"><div class="number">04</div><h3>Wait for staff</h3><p>One ticket per issue. Please do not ping staff for an update.</p></article></div><div class="ticket-cards"><article class="ticket"><h3>Open a ticket for</h3><ul><li>Cheating or staff abuse reports with evidence</li><li>Doxxing, threats, or leaked staff coordinates</li><li>Ban and mute appeals</li><li>Bugs that affect gameplay</li></ul></article><article class="ticket bad"><h3>Don’t open a ticket for</h3><ul><li>Griefed bases, stolen items, or PvP deaths</li><li>Scammed trades</li><li>Items, ranks, teleports, or rule questions</li><li>An appeal already answered without new evidence</li></ul></article></div></div></section>
+    <section class="apply" id="apply"><div class="wrap"><div class="heading"><p class="eyebrow">Staff applications</p><h2>Help protect the chaos.</h2><p>We value judgment and integrity over experience. Applications are reviewed in Discord, then shortlisted candidates are interviewed and trialed.</p></div><div class="apply-grid"><article class="checklist"><h3>What we look for</h3><ul><li>An active, respectful server and Discord member</li><li>Honesty about past bans or cheating history</li><li>Comfort with every command being audited</li><li>Willingness to complete a limited-permission trial</li><li>A secured account with two-factor authentication</li></ul></article><article class="apply-box"><h3>Think you’re a fit?</h3><p>Read the rules first, then submit a thoughtful application in Discord. Vague or dishonest applications are declined.</p><p><a class="button" href="https://discord.gg/JX94BcJuCH" target="_blank" rel="noopener">Apply in Discord ↗</a></p></article></div></div></section>
+    <section id="faq"><div class="wrap"><div class="heading"><p class="eyebrow">FAQ</p><h2>Quick answers.</h2></div><div class="faq"><details><summary>Is griefing allowed?</summary><p>Yes. This is a semi-anarchy server, so raiding, griefing, stealing, and PvP are part of the game. Staff do not restore lost items or bases.</p></details><details><summary>What counts as cheating?</summary><p>Hacked clients, x-ray, dupes, exploits, kill aura, macros, fly hacks, and lag machines. Cheating earns a tempban; three tempbans become permanent.</p></details><details><summary>How do I appeal a punishment?</summary><p>Open a Discord ticket with your username, the punishment and date, and any new evidence. Decisions are final unless new evidence is provided.</p></details><details><summary>Can I share coordinates?</summary><p>Players can share coordinates. Staff cannot share coordinates or player information; doing so means immediate removal.</p></details></div></div></section>
+  </main>
+  <footer><div class="wrap foot"><a class="brand" href="#top">ciblo.xyz</a><span class="copy">© ciblo.xyz. Not affiliated with Mojang Studios or Microsoft.</span></div></footer>
+  <script>document.getElementById('copy').addEventListener('click',function(){navigator.clipboard.writeText('135.148.252.150:27871');this.innerHTML='<span>COPIED!</span>135.148.252.150:27871';setTimeout(()=>this.innerHTML='<span>SERVER IP</span>135.148.252.150:27871',1800)});</script>
 </body>
 </html>
