@@ -1,107 +1,195 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>CIBLO.XYZ</title>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ciblo.xyz | Vanilla Semi-Anarchy Minecraft Server</title>
+<meta name="description" content="Official hub for ciblo.xyz: rules, punishments, Discord tickets and staff applications.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&display=swap">
 <style>
-@font-face{font-family:"Minecraft Ten";src:url(data:font/ttf;base64,AAEAAAAPAIAAAwBwRFNJRwAAAAEAABq0AAAACEdERUYAEABkAAAavAAAABZHUE9Trbm/JQAAGtQAAADYR1NVQkR2THUAABusAAAAIE9TLzJhsH7zAAABeAAAAGBjbWFwfhz27AAAA2gAAAHiZ2FzcP//AAMAABqsAAAACGdseWbeurG0AAAGGAAAElRoZWFkit0wpwAAAPwAAAA2aGhlYQbjA0kAAAE0AAAAJGhtdHjfNxKOAAAB2AAAAZBsb2Nh27bXJgAABUwAAADKbWF4cACzADcAAAFYAAAAIG5hbWUThzJQAAAYbAAAATpwb3N0+m20bAAAGagAAAECAAEAAAABAAALu6zZXw889QALA+gAAAAATjEVlAAAAADZmte4ADL/dAPAAwIAAAAIAAIAAAAAAAAAAQAAAu7/BgAAA/IAMv/sA8AAAQAAAAAAAAAAAAAAAAAAAGQAAQAAAGQANAANAAAAAAACAAAAAQABAAAAQAAAAAAAAAADAkEBkAAFAAACigJYAAAASwKKAlgAAAFeADIBpAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABQWVJTAEAAACEiAu7/BgAAA+gAAAAAAAEAAAAAArwCvAAAACAAAgEsAAAAAAAAAU0AAADIAAAA8AAyAggAMgLaADIDIAAyAtoAMgE2ADICTgAyAk4AMgIIADICCAAyATYAMgHCADIBNgAyAtoAMgJOADIBwgAyAk4AMgJOADIC2gAyAk4AMgJOADICTgAyAk4AMgJOADIBNgAyATYAMgIIADIClAAyAk4AMgJOADICCAAyAk4AMgJOADICTgAyAk4AMgJOADIBNgAyAk4AMgJOADICCAAyAyAAMgKUADICTgAyAk4AMgJiADICTgAyAk4AMgJOADICTgAyAk4AMgMgADICTgAyAk4AMgJOADIDIAAyAk4AMgJOADICCAAyAk4AMgJOADICTgAyAk4AMgJOADIBNgAyAk4AMgJOADICCAAyAyAAMgKUADICTgAyAk4AMgJiADICTgAyAk4AMgJOADICTgAyAk4AMgMgADICTgAyAk4AMgJOADIB9AAAAyAAMgLaADICCAAyAyAAMgJOADICCAAyAyAAMgF8ADIBfAAyApQAMgKUADIBfAAyA2YAMgPyADIAAAADAAAAAwAAABwAAQAAAAAA3AADAAEAAAAcAAQAwAAAACwAIAAEAAwAAAAdACMAOwA9AD8AWgBfAHoAoACpAK4AsAC2AZIgFCAZIB0gIiAmISL//wAAAAAAHQAgACUAPQA/AEEAXwBhAKAAqQCuALAAtgGSIBMgGCAcICIgJiEi//8AAf/k/+P/4v/h/+D/3//b/9r/tf+t/6n/qP+j/sjgSOBF4EPgP+A830EAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBgAAAQAAAAAAAAABAgAAAAIAAAAAAAAAAAAAAAAAAAABAAADBAUGAAcICQoLDA0ODxAREhMUFRYXGBkaGxwdAB4AHwAgISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OQAAAAA6ADs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABYAAAAYVkAV1ZjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFoAAAAAYlUAAAAAAFtcX2BdXgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUACgAVAB8AJ4ArADGAOAA/AEQAR4BLAE4AVQBaAF6AZIBqAHKAeIB+gIWAjgCUgJkAnoCjgKuAsYC4gL0AwwDJAM6A1ADZgNyA4QDngOsA8wD6AP8BBIEKAREBFwEbgSABJoEugTYBO4FCAUUBSwFSAVaBXIFigWgBbYFzAXYBeoGBAYSBjIGTgZiBngGjgaqBsIG1AbmBwAHIAc+B1QHbgduB7AIBggiCEIIbgh8CIoImgiqCMII2AjmCPwJKgAAAAIAMgAAAQQCvAADAAcAABMRMxEDNTMVMtLS0gEYAaT+XP7o0tIAAAACADIBXgIcArwAAwAHAAATETMRMxEzETLSRtIBXgFe/qIBXv6iAAAAAgAyAAACqAK8ABsAHwAAASMVMxUjFSM1IxUjNSM1MzUjNTM1MxUzNTMVMwE1IxUCqEZGRtJG0kZGRkbSRtJG/uhGAaSMjIyMjIyMjIyMjIyM/uiMjAAAAAYAMgAAAqgCvAADAAcACwAPABMAFwAAczUzFSc1MxUnNTMVJzUzFSE1MxUTNTMVMtJG0kbSRtL9itLS0tLSjNLS0tLSjNLS0tL+FtLSAAAAAwAyAAACqAK8AAsADwATAAAzETcRIREzFSMVMxUBNSMdAjM1MkYBXoxGjP6iRkYBowEBGP7ojIyMAaSMjIyMjAAAAAABADIBXgEEArwAAwAAExEzETLSAV4BXv6iAAAAAQAyAAACHAK8AA8AADcRMzUhFSMVIxUzFTMVITUyjAFei42MjP6ijAGkjIyMjIyMjAAAAAEAMgAAAhwCvAAPAAABESMVITUzNTM1IzUjNSEVAhyM/qKMjI2LAV4CMP5cjIyMjIyMjAABADIBGAHWArwAEwAAEzUzFTM1MxUjFTMVIzUjFSM1MzUyjIyMRkaMjIxGAjCMRkaMjIxGRoyMAAEAMgCMAdYCMAALAAATNTMVMxUjFSM1IzW+jIyMjIwBpIyMjIyMjAABADL/dAEEANIABQAAMyM1MxEjeEbSjNL+ogAAAQAyARgBkAGkAAMAABM1IRUyAV4BGIyMAAAAAAEAMgAAAQQA0gADAAAzNTMVMtLS0gAAAAQAMgAAAqgCvAADAAcACwAPAABzNTMVJzUzFSc1MxUnNTMVMtJG0kbSRtLS0ozS0tLS0ozS0gAAAgAyAAACHAK8AAMABwAAMxEhEScRIxEyAerSRgK8/USMAaT+XAAAAAEAMgAAAZACvAAHAAATNTM1MxEjETKM0tIB6oxG/UQB6gAAAAEAMgAAAhwCvAALAAAzESE1ITUhESEVIRUyARj+6AHq/ugBGAGkjIz+XIyMAAAAAAEAMgAAAhwCvAALAAAlNSM1MzUhNSERITUBStLS/ugB6v4WjIyMjIz9RIwAAgAyAAACqAK8ABEAFwAANzUzNTM1MzUzNTMRMxUjFSM1JxUzNSMVMkZGRozSRkbSjIxGjIyMjEZG/lyMjIzSRtGLAAABADIAAAIcArwACwAAExEhFSEVIREhNSE1MgHq/ugBGP4WARgBGAGkjIz+XIyMAAACADIAAAIcArwABwALAAAzESEVIRUhEQMjFTMyAer+6AEY0kZGAryMjP5cARiMAAABADIAAAIcArwAEQAANzM1MzUzNSE1IREjFSMVIxUjeEZGRv7oAepGRkbSjIyMjIz+6IyMjAAAAAMAMgAAAhwCvAALAA8AEwAAEzUjESERIxUzESERJTUjHQIzNXhGAepGRv4WARhGRgFeRgEY/uhG/qIBXkaMjIyMjAAAAgAyAAACHAK8AAcACwAAAREhNSE1IRETMzUjAhz+FgEY/ujSRkYCvP1EjIwBpP7ojAAAAAIAMgAAAQQCMAADAAcAABM1MxUDNTMVMtLS0gFe0tL+otLSAAIAMv90AQQCMAADAAkAABM1MxUDIzUzESMy0oxG0owBXtLS/qLS/qIAAAAAAgAyAIwB1gIwAAMABwAANzUhFQE1IRUyAaT+XAGkjIyMARiMjAAAAAIAMgAAAmICvAAPABMAABM1MzUhFTMRIxUjNTM1IxUTNTMVMkYBpEaM0kaMRtIBpNJGRv7oRoyMjP5c0tIAAAACADIAAAIcArwABwALAAAzESERIxEjERM1IxUyAerSRkZGArz9RAEY/ugBpIyMAAADADIAAAIcArwABwALAA8AADMRIREjFTMRAzUjHQIzNTIB6kZG0kZGArz+6Eb+ogGkjIyMjIwAAAEAMgAAAdYCvAAHAAAlFSERIRUjEQHW/lwBpNKMjAK8jP5cAAIAMgAAAhwCvAAHAAsAADMRIRUzESMVJxEjETIBpEZGjEYCvEb90EaMAaT+XAAAAAEAMgAAAhwCvAALAAABFSEVIREhFSEVMxUBBAEY/hYB6v7o0gEYjIwCvIyMjAAAAAEAMgAAAhwCvAAJAAABESMRIRUhFTMVAQTSAer+6NIBGP7oAryMjIwAAAAAAQAyAAACHAK8AAkAACURMxEhESEVIREBStL+FgHq/uiMARj+XAK8jP5cAAABADIAAAIcArwACwAAMxEzETMRMxEjESMRMtJG0tJGArz+6AEY/UQBGP7oAAEAMgAAAQQCvAADAAAzETMRMtICvP1EAAEAMgAAAhwCvAAHAAAlETMRIREzFQFK0v4W0owCMP1EARiMAAEAMgAAAhwCvAAPAAAzETMVMzUzESMVMxEjNSMVMtJG0oyM0kYCvNLS/uhG/qLS0gAAAAABADIAAAHWArwABQAAMxEzETMVMtLSArz90IwAAQAyAAAC7gK8ABMAAAERIxEzFTMVMzUzNTMRIxEjFSM1AQTS0kaMRtLSRowBGP7oAryMjIyM/UQBGIyMAAAAAAEAMgAAAmICvAAPAAABESMRMxUzFTMRMxEjNSM1AQTS0kZG0tJGARj+6AK8jIwBGP1EjIwAAAAAAgAyAAACHAK8AAMABwAAMxEhEScRIxEyAerSRgK8/USMAaT+XAAAAAIAMgAAAhwCvAAFAAkAADMRIREhERM1IxUyAer+6EZGArz+XP7oAaSMjAAAAgAyAAACYgK8AAUACQAAMxEhETMVJREjETIB6kb+6EYCvP3QjIwBpP5cAAACADIAAAIcArwACwAPAAAzESERIxUzESMRIxETNSMVMgHqRkbSRkZGArz+6Eb+ogEY/ugBpIyMAAEAMgAAAhwCvAALAAATESEVIRUhESE1ITUyAer+6AEY/hYBGAEYAaSMjP5cjIwAAAEAMgAAAhwCvAAHAAABESMRIzUhFQGQ0owB6gIw/dACMIyMAAEAMgAAAhwCvAAHAAAzETMRMxEzETLSRtICvP3QAjD9RAAAAAEAMgAAAhwCvAAPAAATETMRMxEzESMVIxUjNSM1MtJG0kZG0kYBGAGk/ugBGP5cjIyMjAABADIAAALuArwAEwAAAREzNTMVMxEzESMVIzUjFSM1IxEBBEaMRtJG0ozSRgK8/qKMjAFe/dCM0tKMAjAAAAAAAQAyAAACHAK8ABMAADMRMzUjETMVMzUzESMVMxEjNSMVMoyM0kbSjIzSRgFeRgEY0tL+6Eb+otLSAAAAAQAyAAACHAK8AAsAABMRMxUzNTMRIxEjETLSRtKM0gFeAV7S0v6i/qIBXgABADIAAAIcArwADwAAMxEzNTM1ITUhESMVIxUhFTKMjP7oAeqMjAEYAV5GjIz+okaMjAAAAQAy/3QC7gAAAAMAABc1IRUyAryMjIwAAgAyAAACHAK8AAcACwAAMxEhESMRIxETNSMVMgHq0kZGRgK8/UQBGP7oAaSMjAAAAwAyAAACHAK8AAcACwAPAAAzESERIxUzEQM1Ix0CMzUyAepGRtJGRgK8/uhG/qIBpIyMjIyMAAABADIAAAHWArwABwAAJRUhESEVIxEB1v5cAaTSjIwCvIz+XAACADIAAAIcArwABwALAAAzESEVMxEjFScRIxEyAaRGRoxGArxG/dBGjAGk/lwAAAABADIAAAIcArwACwAAARUhFSERIRUhFTMVAQQBGP4WAer+6NIBGIyMAryMjIwAAAABADIAAAIcArwACQAAAREjESEVIRUzFQEE0gHq/ujSARj+6AK8jIyMAAAAAAEAMgAAAhwCvAAJAAAlETMRIREhFSERAUrS/hYB6v7ojAEY/lwCvIz+XAAAAQAyAAACHAK8AAsAADMRMxEzETMRIxEjETLSRtLSRgK8/ugBGP1EARj+6AABADIAAAEEArwAAwAAMxEzETLSArz9RAABADIAAAIcArwABwAAJREzESERMxUBStL+FtKMAjD9RAEYjAABADIAAAIcArwADwAAMxEzFTM1MxEjFTMRIzUjFTLSRtKMjNJGArzS0v7oRv6i0tIAAAAAAQAyAAAB1gK8AAUAADMRMxEzFTLS0gK8/dCMAAEAMgAAAu4CvAATAAABESMRMxUzFTM1MzUzESMRIxUjNQEE0tJGjEbS0kaMARj+6AK8jIyMjP1EARiMjAAAAAABADIAAAJiArwADwAAAREjETMVMxUzETMRIzUjNQEE0tJGRtLSRgEY/ugCvIyMARj9RIyMAAAAAAIAMgAAAhwCvAADAAcAADMRIREnESMRMgHq0kYCvP1EjAGk/lwAAAACADIAAAIcArwABQAJAAAzESERIRETNSMVMgHq/uhGRgK8/lz+6AGkjIwAAAIAMgAAAmICvAAFAAkAADMRIREzFSURIxEyAepG/uhGArz90IyMAaT+XAAAAgAyAAACHAK8AAsADwAAMxEhESMVMxEjESMREzUjFTIB6kZG0kZGRgK8/uhG/qIBGP7oAaSMjAABADIAAAIcArwACwAAExEhFSEVIREhNSE1MgHq/ugBGP4WARgBGAGkjIz+XIyMAAABADIAAAIcArwABwAAAREjESM1IRUBkNKMAeoCMP3QAjCMjAABADIAAAIcArwABwAAMxEzETMRMxEy0kbSArz90AIw/UQAAAABADIAAAIcArwADwAAExEzETMRMxEjFSMVIzUjNTLSRtJGRtJGARgBpP7oARj+XIyMjIwAAQAyAAAC7gK8ABMAAAERMzUzFTMRMxEjFSM1IxUjNSMRAQRGjEbSRtKM0kYCvP6ijIwBXv3QjNLSjAIwAAAAAAEAMgAAAhwCvAATAAAzETM1IxEzFTM1MxEjFTMRIzUjFTKMjNJG0oyM0kYBXkYBGNLS/uhG/qLS0gAAAAEAMgAAAhwCvAALAAATETMVMzUzESMRIxEy0kbSjNIBXgFe0tL+ov6iAV4AAQAyAAACHAK8AA8AADMRMzUzNSE1IREjFSMVIRUyjIz+6AHqjIwBGAFeRoyM/qJGjIwAAAMAMgAAAu4CvAAPAB8ALwAAZREzNTMVMxUjFTMVIxUjNQUVIzUzESM1ITUhFTMVMxEBETMVIRUhNSM1IxEzNTMVAQRGjEaMjEaMAV6MRkb+ogGkRkb90EYBXv5cRkZGjNIBGEZGRoxGRkZGRkYBpEZGRkb+XAGk/lxGRkZGAaRGRgAAAA0AMgDSAmIDAgADAAcACwAPABMAFwAbAB8AIwAnACsALwAzAABTETMRPQEzFQc1MxUHNTMVJzUzFSU1IRUBNSEVJREzESERMxEDNTMVAzUzFSE1MxUDNTMVvmmvr4xGaWlp/ugBGP7oARj+XEYBpEaMRkZG/lxGRkYBXgEY/ujSRkaMRkZGRkaMRkbSRkb+FkZGjAEY/ugBGP7oARhGRv6iRkZGRgFeRkYAAAACADIBGAHWArwACwAPAAATETM1IRUzESMVITU3FTM1MkYBGEZG/uhGjAFeARhGRv7oRkbSjIwAAAIAMv90Au4CvAANABEAAAERIxEjESMRIzUjNTM1ATUjFQLu0kbSjEZGAaRGArz8uAGk/lwBpIyMjP7ojIwAAAAEADIAAAIcArwACwAPABMAGwAAExUzNTMVMzUjNSMVJxUzNTMVMzUBESERIxEjEeEjRiMjRkZGRkb+ogHq0kYB6mkjI2kjI2lGRkZG/a0CvP1EARj+6AAAAQAyARgB1gGkAAMAABM1IRUyAaQBGIyMAAAAAAEAMgEYAu4BpAADAAATNSEVMgK8ARiMjAAAAAABADIBXgEEArwABQAAARUjETMVAQTSjAIw0gFejAAAAAEAMgFeAQQCvAAFAAATNTMRIzUy0owB6tL+oowAAAAAAgAyAV4CHAK8AAUACwAAARUjETMVIxUjETMVAhzSjNLSjAIw0gFejNIBXowAAAAAAgAyAV4CHAK8AAUACwAAEzUzESM1MzUzESM1MtKM0tKMAerS/qKM0v6ijAABADIA0gFKAeoAAwAANxEhETIBGNIBGP7oAAAAAwAyAAADNADSAAMABwALAAAzNTMVMzUzFTM1MxUy0kbSRtLS0tLS0tIAAAAGADIBXgPAArwABwALAA8AEwAXABsAAFMRIzUhFSMRMxEzET0BMx0BNTMVPQEzHQERMxGbaQFeaa+MRkZGjAFeARhGRv7oAV7+ooyMjEaMjEaMjIwBXv6iAAAAAAAACABmAAMAAQQJAAEAGgAOAAMAAQQJAAIADgAAAAMAAQQJAAMANAAOAAMAAQQJAAQAGgAOAAMAAQQJAAUAegBCAAMAAQQJAAYAGAC8AAMAAQQJABAAEgAOAAMAAQQJABEABgAiAFIAZQBnAHUAbABhAHIATQBpAG4AZQBjAHIAYQBmAHQAIABUAGUAbgA6AFYAZQByAHMAaQBvAG4AIAAxAC4AMAAwAFYAZQByAHMAaQBvAG4AIAAxAC4AMAAwADsAUwBlAHAAdABlAG0AYgBlAHIAIAA4ACwAIAAyADAAMQA5ADsARgBvAG4AdABDAHIAZQBhAHQAbwByACAAMQAyAC4AMAAuADAALgAyADUAMgAyACAAMwAyAC0AYgBpAHQATQBpAG4AZQBjAHIAYQBmAHQAVABlAG4AAAACAAAAAAAA/1EAMgAAAAAAAAAAAAAAAAAAAAAAAAAAAGQAAAECAQMAAwAEAAUABgAIAAkACgALAAwADQAOAA8AEAARABIAEwAUABUAFgAXABgAGQAaABsAHAAdAB4AIAAiACQAJQAmACcAKAApACoAKwAsAC0ALgAvADAAMQAyADMANAA1ADYANwA4ADkAOgA7ADwAPQBCAEQARQBGAEcASABJAEoASwBMAE0ATgBPAFAAUQBSAFMAVABVAFYAVwBYAFkAWgBbAFwAXQEEAIsAigCDAIgApgCyALMAtgC3ALQAtQCHAKsAjAd1bmkwMDAwB3VuaTAwMDkHdW5pMDBBMAAAAAAAAf//AAIAAAABAAAAAAABAAAADAAAAAAAAAACAAEAAABjAAEAAAABAAAACgAeACwAAURGTFQACAAEAAAAAP//AAEAAAABa2VybgAIAAAAAQAAAAEABAACAAAAAQAIAAEAggAEAAAADQAkAC4AJAA0AD4ASABOAGAAbgA+AG4ALgB8AAIAFv+cABn/nAABABP/nAACABn/dAAb/5wAAgAO/5wAEP+cAAEAKf7UAAQAM/84ADX/nAA4/5wAYP84AAMADv84ABD/OAAp/tQAAwAO/5wAEP+cACn/nAABACn/OAABAA0ADgAPABAAGAAZACUAKwAvADMANQA4AFsAYAABAAAACgAcAB4AAURGTFQACAAEAAAAAP//AAAAAAAA) format("truetype");font-display:block}
-/* Layout: one terminal window on a near-black desktop; centered server card inside, flat surfaces, one accent (Discord purple) */
-:root{
-  --desk:#121214;
-  --chrome:#1b1b1d;
-  --tab:#262628;
-  --tab-fg:#ececec;
-  --muted:#8c8c93;
-  --screen:#2b2b2e;
-  --line:#3d3d42;
-  --slot:#3a3a3f;
-  --slot-hover:#46464c;
-  --ink:#ffffff;
-  --purple:#2c2370;
-  --purple-hi:#382d8c;
-  --purple-line:#4b3fb5;
-  --discord:#7b86ff;
-  --ok:#8fe39a;
-  --font:"Minecraft Ten","Courier New",monospace;
-  --ui:"Segoe UI",system-ui,-apple-system,sans-serif;
-  color-scheme:dark;
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;background:var(--desk);color:var(--ink);font-family:var(--font);padding-inline:16px;padding-block:24px;display:flex}
-.win{margin:auto;width:100%;max-width:1040px;min-height:min(620px,100%);display:flex;flex-direction:column;background:var(--screen);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.55)}
-.bar{display:flex;align-items:flex-end;justify-content:space-between;background:var(--chrome);padding:8px 0 0 8px;font-family:var(--ui)}
-.tabs{display:flex;align-items:center;min-width:0}
-.tab{display:flex;align-items:center;gap:10px;min-width:0;background:var(--screen);color:var(--tab-fg);font-size:12.5px;padding:9px 12px;border-radius:8px 8px 0 0}
-.tab .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cmd{flex:none;width:16px;height:13px;border:1px solid #b5b5b9;border-radius:2px;font:700 6.5px/11px "Consolas","Courier New",monospace;color:#cfcfd3;text-align:center}
-.x,.plus{flex:none;color:#a9a9b0;line-height:1;text-align:center}
-.x{font-size:11px;width:20px}
-.plus{margin-left:10px;font-size:18px;width:22px}
-.ctl{display:flex;align-self:flex-start;margin-top:-8px}
-.ctl i{width:46px;height:34px;display:grid;place-items:center;color:#c9c9ce;font-style:normal;font-size:11px}
-.screen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(40px,8vw,72px);padding:clamp(48px,9vw,88px) 16px;background:var(--screen)}
-h1{margin:0;font-weight:400;font-size:clamp(34px,9vw,88px);letter-spacing:.03em;line-height:1;color:var(--ink);text-shadow:.06em .06em 0 #000;text-align:center;animation:in .6s ease both}
-.stack{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;animation:in .6s ease .12s both}
-@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.ip,.dc{position:relative;overflow:hidden;transition:background .18s ease,border-color .18s ease,transform .18s ease}
-.ip::before,.dc::before{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.14),transparent);transform:skewX(-18deg);pointer-events:none}
-.ip:hover::before,.ip:focus-visible::before,.dc:hover::before,.dc:focus-visible::before{animation:shine .8s ease}
-@keyframes shine{to{left:140%}}
-.ip{width:100%;max-width:497px;min-height:64px;display:flex;align-items:center;gap:16px;padding:8px 16px 8px 20px;background:var(--slot);color:var(--ink);border:1px solid var(--line);border-radius:4px;font:inherit;font-size:clamp(17px,4.4vw,30px);cursor:pointer;text-align:left}
-.ip:hover{background:var(--slot-hover);border-color:#58585f}
-.ip:active,.dc:active{transform:scale(.985)}
-.ip:focus-visible,.dc:focus-visible{outline:2px solid #fff;outline-offset:3px}
-.ip .tag{flex:none;color:var(--muted)}
-.ip .addr{flex:1;min-width:0;overflow-wrap:anywhere;user-select:all}
-.ip svg{flex:none;width:22px;height:22px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:square;transition:stroke .18s}
-.ip:hover svg{stroke:#fff}
-.ip .ck{display:none}
-.ip.done .cp{display:none}.ip.done .ck{display:block;stroke:var(--ok)}
-.dc{width:96px;height:96px;display:grid;place-items:center;background:var(--purple);border:1px solid var(--purple-line);border-radius:4px;text-decoration:none}
-.dc:hover{background:var(--purple-hi);border-color:#6a5df0}
-.dc svg{width:54px;height:54px;fill:var(--discord)}
-.hint{min-height:1.2em;font-size:15px;color:var(--muted);text-align:center}
-.hint.ok{color:var(--ok)}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+:root{--bg:#060609;--surface:#0c0c11;--surface2:#13131a;--line:#22222b;--text:#ffffff;--muted:#aaaaaa;--pink:#ff9eb4;--shadow:#3f272d;--ink:#1a0f13;
+--sans:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;--pix:"Pixelify Sans","Minecraft Ten","Courier New",monospace;
+color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:border-box;border-radius:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 76px)}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+a{color:var(--pink)}
+:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--surface);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;gap:20px;height:60px}
+.logo{font:600 22px var(--pix);color:var(--pink);text-shadow:2px 2px 0 var(--shadow);text-decoration:none;white-space:nowrap}
+nav{display:flex;gap:2px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+nav a{padding:8px 12px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}
+nav a:hover{color:var(--text);background:var(--surface2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:11px 20px;font:600 14px var(--sans);border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer;text-decoration:none;line-height:1.2}
+.btn:hover{background:var(--surface2);border-color:#3a3a46}
+.btn.pri{background:var(--pink);border-color:var(--pink);color:var(--ink)}
+.btn.pri:hover{filter:brightness(1.08)}
+.ic{width:18px;height:18px;fill:currentColor;flex:none}
+.btn.sm{padding:8px 14px;font-size:13px}
+.hero{padding:84px 0 60px;border-bottom:1px solid var(--line)}
+.eyebrow{font:500 13px var(--pix);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 16px}
+h1{margin:0 0 18px;font:600 clamp(48px,11vw,104px)/1 var(--pix);color:var(--pink);text-shadow:.06em .06em 0 var(--shadow);letter-spacing:.01em}
+h2{margin:0 0 12px;font:600 clamp(28px,4.4vw,38px)/1.1 var(--pix);color:var(--text)}
+h3{margin:0 0 6px;font-size:16px}
+.lead{max-width:600px;color:var(--muted);font-size:17px;margin:0 0 32px}
+.acts{display:flex;flex-wrap:wrap;gap:12px}
+.ip{font:500 15px var(--pix);gap:16px;padding:12px 20px;letter-spacing:.02em}
+.ip small{color:var(--muted);font:500 12px var(--pix);letter-spacing:.12em}
+.ip .cp{color:var(--pink);font-size:12px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:60px}
+.cards a{background:var(--surface);padding:22px;text-decoration:none;color:var(--text);display:block}
+.cards a:hover{background:var(--surface2)}
+.cards .n{font:500 13px var(--pix);color:var(--pink)}
+.cards strong{display:block;margin:6px 0 2px;font-size:16px}
+.cards span.d{color:var(--muted);font-size:14px}
+section{padding:76px 0;border-bottom:1px solid var(--line)}
+.sub{color:var(--muted);max-width:640px;margin:0 0 36px}
+.gl{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.gl>div{background:var(--surface);padding:24px}
+.gl p{margin:0;color:var(--muted);font-size:14.5px}
+.gl .n{font:500 13px var(--pix);color:var(--pink);margin-bottom:8px}
+.tw{overflow-x:auto;border:1px solid var(--line);background:var(--surface)}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{text-align:left;padding:14px 20px;border-bottom:1px solid var(--line);font-size:14.5px;vertical-align:top}
+th{font:500 12px var(--pix);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--surface2)}
+tr:last-child td{border-bottom:0}
+td:last-child{font-weight:600;color:var(--pink)}
+.note{color:var(--muted);font-size:13.5px;margin-top:14px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:start;margin-top:32px}
+@media (max-width:860px){.split{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line)}
+.pb{padding:24px}
+.list{list-style:none;margin:10px 0 0;padding:0}
+.list li{position:relative;padding:5px 0 5px 20px;font-size:14.5px;color:var(--muted)}
+.list li::before{content:"";position:absolute;left:0;top:14px;width:7px;height:7px;background:var(--pink)}
+.list.no li::before{background:#555560}
+.steps{counter-reset:s}
+.steps>div::before{counter-increment:s;content:"0" counter(s);display:block;font:500 13px var(--pix);color:var(--pink);margin-bottom:8px}
+.cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;background:var(--surface);border:1px solid var(--line);padding:28px;margin-top:32px}
+.cta h3{font:600 20px var(--pix);margin:0 0 4px}
+.cta p{margin:0;color:var(--muted);font-size:14.5px}
+footer{padding:36px 0;color:var(--muted);font-size:13px}
+.ft{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
-
-<div class="win" role="application" aria-label="CIBLO.XYZ Minecraft server">
-  <div class="bar">
-    <div class="tabs">
-      <div class="tab"><span class="cmd" aria-hidden="true">C:\</span><span class="t">CIBLO.XYZ — Minecraft</span><span class="x" aria-hidden="true">✕</span></div>
-      <span class="plus" aria-hidden="true">+</span>
-    </div>
-    <div class="ctl" aria-hidden="true"><i>—</i><i>☐</i><i>✕</i></div>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="dc" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></symbol></svg>
+<header>
+  <div class="wrap hd">
+    <a class="logo" href="#top">ciblo.xyz</a>
+    <nav aria-label="Primary"><a href="#rules">Rules</a><a href="#punishments">Punishments</a><a href="#tickets">Tickets</a><a href="#apply">Staff Applications</a></nav>
+    <a class="btn pri sm" href="https://discord.gg/JX94BcJuCH" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#dc"/></svg>Discord</a>
   </div>
-  <main class="screen">
-    <h1>CIBLO.XYZ</h1>
-    <div class="stack">
-      <button class="ip" id="ip" type="button" aria-label="Copy server IP 135.148.252.150:27871">
-        <span class="tag">IP</span><span class="addr" id="addr">135.148.252.150:27871</span>
-        <svg class="cp" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11"/><path d="M5 15V5h10"/></svg>
-        <svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>
-      </button>
-      <a class="dc" href="https://discord.gg/Fgeq3W6AUv" target="_blank" rel="noopener" aria-label="Join the Discord">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
-      </a>
-      <div class="hint" id="hint" role="status" aria-live="polite">Click the IP to copy</div>
-    </div>
-  </main>
-</div>
+</header>
+
+<main id="top">
+<div class="hero"><div class="wrap">
+  <p class="eyebrow">Vanilla Semi-Anarchy</p>
+  <h1>ciblo.xyz</h1>
+  <p class="lead">The official hub for server rules, punishments, Discord tickets and staff applications.</p>
+  <div class="acts">
+    <button class="btn ip" id="ip" type="button" aria-label="Copy server IP 135.148.252.150:27871"><small>IP</small><span>135.148.252.150:27871</span><span class="cp" id="cp">COPY</span></button>
+    <a class="btn pri" href="https://discord.gg/JX94BcJuCH" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#dc"/></svg>Join the Discord</a>
+  </div>
+  <div class="cards">
+    <a href="#rules"><span class="n">01</span><strong>Rules</strong><span class="d">What is allowed and what is not</span></a>
+    <a href="#punishments"><span class="n">02</span><strong>Punishments</strong><span class="d">What happens when rules are broken</span></a>
+    <a href="#tickets"><span class="n">03</span><strong>Tickets</strong><span class="d">Appeals and reports, Discord only</span></a>
+    <a href="#apply"><span class="n">04</span><strong>Staff Applications</strong><span class="d">Requirements and process</span></a>
+  </div>
+</div></div>
+
+<section id="rules"><div class="wrap">
+  <p class="eyebrow">Rules</p>
+  <h2>Play hard. Play fair.</h2>
+  <p class="sub">Griefing and PvP are part of the game. Cheating and abuse are not. By playing on ciblo.xyz you accept these rules.</p>
+  <div class="gl">
+    <div><div class="n">A</div><h3>Allowed</h3><p>Griefing, raiding, stealing, PvP, trap kills, base hunting and AFK farms. Staff do not restore griefed bases, lost items or scammed trades.</p></div>
+    <div><div class="n">B</div><h3>No cheating</h3><p>No hacked clients, x-ray (including texture packs and ore finders), dupes, exploits, kill aura, auto-clickers, macros, fly hacks, lag machines or crashers. Report exploits instead of using them. Cheating results in a tempban, and three tempbans result in a permanent ban.</p></div>
+    <div><div class="n">C</div><h3>Mods</h3><p>Performance and visual mods are allowed. Freecam, entity radar and cave or entity minimaps are not.</p></div>
+    <div><div class="n">D</div><h3>Real-life harm</h3><p>No doxxing, threats or DDoS. Never leak another player's coordinates by any method. You may share only your own.</p></div>
+    <div><div class="n">E</div><h3>Conduct</h3><p>No harassment, hate speech, spam or advertising. No ban evasion or alt accounts used to dodge punishment. Do not argue punishments in public chat.</p></div>
+    <div><div class="n">F</div><h3>Staff conduct</h3><p>Staff may not spy, scout bases, share coordinates or player information, take items, accept payment or favors, or punish someone they are in a dispute with. All staff commands are logged and audited.</p></div>
+  </div>
+</div></section>
+
+<section id="punishments"><div class="wrap">
+  <p class="eyebrow">Punishments</p>
+  <h2>Consistent and proportionate.</h2>
+  <p class="sub">Action depends on the offense and is at staff discretion. Evidence is required before any punishment is issued.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Offense</th><th>Typical action</th></tr></thead>
+    <tbody>
+      <tr><td>Chat violations: spam, advertising, harassment</td><td>Warning, then tempmute, then tempban</td></tr>
+      <tr><td>Cheating: hacks, x-ray, dupes, exploits</td><td>Tempban</td></tr>
+      <tr><td>Three tempbans</td><td>Permanent ban</td></tr>
+      <tr><td>Doxxing, threats, DDoS</td><td>Permanent ban</td></tr>
+      <tr><td>Leaking another player's coordinates</td><td>Permanent ban</td></tr>
+      <tr><td>Ban evasion</td><td>Permanent ban</td></tr>
+      <tr><td>Staff abuse of powers</td><td>Immediate removal</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Decisions are final unless new evidence is provided through an appeal. Every tempban counts toward your total, and three tempbans result in a permanent ban.</p>
+</div></section>
+
+<section id="tickets"><div class="wrap">
+  <p class="eyebrow">Tickets</p>
+  <h2>All tickets are handled in Discord.</h2>
+  <p class="sub">We do not accept appeals, reports or support requests anywhere else. Not on this site, not in game, and not in private messages.</p>
+  <div class="gl steps">
+    <div><h3>Join the Discord</h3><p>Use the button below if you have not joined yet.</p></div>
+    <div><h3>Open a ticket</h3><p>Go to the tickets channel and choose the category that fits.</p></div>
+    <div><h3>Include everything</h3><p>Username, date, what happened and evidence. Incomplete tickets may be closed.</p></div>
+    <div><h3>Wait for a reply</h3><p>One ticket per issue. Do not ping or message staff about it.</p></div>
+  </div>
+  <div class="gl" style="margin-top:32px">
+    <div><h3>Ban or mute appeal</h3><ul class="list"><li>Your Minecraft username</li><li>Punishment type and date</li><li>Staff member, if known</li><li>Why it should be lifted</li></ul></div>
+    <div><h3>Player report</h3><ul class="list"><li>Your username and the reported player</li><li>Date, time and type of violation</li><li>What happened</li><li>Screenshots or clips</li></ul></div>
+    <div><h3>Staff report</h3><ul class="list"><li>Your username and the staff member</li><li>Command or action involved</li><li>Date, time and what happened</li><li>Screenshots or clips</li></ul></div>
+  </div>
+  <div class="split">
+    <div class="panel"><div class="pb"><h3>Open a ticket for</h3>
+      <ul class="list"><li>Cheating reports with evidence</li><li>Staff abuse reports with evidence</li><li>Doxxing, threats or leaked coordinates</li><li>Ban or mute appeals</li><li>Bugs that affect gameplay</li></ul></div></div>
+    <div class="panel"><div class="pb"><h3>Do not open a ticket for</h3>
+      <ul class="list no"><li>Griefed bases, stolen items or PvP deaths</li><li>Scammed trades</li><li>Questions answered in the rules</li><li>Requests for items, ranks or teleports</li><li>Appeals already answered without new evidence</li></ul></div></div>
+  </div>
+  <div class="cta"><div><h3>Need help?</h3><p>Misuse of tickets can lead to ticket access being removed.</p></div><a class="btn pri" href="https://discord.gg/JX94BcJuCH" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#dc"/></svg>Open Discord</a></div>
+</div></section>
+
+<section id="apply"><div class="wrap">
+  <p class="eyebrow">Staff Applications</p>
+  <h2>Moderate ciblo.xyz.</h2>
+  <p class="sub">Moderators hold powerful commands, so trust matters more than experience. We vet carefully and audit continuously. Staff applications are handled in our Discord.</p>
+  <div class="gl steps">
+    <div><h3>Apply</h3><p>Open a staff application in the Discord and answer every question in detail.</p></div>
+    <div><h3>Review</h3><p>Answers and history are reviewed and verified.</p></div>
+    <div><h3>Interview</h3><p>Shortlisted applicants speak with senior staff.</p></div>
+    <div><h3>Trial</h3><p>Limited permissions with mentor oversight and weekly audits.</p></div>
+    <div><h3>Full access</h3><p>Granted only after a clean trial.</p></div>
+  </div>
+  <div class="split">
+    <div class="panel"><div class="pb"><h3>Requirements</h3>
+      <ul class="list"><li>Active member of the server and Discord</li><li>Honest history. Past bans or cheating must be disclosed</li><li>Accept that every staff command is logged and audited</li><li>Accept a trial period with reduced permissions</li><li>Secure accounts with two-factor authentication</li></ul></div></div>
+    <div class="panel"><div class="pb"><h3>Ready to apply?</h3>
+      <p class="note" style="margin:0 0 18px">Read the rules first. Applications with vague or dishonest answers are rejected.</p>
+      <a class="btn pri" href="https://discord.gg/JX94BcJuCH" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#dc"/></svg>Apply in Discord</a></div></div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap ft"><span>&copy; ciblo.xyz. All rights reserved.</span><span>Not affiliated with Mojang Studios or Microsoft.</span></div></footer>
 
 <script>
 (function(){
-  var IP="135.148.252.150:27871",btn=document.getElementById("ip"),hint=document.getElementById("hint"),addr=document.getElementById("addr"),t;
-  function say(m,ok){hint.textContent=m;hint.className="hint"+(ok?" ok":"");btn.classList.toggle("done",!!ok);clearTimeout(t);t=setTimeout(function(){hint.textContent="Click the IP to copy";hint.className="hint";btn.classList.remove("done")},2200)}
-  function fallback(){
-    try{var r=document.createRange();r.selectNodeContents(addr);var s=getSelection();s.removeAllRanges();s.addRange(r);
-      var ok=document.execCommand&&document.execCommand("copy");say(ok?"Copied "+IP:"Press Ctrl+C to copy",!!ok)}
-    catch(e){say("Press Ctrl+C to copy",false)}
-  }
-  btn.addEventListener("click",function(){
-    if(navigator.clipboard&&navigator.clipboard.writeText){
-      navigator.clipboard.writeText(IP).then(function(){say("Copied "+IP,true)},fallback)
-    }else fallback();
-  });
+var DISCORD="https://discord.gg/JX94BcJuCH",IP="135.148.252.150:27871";
+var b=document.getElementById("ip"),cp=document.getElementById("cp"),t;
+function say(m){cp.textContent=m;clearTimeout(t);t=setTimeout(function(){cp.textContent="COPY"},2000)}
+function fb(){var x=document.createElement("textarea");x.value=IP;x.style.cssText="position:fixed;opacity:0";document.body.appendChild(x);x.select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}document.body.removeChild(x);say(ok?"COPIED":"PRESS CTRL+C")}
+b.addEventListener("click",function(){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(IP).then(function(){say("COPIED")},fb)}else fb()});
 })();
 </script>
-
-</body></html>
+</body>
+</html>
