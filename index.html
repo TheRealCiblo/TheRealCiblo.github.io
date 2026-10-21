@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Ciblo — survive, build, explore." />
-    <title>ciblo.xyz — Survive, Build, Explore</title>
+    <meta name="description" content="ciblo.xyz — Minecraft, Fortnite and Roblox editing, promo videos, Unity projects." />
+    <title>ciblo.xyz — Editing & Projects</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -128,229 +128,213 @@ footer span { margin: 0 9px; color: #5c6470; }
 
 .view{display:none}
 .view.active{display:block}
+/* animations */
+.view{opacity:1;filter:blur(0);transform:none}
+.view.leaving{opacity:0;filter:blur(16px);transform:translateY(-14px) scale(.99);transition:opacity .32s ease,filter .32s ease,transform .32s ease}
+.view.entering{animation:viewIn .6s cubic-bezier(.2,.7,.2,1) both}
+@keyframes viewIn{from{opacity:0;filter:blur(18px);transform:translateY(22px)}to{opacity:1;filter:blur(0);transform:none}}
+.reveal{opacity:0;filter:blur(12px);transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),filter .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;filter:blur(0);transform:none}
+.about-card{padding:32px 36px 28px;border:1px solid rgba(180,195,216,.26);border-radius:16px;background:linear-gradient(145deg,rgba(21,23,25,.86),rgba(10,11,12,.81));box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 24px 70px rgba(0,0,0,.21);backdrop-filter:blur(12px)}
+.about-card h2{margin:0 0 18px;font-size:1.75rem;font-weight:600;letter-spacing:-.05em}
+.about-card p{margin:0;color:#c3cedd;font-size:1rem;line-height:1.6}
+.about-tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px;padding-top:24px;border-top:1px solid var(--line)}
+.about-tags span{padding:8px 14px;border-radius:999px;background:rgba(160,172,190,.13);color:#e1e6ed;font-size:.8rem;font-weight:500}
+.projects-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:52px}
+.projects-grid .rules-card{transition:transform .25s ease,border-color .25s ease}
+.projects-grid .rules-card:hover{transform:translateY(-5px);border-color:rgba(215,228,252,.45)}
+.projects-grid p{margin:0;color:#c5ccd7;font-size:.92rem;line-height:1.55}
+.projects-grid h2{margin-bottom:12px}
+@media (max-width:850px){.projects-grid{grid-template-columns:1fr}}
+
+h1 + .copy-button{margin-top:34px}
+.socials{display:flex;gap:12px;margin-top:22px}
+.socials a{width:46px;height:46px;display:grid;place-items:center;border:1px solid rgba(220,229,242,.35);border-radius:50%;color:#e8eefc;background:rgba(13,14,15,.5);backdrop-filter:blur(8px);transition:transform .25s ease,background .25s ease,border-color .25s ease,color .25s ease}
+.socials a svg{width:21px;height:21px}
+.socials a:hover{transform:translateY(-4px);background:rgba(219,229,245,.16);border-color:#fff;color:#fff}
+.socials--footer{justify-content:center;margin:0 0 18px}
+.projects-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+@media (max-width:850px){.projects-grid{grid-template-columns:1fr!important}}
+@media (prefers-reduced-motion:reduce){.view.leaving,.view.entering,.reveal{animation:none;transition:none;opacity:1;filter:none;transform:none}}
+
 
     </style>
   </head>
   <body>
-    <!-- HOME -->
+    <!-- HOME / ABOUT -->
     <div class="view active" id="view-home">
       <section class="home" aria-labelledby="hero-title">
       <header class="site-header">
-        <a class="wordmark" href="#home" aria-label="Ciblo home">ciblo.xyz</a>
-        <nav aria-label="Primary navigation">
-          <a class="active" href="#home">Home</a>
-          <a  href="#store">Store</a>
-          <a href="https://discord.gg/Uf8GA5ZbFa" target="_blank" rel="noopener noreferrer">Discord</a>
-          <a  href="#rules">Rules</a>
-        </nav>
-        <p class="online-status"><span></span>Online: <strong>0</strong></p>
+        <a class="wordmark" href="#home" aria-label="ciblo.xyz home">ciblo.xyz</a>
+        <nav aria-label="Primary navigation"><a class="active" href="#home">Home</a><a href="#projects">Projects</a><a href="#store">Buy / Donate</a></nav>
+        <span></span>
         <p class="rights-notice">© 2026 All rights reserved</p>
       </header>
       <main class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Minecraft Survival</p>
+        <div class="hero-copy reveal">
           <h1 id="hero-title">ciblo.xyz</h1>
-          <p class="hero-description">Survive with friends, build something lasting, and explore at your own pace.</p>
-          <button class="copy-button" type="button" id="copy-ip" aria-label="Copy ciblo.xyz to clipboard">
+          <button class="copy-button" type="button" id="copy-contact" aria-label="Copy Discord username @ciblo.dev to clipboard">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <rect x="9" y="9" width="11" height="11" rx="1"></rect>
               <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path>
             </svg>
-            <span class="button-label">Copy IP</span>
-            <span class="copied-label" aria-live="polite">Copied!</span>
+            <span class="button-label">Contact me</span>
+            <span class="copied-label" aria-live="polite">@ciblo.dev copied!</span>
           </button>
-          <p class="server-address">Java Edition &middot; <span>ciblo.xyz</span></p>
+          <p class="server-address">Discord &middot; <span>@ciblo.dev</span></p>
+          <div class="socials">
+            <a href="https://www.youtube.com/@CibloMC" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg></a>
+            <a href="https://www.tiktok.com/@ciblomc" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 6.7a4.8 4.8 0 0 1-3-1.6 4.8 4.8 0 0 1-1.2-3.1h-3.3v13.1a2.8 2.8 0 1 1-2-2.7V9.1a6.2 6.2 0 1 0 5.3 6.1V9.1a8 8 0 0 0 4.2 1.3V7.1a4.8 4.8 0 0 1-.1-.4Z"/></svg></a>
+            <a href="https://discord.gg/Uf8GA5ZbFa" target="_blank" rel="noopener noreferrer" aria-label="Discord"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.5a18.3 18.3 0 0 0-6.4 0L8.6 3a19.7 19.7 0 0 0-4.9 1.4C.6 9 -.3 13.5.1 18a19.9 19.9 0 0 0 6 3l1.3-2.1a12.8 12.8 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12.2 0l.5.4a12.9 12.9 0 0 1-2 1l1.3 2.1a19.8 19.8 0 0 0 6-3c.5-5.2-.8-9.7-3.6-13.6ZM8.3 15.3c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.1 1.100 2.1 2.4-.9 2.4-2.1 2.4Zm7.4 0c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.1 1.1 2.1 2.4-.9 2.4-2.1 2.4Z"/></svg></a>
+          </div>
         </div>
 
-        <aside class="updates-card" aria-labelledby="updates-title">
-          <div class="updates-heading">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 11v2a2 2 0 0 0 2 2h2l3 5h2l-1-5h2l5 2V7l-5 2H5a2 2 0 0 0-2 2Z"></path>
-              <path d="M7 15v3"></path>
-            </svg>
-            <h2 id="updates-title">Updates</h2>
-            <span class="admin-badge">
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M17 9h-1V7a4 4 0 0 0-8 0v2H7Zm-5 0V7a3 3 0 0 1 6 0v2H10V7a1 1 0 1 0-2 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2Zm-5 7.73V18a1 1 0 0 1-2 0v-1.27a2 2 0 1 1 2 0Z"/></svg>
-              Admin only
-            </span>
-          </div>
-          <p class="card-intro">Admins can change the Message of the Day, update the server image, and more from the admin panel.</p>
-          <article class="update-item">
-            <p class="update-kicker"><span></span>Latest update</p>
-            <h3>Server Improvements</h3>
-            <time datetime="2026-10-18">October 18, 2026</time>
-            <p>New features, helpful fixes, and even smoother performance across the server.</p>
-          </article>
-          <article class="update-item update-item--last">
-            <p class="update-kicker"><span></span>Next update</p>
-            <h3>More to Explore</h3>
-            <p>Stay tuned for new adventures and additions.</p>
-          </article>
+        <aside class="about-card reveal" style="--d:.15s" aria-labelledby="about-title">
+          <h2 id="about-title">About me</h2>
+          <p>I'm a video editor and developer who's really into Minecraft. I edit Minecraft, Fortnite, and Roblox content for creators, make promo videos for Minecraft clients, mods, cheat clients and menus, and Windows tools, build projects in Unity, and work on Minecraft servers.</p>
+          <div class="about-tags"><span>Minecraft</span><span>Fortnite</span><span>Roblox</span><span>Promo videos</span><span>Unity</span><span>Minecraft servers</span></div>
         </aside>
       </main>
       </section>
     </div>
 
-    <!-- STORE -->
+    <!-- PROJECTS -->
+    <div class="view" id="view-projects">
+      <header class="site-header">
+        <a class="wordmark" href="#home" aria-label="ciblo.xyz home">ciblo.xyz</a>
+        <nav aria-label="Primary navigation"><a href="#home">Home</a><a class="active" href="#projects">Projects</a><a href="#store">Buy / Donate</a></nav>
+        <span></span>
+        <p class="rights-notice">© 2026 All rights reserved</p>
+      </header>
+      <main class="subpage-main rules-section" aria-labelledby="projects-title">
+      <div class="section-heading reveal">
+        <p class="eyebrow">What I do</p>
+        <h1 id="projects-title">My projects</h1>
+        <p>A look at the kind of things I edit, build, and work on.</p>
+      </div>
+      <div class="projects-grid">
+        <article class="rules-card reveal"><h2>Content creator editing</h2><p>Editing for Minecraft, Fortnite, and Roblox creators, from YouTube videos to short-form clips.</p></article>
+        <article class="rules-card reveal" style="--d:.12s"><h2>Promotional videos</h2><p>Promo videos for Minecraft clients, mods, cheat clients and menus, Windows tools, and more.</p></article>
+        <article class="rules-card reveal" style="--d:.24s"><h2>Unity projects</h2><p>Games and experiments I build in Unity.</p></article>
+        <article class="rules-card reveal" style="--d:.36s"><h2>Minecraft servers</h2><p>I work on Minecraft servers, and Minecraft is what I'm most into.</p></article>
+      </div>
+    </main>
+      <footer><div class="socials socials--footer">
+            <a href="https://www.youtube.com/@CibloMC" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg></a>
+            <a href="https://www.tiktok.com/@ciblomc" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 6.7a4.8 4.8 0 0 1-3-1.6 4.8 4.8 0 0 1-1.2-3.1h-3.3v13.1a2.8 2.8 0 1 1-2-2.7V9.1a6.2 6.2 0 1 0 5.3 6.1V9.1a8 8 0 0 0 4.2 1.3V7.1a4.8 4.8 0 0 1-.1-.4Z"/></svg></a>
+            <a href="https://discord.gg/Uf8GA5ZbFa" target="_blank" rel="noopener noreferrer" aria-label="Discord"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.5a18.3 18.3 0 0 0-6.4 0L8.6 3a19.7 19.7 0 0 0-4.9 1.4C.6 9 -.3 13.5.1 18a19.9 19.9 0 0 0 6 3l1.3-2.1a12.8 12.8 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12.2 0l.5.4a12.9 12.9 0 0 1-2 1l1.3 2.1a19.8 19.8 0 0 0 6-3c.5-5.2-.8-9.7-3.6-13.6ZM8.3 15.3c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.1 1.100 2.1 2.4-.9 2.4-2.1 2.4Zm7.4 0c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.1 1.1 2.1 2.4-.9 2.4-2.1 2.4Z"/></svg></a>
+          </div>© 2026 ciblo.xyz. All rights reserved.</footer>
+    </div>
+
+    <!-- BUY / DONATE -->
     <div class="view" id="view-store">
       <header class="site-header">
-        <a class="wordmark" href="#home" aria-label="Ciblo home">ciblo.xyz</a>
-        <nav aria-label="Primary navigation">
-          <a  href="#home">Home</a>
-          <a class="active" href="#store">Store</a>
-          <a href="https://discord.gg/Uf8GA5ZbFa" target="_blank" rel="noopener noreferrer">Discord</a>
-          <a  href="#rules">Rules</a>
-        </nav>
-        <p class="online-status"><span></span>Online: <strong>0</strong></p>
+        <a class="wordmark" href="#home" aria-label="ciblo.xyz home">ciblo.xyz</a>
+        <nav aria-label="Primary navigation"><a href="#home">Home</a><a href="#projects">Projects</a><a class="active" href="#store">Buy / Donate</a></nav>
+        <span></span>
         <p class="rights-notice">© 2026 All rights reserved</p>
       </header>
       <main class="subpage-main store-section" aria-labelledby="store-title">
-      <div class="section-heading">
-        <p class="eyebrow">Support the server</p>
-        <h1 id="store-title">Get more with Ciblo<span>+</span></h1>
-        <p>Help support the server and pick up the Ciblo+ rank.</p>
+      <div class="section-heading reveal">
+        <p class="eyebrow">Support my work</p>
+        <h1 id="store-title">Buy / Donate</h1>
+        <p>Want to support what I make or pick something up? It all goes through Venmo.</p>
       </div>
-      <a class="buy-card" href="https://venmo.com/u/ciblo" target="_blank" rel="noopener noreferrer" aria-label="Buy Ciblo Plus through Venmo">
-        <div class="buy-card__icon">+</div>
+      <a class="buy-card reveal" style="--d:.15s" href="https://venmo.com/u/ciblo" target="_blank" rel="noopener noreferrer" aria-label="Buy or donate through Venmo">
+        <div class="buy-card__icon">$</div>
         <div>
-          <p>One-time support</p>
-          <h2>Buy Ciblo<span>+</span></h2>
+          <p>Venmo</p>
+          <h2>Buy / Donate</h2>
           <span>Continue to Venmo <b aria-hidden="true">↗</b></span>
         </div>
       </a>
     </main>
-      <footer>© 2026 Ciblo. All rights reserved.</footer>
-    </div>
-
-    <!-- RULES -->
-    <div class="view" id="view-rules">
-      <header class="site-header">
-        <a class="wordmark" href="#home" aria-label="Ciblo home">ciblo.xyz</a>
-        <nav aria-label="Primary navigation">
-          <a  href="#home">Home</a>
-          <a  href="#store">Store</a>
-          <a href="https://discord.gg/Uf8GA5ZbFa" target="_blank" rel="noopener noreferrer">Discord</a>
-          <a class="active" href="#rules">Rules</a>
-        </nav>
-        <p class="online-status"><span></span>Online: <strong>0</strong></p>
-        <p class="rights-notice">© 2026 All rights reserved</p>
-      </header>
-      <main class="subpage-main rules-section" aria-labelledby="rules-title">
-      <div class="section-heading">
-        <p class="eyebrow">Play fair. Be kind.</p>
-        <h1 id="rules-title">Server rules</h1>
-        <p>These rules apply to everyone. Use common sense and help keep Ciblo a good place to play.</p>
-      </div>
-      <div class="rules-grid">
-        <article class="rules-card">
-          <h2>In-game rules</h2>
-          <ol>
-            <li>No exploits.</li>
-            <li>No X-Ray.</li>
-            <li>No NSFW.</li>
-            <li>No racism.</li>
-            <li>No combat logging.</li>
-            <li>Do not intentionally create lag.</li>
-            <li>No spawn camping.</li>
-            <li>No abusing glitches.</li>
-            <li>No dupes.</li>
-            <li>No naked killing except at spawn, or if they steal, have tools, weapons, a shield, or armor.</li>
-            <li>Do not advertise without permission.</li>
-            <li>No slurs or racial comments.</li>
-            <li>Do not leave the game right after or during combat.</li>
-            <li>No pearl, trident, or elytra running.</li>
-            <li>No riptide in combat.</li>
-            <li>No crystal PvP.</li>
-            <li>No bed bombing.</li>
-            <li>Do not repeatedly kill players while they are respawning.</li>
-            <li>Use common sense. Follow other rules you know are right, even if they are not listed here.</li>
-          </ol>
-        </article>
-        <article class="rules-card">
-          <h2>Discord rules</h2>
-          <ol>
-            <li>Be kind and respectful to others.</li>
-            <li>No NSFW.</li>
-            <li>Keep your messages appropriate.</li>
-            <li>No spam pinging.</li>
-            <li>Do not @ staff unless it is in a ticket.</li>
-            <li>Do not advertise in Discord without permission.</li>
-            <li>No sharing personal information.</li>
-            <li>No doxing.</li>
-            <li>Follow Discord's Guidelines and Terms of Service.</li>
-            <li>Use common sense and follow the rules.</li>
-          </ol>
-          <a class="discord-link" href="https://discord.gg/Uf8GA5ZbFa" target="_blank" rel="noopener noreferrer">Join the Discord <span aria-hidden="true">↗</span></a>
-        </article>
-      </div>
-    </main>
-      <footer>© 2026 Ciblo. All rights reserved.</footer>
+      <footer><div class="socials socials--footer">
+            <a href="https://www.youtube.com/@CibloMC" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg></a>
+            <a href="https://www.tiktok.com/@ciblomc" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 6.7a4.8 4.8 0 0 1-3-1.6 4.8 4.8 0 0 1-1.2-3.1h-3.3v13.1a2.8 2.8 0 1 1-2-2.7V9.1a6.2 6.2 0 1 0 5.3 6.1V9.1a8 8 0 0 0 4.2 1.3V7.1a4.8 4.8 0 0 1-.1-.4Z"/></svg></a>
+            <a href="https://discord.gg/Uf8GA5ZbFa" target="_blank" rel="noopener noreferrer" aria-label="Discord"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.5a18.3 18.3 0 0 0-6.4 0L8.6 3a19.7 19.7 0 0 0-4.9 1.4C.6 9 -.3 13.5.1 18a19.9 19.9 0 0 0 6 3l1.3-2.1a12.8 12.8 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12.2 0l.5.4a12.9 12.9 0 0 1-2 1l1.3 2.1a19.8 19.8 0 0 0 6-3c.5-5.2-.8-9.7-3.6-13.6ZM8.3 15.3c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.1 1.100 2.1 2.4-.9 2.4-2.1 2.4Zm7.4 0c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.1 1.1 2.1 2.4-.9 2.4-2.1 2.4Z"/></svg></a>
+          </div>© 2026 ciblo.xyz. All rights reserved.</footer>
     </div>
 
     <script>
-const copyButton = document.querySelector('#copy-ip');
-const serverAddress = 'ciblo.xyz';
-
-async function copyServerAddress() {
-  try {
-    if (navigator.clipboard?.writeText) {
-      try {
-        await navigator.clipboard.writeText(serverAddress);
-      } catch {
-        fallbackCopy();
-      }
-    } else {
-      fallbackCopy();
-    }
-
-    copyButton.classList.add('is-copied');
-    window.setTimeout(() => copyButton.classList.remove('is-copied'), 1800);
-  } catch {
-    // Gives the visitor an accessible indication even if the browser blocks clipboard access.
-    copyButton.querySelector('.copied-label').textContent = 'Copy failed';
-    copyButton.classList.add('is-copied');
-    window.setTimeout(() => {
-      copyButton.classList.remove('is-copied');
-      copyButton.querySelector('.copied-label').textContent = 'Copied!';
-    }, 1800);
-  }
-}
+const copyButton = document.querySelector('#copy-contact');
+const contactText = '@ciblo.dev';
 
 function fallbackCopy() {
   const input = document.createElement('textarea');
-  input.value = serverAddress;
+  input.value = contactText;
   input.setAttribute('readonly', '');
   input.style.position = 'fixed';
   input.style.opacity = '0';
   document.body.append(input);
   input.select();
-  const copied = document.execCommand('copy');
+  const ok = document.execCommand('copy');
   input.remove();
-
-  if (!copied) throw new Error('The browser declined clipboard access.');
+  if (!ok) throw new Error('Clipboard blocked');
 }
 
-copyButton.addEventListener('click', copyServerAddress);
-
+async function copyContact() {
+  const label = copyButton.querySelector('.copied-label');
+  try {
+    try { await navigator.clipboard.writeText(contactText); } catch { fallbackCopy(); }
+    label.textContent = '@ciblo.dev copied!';
+  } catch {
+    label.textContent = 'Copy failed';
+  }
+  copyButton.classList.add('is-copied');
+  setTimeout(() => copyButton.classList.remove('is-copied'), 1800);
+}
+copyButton.addEventListener('click', copyContact);
 
 const views = {
-  home:  { title: 'ciblo.xyz — Survive, Build, Explore', sub: false },
-  store: { title: 'Store — ciblo.xyz', sub: true },
-  rules: { title: 'Rules — ciblo.xyz', sub: true }
+  home:     { title: 'ciblo.xyz — Editing & Projects', sub: false },
+  projects: { title: 'Projects — ciblo.xyz', sub: true },
+  store:    { title: 'Buy / Donate — ciblo.xyz', sub: true }
 };
+
+const io = 'IntersectionObserver' in window
+  ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 })
+  : null;
+
+function reveal(view) {
+  view.querySelectorAll('.reveal').forEach(el => {
+    el.classList.remove('in');
+    if (io) io.observe(el); else el.classList.add('in');
+  });
+}
+
+let current = null, busy = false;
+
+function show(key, animate) {
+  const next = document.getElementById('view-' + key);
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active', 'leaving', 'entering'));
+  next.classList.add('active');
+  if (animate) {
+    next.classList.add('entering');
+    setTimeout(() => next.classList.remove('entering'), 650);
+  }
+  document.body.classList.toggle('subpage', views[key].sub);
+  document.title = views[key].title;
+  window.scrollTo(0, 0);
+  current = key;
+  requestAnimationFrame(() => reveal(next));
+}
 
 function route() {
   const name = (location.hash || '#home').slice(1);
   const key = views[name] ? name : 'home';
-  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + key));
-  document.body.classList.toggle('subpage', views[key].sub);
-  document.title = views[key].title;
-  window.scrollTo(0, 0);
+  if (key === current) return;
+  if (!current) return show(key, false);
+  const old = document.getElementById('view-' + current);
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (still) return show(key, false);
+  old.classList.add('leaving');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => show(key, true), 320);
 }
 
 window.addEventListener('hashchange', route);
 route();
-
     </script>
   </body>
 </html>
