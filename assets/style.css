@@ -33,9 +33,8 @@
 /* ---------- Base (sizes in rem so big screens scale up) ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { font-size: 16px; -webkit-text-size-adjust: 100%; }
-@media (min-width: 1600px) { html { font-size: 18px; } }
-@media (min-width: 2200px) { html { font-size: 22px; } }   /* 1440p / small TVs */
-@media (min-width: 3200px) { html { font-size: 30px; } }   /* 4K TVs */
+/* only a true 4K-at-100% screen (e.g. a TV's built-in browser) gets bigger text; normal PC monitors stay at 16px */
+@media (min-width: 3200px) { html { font-size: 24px; } }
 
 body {
   margin: 0;
@@ -210,7 +209,7 @@ main {
   align-items: baseline;
   justify-content: center;
   gap: 0.3em;
-  font-size: clamp(3rem, 13vw, 9rem);
+  font-size: clamp(2.75rem, 10vw, 8.75rem);
   font-weight: 800;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
