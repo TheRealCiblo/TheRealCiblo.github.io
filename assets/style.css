@@ -29,6 +29,20 @@
   --logo: #7a7a7a;
   --glow: rgba(0, 0, 0, 0.2);
 }
+/* the Work tab is always black, whichever theme is picked */
+:root[data-page="work"] {
+  color-scheme: dark;
+  --bg: #000;
+  --fg: #fff;
+  --text: #b5b5b5;
+  --muted: #8f8f8f;
+  --dim: #555;
+  --surface: #111;
+  --line: #262626;
+  --tab-on: #cfcfcf;
+  --logo: #8a8a8a;
+  --glow: rgba(255, 255, 255, 0.5);
+}
 
 /* ---------- Base (sizes in rem so big screens scale up) ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -319,6 +333,155 @@ main {
 .pill svg { width: 1.5rem; height: 1.05rem; transition: scale 0.35s var(--ease); }
 .pill:active { transform: scale(0.97); }
 
+/* ---------- Work ---------- */
+@keyframes tileIn { from { opacity: 0; filter: blur(12px); translate: 0 14px; } }
+
+#page-work { flex-direction: column; }
+.work { width: 100%; max-width: 52rem; }
+.work-head { margin-bottom: 1.75rem; }
+.work-head h2 {
+  margin: 0 0 0.4rem;
+  font: 700 1.875rem "Montserrat", sans-serif;
+  letter-spacing: -0.01em;
+}
+.work-head p { margin: 0; color: var(--text); line-height: 1.6; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.25rem;
+}
+.stat {
+  padding: 1.4rem 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  animation: tileIn 0.8s var(--ease) calc(0.1s + var(--i, 0) * 0.08s) backwards;
+}
+.stat .num {
+  display: block;
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.stat .label {
+  display: block;
+  margin-top: 0.4rem;
+  font: 600 0.72rem "Montserrat", sans-serif;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Shorts: a thumbnail until clicked, then the real player loads in place */
+.videos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.video {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #111;
+  animation: tileIn 0.8s var(--ease) calc(0.25s + var(--i) * 0.05s) backwards;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s ease;
+}
+.video-btn {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.video img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 0.6s var(--ease);
+}
+.video .play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: scale 0.4s var(--ease), background-color 0.3s ease, border-color 0.3s ease;
+}
+.video .play svg { width: 1.2rem; height: 1.2rem; fill: #fff; translate: 2px 0; }
+.video .cap {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 2.5rem 0.9rem 0.9rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+  color: #fff;
+  font: 600 0.8rem/1.35 "Poppins", sans-serif;
+  text-align: left;
+}
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* ---------- Hire me (square, bottom right, every page but Contact) ---------- */
+.hire {
+  position: fixed;
+  right: var(--pad-x);
+  bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 4.75rem;
+  height: 4.75rem;
+  padding: 0.75rem;
+  overflow: hidden;
+  border-radius: 1.1rem;
+  background: var(--fg);
+  color: var(--bg);
+  font: 700 0.82rem/1.1 "Montserrat", sans-serif;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: transform 0.45s var(--ease), opacity 0.4s ease, box-shadow 0.4s ease,
+              background-color 0.5s ease, color 0.5s ease;
+}
+.hire svg {
+  align-self: flex-end;
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: translate 0.45s var(--ease);
+}
+.hire::after {                                     /* glare that sweeps across on hover */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 35%, color-mix(in srgb, var(--bg) 22%, transparent) 50%, transparent 65%) 120% 0 / 250% 100% no-repeat;
+  pointer-events: none;
+}
+.hire:active { transform: scale(0.95); }
+:root[data-page="contact"] .hire { opacity: 0; transform: scale(0.8); pointer-events: none; }
+:root[data-page="work"] .theme-btn { opacity: 0; pointer-events: none; }
+.theme-btn { transition: transform 0.4s var(--ease), border-color 0.3s ease, opacity 0.4s ease; }
+
 /* ---------- Footer ---------- */
 .site-footer {
   display: flex;
@@ -379,6 +542,12 @@ main {
   .pill.yt:hover { border-color: #ff0033; box-shadow: 0 0 24px rgba(255, 0, 51, 0.3); }
   .pill.dc:hover { border-color: #5865f2; box-shadow: 0 0 24px rgba(88, 101, 242, 0.35); }
   .footer-links a:hover { color: var(--fg); }
+  .video:not(.playing):hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(255, 255, 255, 0.07); }
+  .video:hover img { scale: 1.05; }
+  .video:hover .play { scale: 1.12; background-color: #ff0033; border-color: #ff0033; }
+  .hire:hover { transform: translateY(-3px) scale(1.06); box-shadow: 0 14px 40px var(--glow); }
+  .hire:hover svg { translate: 2px -2px; }
+  .hire:hover::after { animation: shine 0.9s ease forwards; }
   .legal:hover { color: var(--muted); }
   .legal:hover .brand { color: var(--fg); }
 }
@@ -388,6 +557,11 @@ main {
   .wrap { flex-direction: column; align-items: flex-start; gap: 2rem; }
   .star { align-self: flex-end; width: 3.5rem; height: 3.5rem; }
   .content h2 { font-size: 1.6rem; }
+  .videos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+  .stats { gap: 0.75rem; }
+  .stat { padding: 1.1rem; }
+  .hire { width: 4rem; height: 4rem; padding: 0.6rem; font-size: 0.72rem; }
+  .site-footer { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }   /* room for the Hire me square */
 }
 @media (max-width: 380px) {
   .tabs { gap: 1.1rem; }

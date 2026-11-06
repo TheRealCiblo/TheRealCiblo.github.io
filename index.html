@@ -49,6 +49,7 @@
 
   <nav class="tabs intro" style="--d: 0.25s" aria-label="Main">
     <a class="tab" href="#home" data-page="home" aria-current="page">Home</a>
+    <a class="tab" href="#work" data-page="work">Work</a>
     <a class="tab" href="#about" data-page="about">About</a>
     <a class="tab" href="#contact" data-page="contact">Contact</a>
   </nav>
@@ -66,6 +67,27 @@
         <span class="ghost" aria-hidden="true">welcome to ciblo.xyz</span>
         <span class="typed" aria-hidden="true"><span id="typed"></span><span class="caret" id="caret"></span></span>
       </a>
+    </section>
+
+    <!-- Work -->
+    <section class="page" id="page-work" aria-labelledby="work-title">
+      <div class="work">
+        <div class="work-head">
+          <h2 id="work-title">Work</h2>
+          <p>Short-form edits for Minecraft and gaming content. Tap any video to play it here.</p>
+        </div>
+        <div class="stats">
+          <div class="stat" style="--i: 0">
+            <span class="num" data-to="51652">51,652</span>
+            <span class="label">views generated</span>
+          </div>
+          <div class="stat" style="--i: 1">
+            <span class="num" data-to="1.4" data-dec="1" data-suffix="K">1.4K</span>
+            <span class="label">subscribers gained</span>
+          </div>
+        </div>
+        <div class="videos" id="videos"></div>
+      </div>
     </section>
 
     <!-- About -->
@@ -115,6 +137,11 @@
       <span class="copy">&copy;</span><span>2026</span><span class="dot"></span><span class="brand">ciblo.xyz</span><span class="dot"></span><span>All rights reserved</span>
     </div>
   </footer>
+
+  <a class="hire intro" href="#contact" style="--d: 0.9s" aria-label="Hire me">
+    <span>Hire<br>me</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+  </a>
 
   <div class="toast" id="toast" role="status" aria-live="polite">copied</div>
 

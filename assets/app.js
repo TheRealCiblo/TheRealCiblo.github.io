@@ -8,9 +8,14 @@
   const themeBtn = $("#theme");
   const themeMeta = $('meta[name="theme-color"]');
 
+  // browser bar colour: the Work tab is always black
+  function syncMeta() {
+    themeMeta.content = root.dataset.theme === "light" && root.dataset.page !== "work" ? "#f4f4f1" : "#000000";
+  }
+
   function applyTheme(theme, remember) {
     root.dataset.theme = theme;
-    themeMeta.content = theme === "light" ? "#f4f4f1" : "#000000";
+    syncMeta();
     themeBtn.setAttribute("aria-label", theme === "light" ? "Switch to dark mode" : "Switch to light mode");
     if (remember) try { localStorage.setItem("theme", theme); } catch (e) {}
   }
@@ -80,14 +85,15 @@
   setTimeout(() => document.body.style.removeProperty("--page-delay"), 1500);
 
   /* ---------- Pages (#home, #about, #contact — so links, refresh and Back all work) ---------- */
-  const PAGES = ["home", "about", "contact"];
-  const TITLES = { home: "ciblo.xyz", about: "About · ciblo.xyz", contact: "Contact · ciblo.xyz" };
+  const PAGES = ["home", "work", "about", "contact"];
+  const TITLES = { home: "ciblo.xyz", work: "Work · ciblo.xyz", about: "About · ciblo.xyz", contact: "Contact · ciblo.xyz" };
   let slideNext = false;
 
   function showPage(name, slide) {
     const current = $(".page.active");
     const next = $("#page-" + name);
-    if (!next || current === next) return;
+    if (!next) return;
+    if (current === next) { root.dataset.page = name; syncMeta(); return; }   // first load on Home
 
     $$(".tab").forEach(t => {
       if (t.dataset.page === name) t.setAttribute("aria-current", "page");
@@ -95,6 +101,18 @@
     });
     $$(".page.leaving").forEach(p => p.classList.remove("leaving"));
     document.title = TITLES[name];
+
+    // going in or out of Work in light mode: fade the colours to/from black instead of snapping
+    const wasWork = root.dataset.page === "work";
+    if (current && wasWork !== (name === "work") && root.dataset.theme === "light") {
+      root.classList.add("theme-fade");
+      setTimeout(() => root.classList.remove("theme-fade"), 600);
+    }
+    root.dataset.page = name;
+    syncMeta();
+    if (wasWork && name !== "work") stopVideo();
+    if (name === "work") countUp();
+    if (current && scrollY > 0) scrollTo(0, 0);
 
     if (current) {
       current.classList.remove("active", "slide-in");
@@ -109,6 +127,89 @@
     }
     next.classList.toggle("slide-in", slide);
     next.classList.add("active");
+  }
+
+  /* ---------- Work: Shorts that play right on the page ---------- */
+  const VIDEOS = [
+    ["LD891S2OK-k", "ciblo.xyz season 3 | Join Today!"],
+    ["gMRbMsJ0GCg", "Join ciblo.xyz | Today!"],
+    ["eQdQrY_dsRY", "ciblo.xyz | The best Minecraft SMP out there."],
+    ["9ii9kyzjzAM", "ciblo.xyz SMP"],
+    ["vaI01fONLKY", "Head over to ciblo.xyz"],
+    ["smSEZE-_M00", "PVP Changed Forever DonutSMP??"],
+    ["tztUDTC4hT4", "Flooding ruining DonutSMP?"],
+    ["ujBPBkpoBbQ", "Best money method on the DonutSMP?"],
+    ["08vAtXnxm2w", "Can We Do it???"],
+  ];
+  const videoGrid = $("#videos");
+  VIDEOS.forEach(([id, title], i) => {
+    const tile = document.createElement("div");
+    tile.className = "video";
+    tile.style.setProperty("--i", i);
+    tile.dataset.id = id;
+    tile.dataset.title = title;
+
+    const btn = document.createElement("button");
+    btn.className = "video-btn";
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Play: " + title);
+
+    const img = new Image();
+    img.alt = "";
+    img.loading = "lazy";                           // only downloads once the Work tab is opened
+    img.decoding = "async";
+    img.src = `https://i.ytimg.com/vi/${id}/oar2.jpg`;
+    img.addEventListener("error", () => { img.src = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`; }, { once: true });
+
+    const play = document.createElement("span");
+    play.className = "play";
+    play.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+    const cap = document.createElement("span");
+    cap.className = "cap";
+    cap.textContent = title;
+
+    btn.append(img, play, cap);
+    tile.append(btn);
+    videoGrid.append(tile);
+  });
+
+  let playingTile = null;
+  function stopVideo() {
+    if (!playingTile) return;
+    playingTile.querySelector("iframe").replaceWith(playingTile._btn);
+    playingTile.classList.remove("playing");
+    playingTile = null;
+  }
+  videoGrid.addEventListener("click", e => {
+    const btn = e.target.closest(".video-btn");
+    if (!btn) return;
+    const tile = btn.parentElement;
+    stopVideo();                                    // only one video plays at a time
+    const frame = document.createElement("iframe");
+    frame.src = `https://www.youtube-nocookie.com/embed/${tile.dataset.id}?autoplay=1&playsinline=1&rel=0`;
+    frame.title = tile.dataset.title;
+    frame.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    frame.allowFullscreen = true;
+    tile._btn = btn;
+    btn.replaceWith(frame);
+    tile.classList.add("playing");
+    playingTile = tile;
+  });
+
+  // stats count up from zero each time Work opens
+  function countUp() {
+    $$(".num[data-to]").forEach(el => {
+      const to = parseFloat(el.dataset.to);
+      const dec = parseInt(el.dataset.dec || "0", 10);
+      const suffix = el.dataset.suffix || "";
+      const fmt = new Intl.NumberFormat("en-US", { minimumFractionDigits: dec, maximumFractionDigits: dec });
+      const start = performance.now(), dur = 1600;
+      (function step(now) {
+        const p = Math.min(1, (now - start) / dur);
+        el.textContent = fmt.format(to * (1 - Math.pow(1 - p, 4))) + suffix;   // eases out
+        if (p < 1) requestAnimationFrame(step);
+      })(start);
+    });
   }
 
   function route() {
@@ -193,6 +294,8 @@
       kick();
     }, { passive: true });
     root.addEventListener("mouseleave", () => { shown = false; kick(); });
+    // the mouse moving onto a playing video: YouTube shows its own cursor there, so hide ours
+    document.addEventListener("pointerover", e => { if (e.target.tagName === "IFRAME") { shown = false; kick(); } });
     addEventListener("pointerdown", () => { pressT = 1; kick(); });
     addEventListener("pointerup", () => { pressT = 0; kick(); });
     addEventListener("resize", resize);
