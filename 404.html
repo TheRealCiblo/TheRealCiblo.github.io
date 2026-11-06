@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page not found · ciblo.xyz</title>
+<meta name="robots" content="noindex">
+<script>
+  (function () {
+    var t; try { t = localStorage.getItem("theme"); } catch (e) {}
+    if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    document.documentElement.dataset.theme = t;
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Poppins:wght@400;800&display=swap">
+<!-- styles are inline: this page can be shown at any address, where relative links to /assets would break -->
+<style>
+  :root { color-scheme: dark; --bg: #000; --fg: #fff; --muted: #8f8f8f; --line: #2a2a2a; --ease: cubic-bezier(0.16, 1, 0.3, 1); }
+  :root[data-theme="light"] { color-scheme: light; --bg: #f4f4f1; --fg: #0a0a0a; --muted: #6f6f6f; --line: #d9d9d6; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 24px max(16px, env(safe-area-inset-left));
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "Poppins", system-ui, sans-serif;
+    text-align: center;
+  }
+  @keyframes in { from { opacity: 0; filter: blur(16px); translate: 0 12px; } }
+  @keyframes spin { from { opacity: 0; filter: blur(16px); scale: 0.6; rotate: -90deg; } }
+  .star { width: 64px; height: 64px; margin: 0 auto 28px; fill: currentColor; animation: spin 1s var(--ease) backwards; }
+  h1 { margin: 0; font-size: clamp(64px, 18vw, 140px); font-weight: 800; letter-spacing: -0.04em; line-height: 1; animation: in 1s var(--ease) 0.1s backwards; }
+  p { margin: 14px 0 32px; color: var(--muted); animation: in 1s var(--ease) 0.2s backwards; }
+  a {
+    display: inline-block;
+    padding: 12px 24px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--fg);
+    font: 700 14px "Montserrat", sans-serif;
+    text-decoration: none;
+    animation: in 1s var(--ease) 0.3s backwards;
+    transition: transform 0.35s var(--ease), border-color 0.3s ease;
+  }
+  a:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+  @media (hover: hover) { a:hover { transform: translateY(-2px) scale(1.03); border-color: var(--muted); } }
+</style>
+</head>
+<body>
+  <main>
+    <svg class="star" viewBox="-200 -200 400 400" aria-hidden="true">
+      <rect x="-46" y="-195" width="92" height="215"/>
+      <rect x="-46" y="-195" width="92" height="215" transform="rotate(72)"/>
+      <rect x="-46" y="-195" width="92" height="215" transform="rotate(144)"/>
+      <rect x="-46" y="-195" width="92" height="215" transform="rotate(216)"/>
+      <rect x="-46" y="-195" width="92" height="215" transform="rotate(288)"/>
+    </svg>
+    <h1>404</h1>
+    <p>This page doesn't exist.</p>
+    <a id="home" href="/">Back to ciblo.xyz</a>
+  </main>
+  <script>
+    // on a github.io project site the home page lives under /repo-name/, not /
+    if (location.hostname.endsWith("github.io")) {
+      var first = location.pathname.split("/")[1];
+      if (first && !/\./.test(first)) document.getElementById("home").href = "/" + first + "/";
+    }
+  </script>
+</body>
+</html>
