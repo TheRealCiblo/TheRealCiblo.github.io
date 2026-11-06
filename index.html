@@ -3,48 +3,596 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Window</title>
+<title>ciblo.xyz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
   html, body {
     margin: 0;
     height: 100%;
     background: #000;
-  }
-  body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
     font-family: "Poppins", sans-serif;
     color: #fff;
+    user-select: none;
   }
-  .window {
-    box-sizing: border-box;
-    width: 500px;
-    height: 500px;
-    background: #1e1e1e;
-    padding: 56px 64px;
+
+  /* ---------- Motion ---------- */
+  :root { --ease: cubic-bezier(0.16, 1, 0.3, 1); }   /* fast start, long soft landing */
+
+  /* opening the site: everything starts blurred and settles into focus, one after another */
+  @keyframes introIn {
+    from { opacity: 0; filter: blur(18px); translate: 0 14px; scale: 0.97; }
   }
-  .date {
-    display: inline-block;
-    background: #333;
-    padding: 14px 18px;
-    font-size: 14px;
-    font-weight: 600;
+  .intro { animation: introIn 1.1s var(--ease) var(--d, 0s) backwards; }
+
+  /* switching tabs: the new page blurs in */
+  @keyframes pageIn {
+    from { opacity: 0; filter: blur(14px); translate: 0 10px; scale: 0.985; }
   }
-  h1 {
-    margin: 40px 0 0;
-    font-size: 32px;
+
+  /* custom crosshair (fine pointers only, see script) */
+  html.custom-cursor, html.custom-cursor * { cursor: none !important; }
+  .cursor {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;           /* stays visible over white text too */
+  }
+
+  /* "reduce motion" turned on in the OS: keep the blur/fade, drop the sliding and zooming */
+  @media (prefers-reduced-motion: reduce) {
+    @keyframes introIn { from { opacity: 0; filter: blur(18px); } }
+    @keyframes pageIn  { from { opacity: 0; filter: blur(14px); } }
+  }
+
+  /* ---------- Header ---------- */
+  .logo {
+    position: fixed;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font: 700 18px "Montserrat", sans-serif;
+    letter-spacing: 0.02em;
+    cursor: default;
+    color: transparent;
+    background: linear-gradient(110deg, #8a8a8a 42%, #fff 50%, #8a8a8a 58%) 100% 0 / 260% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    transition: filter 0.3s ease;
+  }
+  .logo:hover {
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.55));
+    animation: shine 0.9s ease forwards;
+  }
+  @keyframes shine {
+    from { background-position: 100% 0; }
+    to   { background-position: 0% 0; }
+  }
+
+  /* ---------- Tabs ---------- */
+  .tabs {
+    position: fixed;
+    top: 66px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 34px;
+    max-width: 100vw;
+  }
+  .tab {
+    position: relative;
+    padding: 8px 2px 11px;
+    border: 0;
+    background: none;
+    color: #8f8f8f;
+    font: 700 14px "Montserrat", sans-serif;
+    cursor: pointer;
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+  .tab::after {                       /* the underline */
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(110deg, transparent 38%, #fff 50%, transparent 62%) 100% 0 / 300% 100% no-repeat #333;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .tab:hover {
+    color: #fff;
+    transform: scale(1.07);
+  }
+  .tab:hover::after {                 /* glare sweeps across the underline */
+    animation: glare 0.8s ease forwards;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  @keyframes glare {
+    from { background-position: 100% 0; }
+    to   { background-position: 0% 0; }
+  }
+  .tab.active { color: #fff; }
+  .tab.active::after { background-color: #cfcfcf; }
+  .tab:focus-visible { outline: 1px solid #666; outline-offset: 4px; border-radius: 4px; }
+
+  /* ---------- Tab pages ---------- */
+  .page {
+    position: fixed;
+    inset: 110px 0 60px;              /* below the tabs, above the footer */
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .page.active {
+    display: flex;
+    animation: pageIn 0.7s var(--ease) var(--page-delay, 0s) backwards;
+  }
+
+  /* slide transition (used by the asterisk on About to go back Home) */
+  @keyframes slideOutRight { to   { opacity: 0; translate: 45vw 0; filter: blur(10px); } }
+  @keyframes slideInLeft   { from { opacity: 0; translate: -45vw 0; filter: blur(10px); } }
+  .page.leaving {
+    display: flex;
+    pointer-events: none;
+    animation: slideOutRight 0.7s var(--ease) forwards;
+  }
+  .page.active.slide-in { animation: slideInLeft 0.8s var(--ease) both; }
+
+  /* Home: the time is the page header */
+  .home-title {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.3em;
+    font-size: clamp(44px, 10vw, 140px);
     font-weight: 800;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
+  .home-title .small {
+    font-size: 0.28em;
+    font-weight: 600;
+    letter-spacing: 0;
+    opacity: 0.55;
+  }
+
+  #page-home { flex-direction: column; }
+
+  /* "welcome to ciblo.xyz" under the time, typed out on first load */
+  .welcome {
+    position: relative;
+    margin-top: 14px;
+    font-size: clamp(15px, 1.6vw, 20px);
+    font-weight: 400;
+    color: #8f8f8f;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.25s ease, text-shadow 0.25s ease;
+  }
+  .welcome:hover {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  .welcome .ghost { visibility: hidden; }          /* reserves the full width so nothing shifts */
+  .welcome .typed {
+    position: absolute;
+    left: 0; top: 0;
+    white-space: nowrap;
+  }
+  .welcome .caret {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    background: currentColor;
+    animation: blink 1s step-end infinite;
+    transition: opacity 0.6s ease;
+  }
+  .welcome .caret.gone { opacity: 0; animation: none; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* About */
+  .about {
+    max-width: 560px;
+    padding: 0 24px;
+  }
+  .about h2 {
+    margin: 0 0 24px;
+    font: 700 30px "Montserrat", sans-serif;
+    letter-spacing: -0.01em;
+  }
+  .about p {
+    margin: 0 0 18px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.75;
+    color: #b5b5b5;
+    user-select: text;
+  }
+  .about a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: #555;
+    text-underline-offset: 4px;
+    cursor: pointer;
+    transition: text-decoration-color 0.2s ease, text-shadow 0.2s ease;
+  }
+  .about a:hover {
+    text-decoration-color: #fff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  }
+
+  .about a.email {
+    display: inline-block;
+    margin-top: 6px;
+    font: 700 clamp(18px, 2.2vw, 26px) "Montserrat", sans-serif;
+    letter-spacing: -0.01em;
+    user-select: text;
+  }
+
+  .about-wrap {
+    display: flex;
+    align-items: center;
+    gap: 56px;
+  }
+
+  /* asterisk on the right of About: blurs in, spins on hover, click = back Home */
+  @keyframes starIn {
+    from { opacity: 0; filter: blur(16px); scale: 0.6; rotate: -90deg; }
+  }
+  .star {
+    flex: none;
+    width: 72px;
+    height: 72px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #fff;
+    cursor: pointer;
+    animation: starIn 1s var(--ease) 0.25s backwards;
+    transition: rotate 0.7s var(--ease), scale 0.4s var(--ease), filter 0.4s ease;
+  }
+  .star svg { width: 100%; height: 100%; display: block; fill: currentColor; }
+  .star:hover {
+    rotate: 72deg;
+    scale: 1.12;
+    filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.55));
+  }
+  .star:active { scale: 0.92; }
+  @media (max-width: 720px) {
+    .about-wrap { flex-direction: column; align-items: flex-end; gap: 28px; }
+    .star { width: 56px; height: 56px; }
+  }
+
+  /* YouTube channel link */
+  .yt {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px 10px 14px;
+    border: 1px solid #2a2a2a;
+    border-radius: 999px;
+    background: #121212;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.35s var(--ease), border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .yt:hover {
+    transform: translateY(-2px) scale(1.03);
+    border-color: #ff0033;
+    box-shadow: 0 0 24px rgba(255, 0, 51, 0.35);
+  }
+  .yt-label { font: 700 14px "Montserrat", sans-serif; letter-spacing: 0.01em; }
+  .yt-play { width: 24px; height: 17px; transition: scale 0.35s var(--ease); }
+  .yt:hover .yt-play { scale: 1.15; }
+  .about a.yt, .about a.yt:hover { text-decoration: none; text-shadow: none; font-weight: 400; }
+  .contact-yt { margin-top: 28px; }
+
+  /* ---------- Footer ---------- */
+  .footer {
+    position: fixed;
+    left: 50%;
+    bottom: 26px;
+    translate: -50% 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+    font: 500 10.5px "Montserrat", sans-serif;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #555;
+    transition: color 0.5s ease;
+  }
+  .footer:hover { color: #9a9a9a; }
+  .footer .copy { font-size: 13px; letter-spacing: 0; translate: 0 -0.5px; }
+  .footer .brand { font-weight: 700; color: #7a7a7a; letter-spacing: 0.08em; text-transform: none; transition: color 0.5s ease; }
+  .footer:hover .brand { color: #d0d0d0; }
+  .footer .dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: 0.6; }
+
+  /* "copied" note under the footer — barely there */
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 6px;
+    translate: -50% 4px;
+    font: 500 10px "Montserrat", sans-serif;
+    letter-spacing: 0.2em;
+    text-transform: lowercase;
+    color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease, translate 0.6s var(--ease);
+  }
+  .toast.show { opacity: 0.22; translate: -50% 0; }
 </style>
 </head>
-<body>
-  <div class="window">
-    <span class="date">5 November 2026</span>
-    <h1>Welcome to ciblo.xyz</h1>
-  </div>
+<body style="--page-delay: 0.4s">
+
+  <header class="logo intro" style="--d: 0.1s">ciblo.xyz</header>
+
+  <nav class="tabs intro" id="tabs" style="--d: 0.25s">
+    <button class="tab active" data-page="home">Home</button>
+    <button class="tab" data-page="about">About</button>
+    <button class="tab" data-page="contact">Contact</button>
+  </nav>
+
+  <main>
+    <section class="page active" id="page-home">
+      <h1 class="home-title">
+        <span id="time"></span>
+        <span class="small" id="ampm"></span>
+        <span class="small" id="zone"></span>
+      </h1>
+      <a class="welcome" href="#about" data-goto="about" aria-label="welcome to ciblo.xyz">
+        <span class="ghost" aria-hidden="true">welcome to ciblo.xyz</span>
+        <span class="typed" aria-hidden="true"><span id="typed"></span><span class="caret" id="caret"></span></span>
+      </a>
+    </section>
+    <section class="page" id="page-about">
+      <div class="about-wrap">
+      <div class="about">
+        <h2>About me</h2>
+        <p>Hello, my name is Ciblo. I'm a freelance editor and project creator.</p>
+        <p>I occasionally build projects in Unity, and I spend plenty of time on general computer work. I've also worked in Blender, including 3D animation.</p>
+        <p>I create Minecraft videos along with other editing projects. If there's anything you'd like me to know, head over to the <a href="#contact" data-goto="contact">Contact</a> page.</p>
+      </div>
+      <button class="star" data-goto="home" data-slide aria-label="Back to home" title="Home">
+        <svg viewBox="-200 -200 400 400" aria-hidden="true">
+          <g>
+            <rect x="-46" y="-195" width="92" height="215"/>
+            <rect x="-46" y="-195" width="92" height="215" transform="rotate(72)"/>
+            <rect x="-46" y="-195" width="92" height="215" transform="rotate(144)"/>
+            <rect x="-46" y="-195" width="92" height="215" transform="rotate(216)"/>
+            <rect x="-46" y="-195" width="92" height="215" transform="rotate(288)"/>
+          </g>
+        </svg>
+      </button>
+      </div>
+    </section>
+    <section class="page" id="page-contact">
+      <div class="about-wrap">
+      <div class="about">
+        <h2>Contact</h2>
+        <p>For editing work, collaborations or any questions, feel free to reach out by email.</p>
+        <a class="email" href="mailto:ciblobuisness@gmail.com" data-copy title="Click to copy">ciblobuisness@gmail.com</a>
+        <div class="contact-yt">
+          <a class="yt" href="https://www.youtube.com/@CibloMC" target="_blank" rel="noopener">
+            <svg class="yt-play" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="6" fill="#ff0033"/><path d="M11 6l7 4-7 4z" fill="#fff"/></svg>
+            <span class="yt-label">YouTube</span>
+          </a>
+        </div>
+      </div>
+      <button class="star" data-goto="home" data-slide aria-label="Back to home" title="Home">
+        <svg viewBox="-200 -200 400 400" aria-hidden="true">
+          <g>
+            <rect x="-46" y="-195" width="92" height="215"/>
+            <rect x="-46" y="-195" width="92" height="215" transform="rotate(72)"/>
+            <rect x="-46" y="-195" width="92" height="215" transform="rotate(144)"/>
+            <rect x="-46" y="-195" width="92" height="215" transform="rotate(216)"/>
+            <rect x="-46" y="-195" width="92" height="215" transform="rotate(288)"/>
+          </g>
+        </svg>
+      </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer intro" style="--d: 0.7s">
+    <span class="copy">&copy;</span><span>2026</span><span class="dot"></span><span class="brand">ciblo.xyz</span><span class="dot"></span><span>All rights reserved</span>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite">copied</div>
+
+<script>
+  /* ----- time: 12-hour, in the viewer's own time zone ----- */
+  const timeFmt = new Intl.DateTimeFormat(undefined, {
+    hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true, timeZoneName: "short"
+  });
+
+  function tick() {
+    const now = new Date();
+    const p = Object.fromEntries(timeFmt.formatToParts(now).map(x => [x.type, x.value]));
+    document.getElementById("time").textContent = `${p.hour}:${p.minute}:${p.second}`;
+    document.getElementById("ampm").textContent = (p.dayPeriod || "").toUpperCase();
+    document.getElementById("zone").textContent = p.timeZoneName || "";
+    setTimeout(tick, 1000 - (now.getTime() % 1000));   // stay synced to the second
+  }
+  tick();
+
+  /* ----- typewriter for "welcome to ciblo.xyz" (runs once, on page load) ----- */
+  (function typewriter() {
+    const text = "welcome to ciblo.xyz";
+    const out = document.getElementById("typed");
+    const caret = document.getElementById("caret");
+    let i = 0;
+    function step() {
+      out.textContent = text.slice(0, ++i);
+      if (i < text.length) {
+        const ch = text[i - 1];
+        setTimeout(step, ch === " " ? 120 : 55 + Math.random() * 45);   // slight, natural variation
+      } else {
+        setTimeout(() => caret.classList.add("gone"), 1800);            // blink a moment, then fade
+      }
+    }
+    setTimeout(step, 1200);                                              // start once the page has blurred in
+  })();
+
+  /* after the opening animation, tab switches blur in immediately */
+  setTimeout(() => document.body.style.removeProperty("--page-delay"), 1500);
+
+  /* ----- custom crosshair with motion blur ----- */
+  (function crosshair() {
+    if (!matchMedia("(pointer: fine)").matches) return;                // keep the normal cursor on touch screens
+    document.documentElement.classList.add("custom-cursor");
+
+    const canvas = document.createElement("canvas");
+    canvas.className = "cursor";
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext("2d");
+
+    let W = 0, H = 0, dpr = 1;
+    function resize() {
+      dpr = devicePixelRatio || 1;
+      W = innerWidth; H = innerHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+    }
+    resize();
+    addEventListener("resize", resize);
+
+    const target = { x: W / 2, y: H / 2 }, pos = { ...target };
+    let shown = false, vis = 0;            // fade in/out when the mouse enters/leaves
+    let hoverT = 0, hover = 0;             // over something clickable
+    let pressT = 0, press = 0;             // mouse button held
+
+    addEventListener("pointermove", e => {
+      target.x = e.clientX; target.y = e.clientY;
+      if (!shown) { pos.x = target.x; pos.y = target.y; shown = true; }
+      hoverT = e.target.closest("a, button") ? 1 : 0;
+    });
+    document.documentElement.addEventListener("mouseleave", () => { shown = false; });
+    addEventListener("pointerdown", () => { pressT = 1; });
+    addEventListener("pointerup",   () => { pressT = 0; });
+
+    /* normally a small dot; over anything clickable it becomes a simple + crosshair */
+    function draw(x, y, alpha) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      const r = (3.5 - hover * 2.5) * (1 - press * 0.3);   // dot shrinks to a pin-point centre
+      ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
+      if (hover > 0.01) {
+        const gap = 4 - press * 1.5, len = 8 * hover;
+        ctx.strokeStyle = `rgba(255,255,255,${alpha * hover})`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(-gap - len, 0); ctx.lineTo(-gap, 0);
+        ctx.moveTo(gap, 0);        ctx.lineTo(gap + len, 0);
+        ctx.moveTo(0, -gap - len); ctx.lineTo(0, -gap);
+        ctx.moveTo(0, gap);        ctx.lineTo(0, gap + len);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function frame() {
+      const px = pos.x, py = pos.y;
+      pos.x += (target.x - pos.x) * 0.5;             // quick, slightly smoothed follow
+      pos.y += (target.y - pos.y) * 0.5;
+      hover += (hoverT - hover) * 0.2;
+      press += (pressT - press) * 0.35;
+      vis   += ((shown ? 1 : 0) - vis) * 0.2;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      if (vis > 0.01) {
+        // motion blur: faint copies smeared back along the direction of travel
+        const vx = pos.x - px, vy = pos.y - py;
+        const n = Math.min(10, 1 + Math.floor(Math.hypot(vx, vy) / 3));
+        for (let i = n - 1; i >= 1; i--) {
+          const t = i / n;
+          draw(pos.x - vx * t * 1.6, pos.y - vy * t * 1.6, vis * (1 - t) * 0.3);
+        }
+        draw(pos.x, pos.y, vis);
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* ----- tabs ----- */
+  function showPage(name, slide = false) {
+    const current = document.querySelector(".page.active");
+    const next = document.getElementById("page-" + name);
+    if (!next || current === next) return;
+
+    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.page === name));
+    document.querySelectorAll(".page.leaving").forEach(p => p.classList.remove("leaving"));
+
+    if (current) {
+      current.classList.remove("active", "slide-in");
+      if (slide) {                                   // keep the old page on screen while it slides away
+        current.classList.add("leaving");
+        current.addEventListener("animationend", function done(e) {
+          if (e.target !== current) return;
+          current.classList.remove("leaving");
+          current.removeEventListener("animationend", done);
+        });
+      }
+    }
+    next.classList.toggle("slide-in", slide);
+    next.classList.add("active");
+  }
+  document.getElementById("tabs").addEventListener("click", e => {
+    const tab = e.target.closest(".tab");
+    if (tab) showPage(tab.dataset.page);
+  });
+  /* in-page links such as "Contact" on the About page */
+  document.addEventListener("click", e => {
+    const link = e.target.closest("[data-goto]");
+    if (!link) return;
+    e.preventDefault();
+    showPage(link.dataset.goto, link.hasAttribute("data-slide"));
+  });
+
+  /* ----- email: click copies it and shows a faint "copied" at the very bottom ----- */
+  const toast = document.getElementById("toast");
+  let toastTimer;
+  document.querySelectorAll("[data-copy]").forEach(el => el.addEventListener("click", async e => {
+    e.preventDefault();
+    const text = el.textContent.trim();
+    try { await navigator.clipboard.writeText(text); }
+    catch {                                       // older browsers / no clipboard permission
+      const t = Object.assign(document.createElement("textarea"), { value: text });
+      document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove();
+    }
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 1600);
+  }));
+
+  /* ----- UI sounds: tabs get one click, every other button/link gets the other ----- */
+  const sounds = {
+    tab:    new Audio("sounds/tab-click.mp3"),
+    button: new Audio("sounds/button-click.mp3"),
+  };
+  Object.values(sounds).forEach(a => { a.preload = "auto"; a.load(); });
+
+  function play(name) {
+    const a = sounds[name].cloneNode();          // a fresh copy so fast clicks can overlap
+    a.volume = 0.5;
+    a.play().catch(() => {});
+  }
+  document.addEventListener("pointerdown", e => {
+    if (e.button !== 0) return;
+    if (e.target.closest(".tab")) play("tab");
+    else if (e.target.closest("a, button")) play("button");
+  });
+</script>
 </body>
 </html>
